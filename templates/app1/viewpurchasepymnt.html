@@ -23,7 +23,14 @@
             height : 29.7cm;
             overflow: hidden;
         }
-        
+        hr {
+            border: 0;
+            clear:both;
+            display:block;
+            width: 96%;               
+            background-color:#000000;
+            height: 1px;
+        }    
     </style>
 
     <div class="page-content" >
@@ -32,56 +39,42 @@
                 <div class="card-title">
                     <center><h2 class="mb-0">PAYMENT VIEW</h2></center>
                     <hr>
+                    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgba(0,0,0,.01);">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarScroll">
+                            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                              <li class="nav-item active" >
+                                <a class="nav-link text-light btn" role="button" onclick="printDiv()"><i class="fa fa-print">&nbsp;Print</i><span class="sr-only">(current)</span></a>
+                              </li>
+                                <!-- <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light btn btn-outline-info" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-share"></i> Share
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
+                                        <a class="dropdown-item" href="#">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
+                                    </div>
+                                </li> -->
+                                <li class="nav-item">
+                                    <a class="nav-link text-light btn" role="button" id="cmd">
+                                        <i class="fa fa-file-pdf-o">&nbsp;Pdf</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light btn" role="button" href="goeditpurchasepymnt/{{ paymt.pymntid }}{{ py.pymnt }}" class=" fa fa-pencil"><i class=" fa fa-pencil"></i>&nbsp;Edit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light btn" role="button" href="deletepurchasepymnt/{{ paymt.pymntid }}{{ py.pymnt }}"><i class="fa fa-trash-o delete">&nbsp;Delete</i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
             </div>
         </div>
-
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgba(0,0,0,.01);">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                  <li class="nav-item active" >
-                    <a class="nav-link text-light btn btn-info" role="button" onclick="printDiv()"><i class="fa fa-print">Print</i><span class="sr-only">(current)</span></a>
-                  </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light btn btn-outline-info" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-share"></i> Share
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
-                            <a class="dropdown-item" href="#">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
-                        </div>
-                    </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light btn btn-outline-info" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-exchange"></i>Convert 
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href=""><i class="fas fa-receipt"></i>To Bill</a>
-                            <a class="dropdown-item" href="">To Approved</a>
-                        </div>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link text-light btn btn-outline-info" role="button" id="cmd">
-                            <i class="fa fa-file-pdf-o">&nbsp;Pdf</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"></a>
-                    </li>
-                    <!-- <li class="nav-item">
-                        <a class="nav-link text-light btn btn-outline-info" role="button" href="" class=" fa fa-pencil"><i class=" fa fa-pencil"></i> Edit</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link text-light btn btn-outline-info" role="button" href="deletepurchasepymnt/{{ paymt.pymntid }}{{ py.pymnt }}"><i class="fa fa-trash-o delete">Delete</i></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
     
         <div  id="content">
                 <div class="my-5 page" size="A4" >
@@ -247,23 +240,6 @@
                 a.document.close(); 
                 a.print(); 
             } 
-        </script>
-        
-        <script>
-            var doc = new jsPDF();
-            var specialElementHandlers = {
-                '#editor': function (element, renderer) {
-                    return true;
-                }
-            };
-
-            $('#cmd').click(function () {
-                doc.fromHTML($('#content').html(), 15, 15, {
-                    'width': 170,
-                        'elementHandlers': specialElementHandlers
-                });
-                doc.save('sample-file.pdf');
-            });
         </script>
 
         <script type="text/javascript">

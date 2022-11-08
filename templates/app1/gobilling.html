@@ -38,9 +38,9 @@
                                 role="button">Filter By
                             </a>
                             <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'gobilling' %}">All</a>
                                 <a class="dropdown-item" href="{% url 'bill_draft' %}">Draft</a>
-                                <a class="dropdown-item" href="#">Billed</a>
-                                <a class="dropdown-item" href="#">Approved</a>
+                                <a class="dropdown-item" href="{% url 'bill_billed' %}">Billed</a>
                             </div>
                             <a href="{% url 'addbilling' %}" class="btn btn-outline-info" role="button">New</a>
                         </div>

@@ -30,7 +30,7 @@
                     <h4 class="mb-0">Vendor Details</h4>
                 </div>
                 <hr/>
-                <form action="editpurchaseorder/{{ pordr.porderid }} {{pitem.pid}}" method="post" autocomplete="off">
+                <form action="editpurchaseorder/{{ pordr.porderid }} {{pitem.porder}}" method="post" enctype="multipart/form-data" autocomplete="off">
                     {% csrf_token %}
                     
                     {% if user.is_authenticated %}
@@ -67,7 +67,7 @@
                         <div class="row">
                             <div class="col-md-3 mt-2">
                                 <label for="">Source of Supply</label>
-                                <select name="sourceofsupply" id="" class="form-control">
+                                <select name="sourceofsupply" id="plosu" class="form-control" onchange="state(this)">
                                     <option value="{{ pordr.sourceofsupply }}">{{ pordr.sourceofsupply }}</option>
                                     <option value="[AN] Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
                                     <option value="[AD] Andhra Predhesh">[AD] Andhra Predhesh</option>
@@ -217,6 +217,7 @@
                                         <tr>
                                             <th class="text-center">Sl.No</th>
                                             <th class="text-center">Item</th>
+                                            <th class="text-center">HSN</th>
                                             <th class="text-center">Quantity</th>
                                             <th class="text-center">Rate</th>
                                             <th class="text-center">Tax (%)</th>
@@ -226,9 +227,11 @@
                                     <tbody id="items-table-body">
                                         {% for p in pitem %}
                                         <tr>
-                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ forloop.counter }}
+                                                <input type="text" name="id[]" value="{{p.id}}" hidden>
+                                            </td>
                                             <td style="width: 20%;">
-                                                <select name="items[]" id="itmlst" class="form-control">
+                                                <select name="items[]" id="product" class="form-control">
                                                     <option value="{{ p.items }}">{{ p.items }}</option>
                                                     {% for i in item %}
                                                         <option value="{{ i.name }}">
@@ -236,35 +239,41 @@
                                                         </option>
                                                     {% endfor %}
                                                 </select>
+                                            </td>
+                                            <td><input type="number" value="{{ p.hsn }}" name='hsn[]' id="hsn1" placeholder='Enter HSN' 
+                                                class="form-control hsn" step="0.00" min="0">
+                                            </td> 
                                             <td>
                                                 <input type="number" value="{{ p.quantity }}" name='quantity[]'  onchange="qtychange1(this)" placeholder='Enter Qty'
                                                 id="qty1" class="form-control qty" step=0 min=0>
-                                                <span id="qtyspan" class='text-muted'></span>
                                             </td> 
                                             <td><input type="number" value="{{ p.rate }}" name='rate[]' id="unit1" placeholder='Enter Rate' 
                                                 class="form-control price" step="0.00" min="0">
                                             </td> 
                                             <td>
-                                                <select name="tax[]" id="tax" class="form-control tax" onchange="filtertax()">
-                                                    <!-- <option value="{{ p.tax }}">{{ p.tax }}</option> -->
-                                                    <option value="1">28.0% GST(28%)</option>
-                                                    <option value="2">28.0% IGST(28%)</option>
-                                                    <option value="3">18.0% GST(18%)</option>
-                                                    <option value="4">18.0% IGST(18%)</option>
-                                                    <option value="5">12.0% GST(12%)</option>
-                                                    <option value="6">12.0% IGST(12%)</option>
-                                                    <option value="7">06.0% GST(06%)</option>
-                                                    <option value="8">06.0% IGST(06%)</option>
-                                                    <option value="9">05.0% GST(05%)</option>
-                                                    <option value="10">05.0% IGST(05%)</option>
-                                                    <option value="11">03.0% GST(03%)</option>
-                                                    <option value="12">03.0% IGST(03%)</option>
-                                                    <option value="13">0.25% GST(0.25%)</option>
-                                                    <option value="14">0.25% IGST(0.25%)</option>
-                                                    <option value="0">0.0% GST(0%)</option>
-                                                    <option value="0">Exempt GST(0%)</option>
-                                                    <option value="0">Exempt GST(0%)</option>
-                                                    <option value="0">Out of Scope(0%)</option>
+                                                <select name="tax[]" id="tax1" class="form-control tax" onchange="filtertax()">
+                                                    <option id="ta1" value={{ p.tax }} text={{ cmp1.state }}>{{ p.tax }} % GST</option>
+                                                    <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
+                                                    <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
+                                                    <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
+                                                    <option value=6 text={{ cmp1.state }}>06.0% GST(06%)</option>
+                                                    <option value=5 text={{ cmp1.state }}>05.0% GST(05%)</option>
+                                                    <option value=3 text={{ cmp1.state }}>03.0% GST(03%)</option>
+                                                    <option value=.25 text={{ cmp1.state }}>0.25% GST(0.25%)</option>
+                                                    <option value=0 text={{ cmp1.state }}>0.0% GST(0%)</option>
+                                                    <option value=0 text={{ cmp1.state }}>Exempt GST(0%)</option>
+                                                    <option value=0 text={{ cmp1.state }}>Out of Scope(0%)</option>
+                                                    <option id="ta5" value={{ p.tax }} text=" ">{{ p.tax }} % IGST</option>
+                                                    <option value=28 text=" ">28.0% IGST(28%)</option>
+                                                    <option value=18 text=" ">18.0% IGST(18%)</option>
+                                                    <option value=12 text=" ">12.0% IGST(12%)</option>
+                                                    <option value=6 text=" ">06.0% IGST(06%)</option>
+                                                    <option value=5 text=" ">05.0% IGST(05%)</option>
+                                                    <option value=3 text=" ">03.0% IGST(03%)</option>
+                                                    <option value=.25 text=" ">0.25% IGST(0.25%)</option>
+                                                    <option value=0 text=" ">0.0% IGST(0%)</option>
+                                                    <option value=0 text=" ">Exempt IGST(0%)</option>
+                                                    <option value=0 text=" ">Out of Scope(0%)</option>
                                               </select>
                                             </td> 
                                             <td><input type="number" value="{{ p.amount }}" name='amount[]' id="total1" class="form-control total" 
@@ -275,9 +284,9 @@
                                         
                                         {% endfor %}   
                                     </tbody>
-                                    <tr>
+                                    <!-- <tr>
                                         <td style="border: none;"><a class="btn btn-outline-secondary ml-1" role="button" id="addrow" onclick="add_item_row()">+</a></td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                                 <div class="row mt-3">
                                     <div class="col-md-1">
@@ -298,17 +307,8 @@
                                     <textarea class="form-control" name="note" rows="3">{{ pordr.note }}</textarea>
                                 </div><br>
                                 <div>
-                                    <input type="file" class="form-control" name="file" value="{{ pordr.file }}">
+                                    <input type="file" class="form-control" name="file">
                                 </div>
-                                <div class="notices mt-3">
-                                    <div class="text-muted">NOTICE:</div>
-                                    <div class="text-muted">
-                                      Fin sYs Terms and Conditions Apply
-                                    </div>
-                                  </div>
-                                  <footer class="text-muted">Purchase was created on a computer and is valid without the
-                                    signature and seal.
-                                  </footer>
                             </div>
                             <div class="col-md-1 mt-3"></div>
                             <div class="col-md-5 table-responsive-md mt-3" id="tab_logic_total" style="background-color:rgba(0,0,0,.4); border: 1px solid rgba(128, 128, 128, 0.6);"><br>
@@ -382,19 +382,14 @@
                                         <div class="col-sm-4 m-0 p-0"></div>
                                     </div>
                                 </div>
-
-                                
                             </div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                                    <label>Agree to terms and conditions</label>
-                                    <div class="invalid-feedback">You must agree before submitting.</div>
-                                </div>
+                        <div class="notices mt-3">
+                            <div class="text-muted">NOTICE:</div>
+                            <div class="text-muted">
+                              Fin sYs Terms and Conditions Apply
                             </div>
-                        </div> 
+                        </div>
                         <div class="row">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
@@ -411,9 +406,7 @@
         </div>
     </div>
       
-    <script src="{% static 'assets/js/fuse-3.4.6.min.js' %}"></script>
-    <script src="{% static 'assets/js/main.js' %}"></script>
-    <script>
+    <!-- <script>
         var item_row_counter = 1
 
         function add_item_row() {
@@ -437,27 +430,7 @@
                 add_item_row();
             }
         }
-    </script>
-
-    <script>
-        (function () {
-            'use strict';
-            window.addEventListener('load', function () {
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.getElementsByClassName('needs-validation');
-                // Loop over them and prevent submission
-                var validation = Array.prototype.filter.call(forms, function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
-    </script>
+    </script> -->
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
@@ -555,28 +528,8 @@
                     var price = $(this).find('.price').val();
                     var tax = $(this).find('.tax').val();
 
-                    var xyz = document.getElementById("tax").value
-
-                    if(xyz ==1 || xyz ==2  )
-                        tax=28
-                    if(xyz ==3 || xyz ==4  )
-                        tax=18    
-                    if(xyz ==5 || xyz ==6  )
-                        tax=12
-                    if(xyz ==7 || xyz ==8  )
-                        tax=6 
-                    if(xyz ==9 || xyz ==10  )
-                        tax=5
-                    if(xyz ==11 || xyz ==12  )
-                        tax=3 
-                    if(xyz ==13 || xyz ==14  )
-                        tax=.25 
-                    if(xyz ==15 )
-                        tax=.25     
-
                     $(this).find('.total').val(parseFloat(qty * price));
                     $(this).find('.taxamount').val(parseFloat((qty * price) * (parseFloat(tax) / 100)));
-
                     
                     calc_total();
                 }
@@ -589,10 +542,6 @@
                 total += parseFloat($(this).val());
             });
 
-            cgst =0;
-            sgst = 0;
-            igst=0;
-            tcsamount = 0;
             taxamount = 0.0;
             $('.taxamount').each(function() {
                 taxamount += parseFloat($(this).val());
@@ -600,67 +549,59 @@
 
             $('#subtotal').val(parseFloat(total.toFixed(2)));
             $('#tax_amount').val(parseFloat(taxamount.toFixed(2)));
-            $('#tcs_amount').val(tcsamount.toFixed(2));
-            
-
-            tax_sum = total / 100 * $('#tax').val();
-
+        
             calc_tcs();
         }
         function calc_tcs() {
             tcsamount = 0;
-    
             var a = document.getElementById("tcs1").value
             var discount = document.getElementById("disc1").value
-            
             tcs=0
-    
             tcs =a/100 * total
+            let z=Math.round(tcs)
             disc0=discount
             
             var amount =taxamount + total + tcs 
             let x =Math.round(amount)
             let y =Math.round(x-disc0)
             
-            $('#tcs_amount').val(((a/100) *total).toFixed(2));
+            $('#tcs_amount').val((z).toFixed(2));
             $('#grandtotal').val((y).toFixed(2));
             $('#round_off').val((y).toFixed(2));  
             
             test()
         }
         function test(){
-            var bc = document.getElementById("tax").value
+            var bc = document.getElementById("plosu").value
             d=0
-            if (bc ==1 || bc ==3 || bc ==5 || bc ==7 || bc ==9 || bc ==11 || bc ==13|| bc ==15 ) {
-                $('#cgst').val((taxamount/2).toFixed(2));
-                $('#sgst').val((taxamount/2).toFixed(2));
-                $('#igst').val(d.toFixed(2)); 
-                }
-            if (bc ==2 || bc ==4 || bc ==6 || bc ==8 || bc ==10|| bc ==12 || bc ==14 ){
-                $('#igst').val(taxamount.toFixed(2)); 
+            if (bc == "{{ cmp1.state }}"  ) {
+                gst = taxamount/2
+                $('#cgst').val(parseFloat(gst.toFixed(2)));
+                $('#sgst').val(parseFloat(gst.toFixed(2)));
+                $('#igst').val(parseFloat(d.toFixed(2)));
+            }
+                
+            if (bc != "{{ cmp1.state }}"  ) {
+                $('#igst').val(taxamount.toFixed(2));
                 $('#cgst').val(d.toFixed(2));
                 $('#sgst').val(d.toFixed(2));
             }
         }
     </script>
 
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
-        function filtertax() {
-            var status = document.getElementById("tax");
-                var a = status.value
-                console.log(a);
-                if( a == '1' || a == '3' || a == '5' | a == '7' || a == '9' || a == '11' || a == '13' || a== '0' ){
-                    console.log(a);
-
-                    document.getElementById('cgst1').style.display = 'flex';
-                    document.getElementById('sgst1').style.display = 'flex';
-                    document.getElementById('igst1').style.display = 'none';
-                } else {
-                    document.getElementById('cgst1').style.display = 'none';
-                    document.getElementById('sgst1').style.display = 'none';
-                    document.getElementById('igst1').style.display = 'flex';    
-                }
+        function state(element) {
+            if (element.value == "Kerala" ) {
+                document.getElementById('cgst1').style.display = 'flex';
+                document.getElementById('sgst1').style.display = 'flex';
+                document.getElementById('igst1').style.display = 'none'; 
+            } else {
+                document.getElementById('cgst1').style.display = 'none';
+                document.getElementById('sgst1').style.display = 'none';
+                document.getElementById('igst1').style.display = 'flex';
+            }
         }
     </script>
-    
+
 {% endblock %}

@@ -854,7 +854,7 @@ class accounts1(models.Model):
     acctype = models.CharField(max_length=100)
     detype = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=100,null=True)
     gst = models.CharField(max_length=100, default='', null=True)
     deftaxcode = models.CharField(max_length=100)
     balance = models.FloatField(default=0.0, null=True)
@@ -1352,6 +1352,14 @@ class vendor(models.Model):
     shippincode = models.CharField(max_length=100, null=True)
     shipcountry = models.CharField(max_length=100, null=True)
 
+    vendor_status = (
+        ('Active','Active'),
+        ('Inactive','Inactive'),
+       
+    )
+    
+    status =models.CharField(max_length=150,choices=vendor_status,default='Active')
+
 class purchaseorder(models.Model):
     porderid = models.AutoField(('pid'), primary_key=True)
     vendor_name = models.CharField(max_length=100,null=True)
@@ -1376,9 +1384,10 @@ class purchaseorder(models.Model):
     tcs_amount = models.CharField(max_length=100,null=True)
     round_off = models.CharField(max_length=100,null=True)
     tax_amount = models.CharField(max_length=100,null=True)
+    balance_due = models.CharField(max_length=100,null=True)
     grand_total = models.CharField(max_length=100,null=True)
     note = models.CharField(max_length=255,null=True)
-    file = models.FileField(upload_to='purchase/purchaseorder',null=True)
+    file = models.FileField(upload_to='purchase/purchaseorder',default="default.png")
 
     porder_status = (
         ('Draft','Draft'),
@@ -1391,6 +1400,7 @@ class purchaseorder(models.Model):
 class purchaseorder_item(models.Model):
     porder = models.ForeignKey(purchaseorder, on_delete=models.CASCADE,null=True)
     items = models.CharField(max_length=100,null=True)
+    hsn = models.CharField(max_length=100,null=True)
     quantity = models.CharField(max_length=100,null=True)
     rate = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)
@@ -1425,7 +1435,7 @@ class purchasebill(models.Model):
     balance_due = models.CharField(max_length=100,null=True)
     amtrecvd = models.CharField(max_length=100,null=True)
     note = models.CharField(max_length=255,null=True)
-    file = models.FileField(upload_to='purchase/bill',null=True)
+    file = models.FileField(upload_to='purchase/bill',default="default.png")
 
     bill_status = (
         ('Draft','Draft'),
@@ -1435,7 +1445,8 @@ class purchasebill(models.Model):
 
 class purchasebill_item(models.Model):
     bill = models.ForeignKey(purchasebill, on_delete=models.CASCADE,null=True)
-    items = models.CharField(max_length=100)
+    items = models.CharField(max_length=100,null=True)
+    hsn = models.CharField(max_length=100,null=True)
     quantity = models.CharField(max_length=100,null=True)
     rate = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)
@@ -1458,7 +1469,7 @@ class purchase_expense(models.Model):
     tax = models.CharField(max_length=100,null=True)
     reference = models.CharField(max_length=100,null=True)
     note = models.CharField(max_length=255,null=True)
-    file = models.FileField(upload_to='purchase/expense',null=True)
+    file = models.FileField(upload_to='purchase/expense',default="default.png")
 
 class creditperiod(models.Model):
     newperiod = models.IntegerField()
@@ -1479,6 +1490,7 @@ class purchasepayment1(models.Model):
     billdate = models.DateField(null=True)
     billno = models.CharField(max_length=100,null=True)
     billamount = models.CharField(max_length=100,null=True)
+    duedate = models.CharField(max_length=100,null=True)
     amountdue = models.CharField(max_length=100,null=True)
     payments = models.CharField(max_length=100,null=True)
     
@@ -1500,9 +1512,9 @@ class purchasedebit(models.Model):
     grandtotal = models.CharField(max_length=100,null=True)
 
 class purchasedebit1(models.Model):
-    pdebid = models.AutoField(('pddid'), primary_key=True)
     pdebit = models.ForeignKey(purchasedebit, on_delete=models.CASCADE,null=True)
     items = models.CharField(max_length=100,null=True)
+    hsn = models.CharField(max_length=100,null=True)
     quantity = models.CharField(max_length=100,null=True)
     price = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)

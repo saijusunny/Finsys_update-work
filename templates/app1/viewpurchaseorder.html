@@ -209,6 +209,14 @@
             border: none;
             border-bottom: 2px solid #000;
         }
+        hr {
+            border: 0;
+            clear:both;
+            display:block;
+            width: 96%;               
+            background-color:#000000;
+            height: 1px;
+        }
     </style>
 
     <script>
@@ -230,58 +238,69 @@
                 <div class="card-title">
                     <center><h2 class="mb-0">PURCHASE ORDER VIEW</h2></center>
                     <hr>
+                    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgba(0,0,0,.01);">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarScroll">
+                            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                              <li class="nav-item active" >
+                                <a class="nav-link text-light btn" role="button" onclick="window.print()"><i class="fa fa-print">Print</i><span class="sr-only">(current)</span></a>
+                              </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-share-alt"></i> Share
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
+                                        <a class="dropdown-item" href="#">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light btn" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-exchange"></i>Convert 
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{% url 'convertapproved' pordr.porderid %}">Approved</a>
+                                        <a class="dropdown-item" href="{% url 'convertbilled' pordr.porderid %}"><i class="fas fa-receipt"></i>Bill</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light btn" role="button" href="javascript:generatePDF()">
+                                        <i class="fa fa-file-pdf-o">&nbsp;Pdf</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light btn" role="button" href="goeditpurchaseorder/{{ pordr.porderid }}{{ pitem.porder }}" class=" fa fa-pencil"><i class=" fa fa-pencil"></i> Edit</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light btn" role="button" href="deletepurchasorder/{{ pordr.porderid }}{{ pitem.porder }}"><i class="fa fa-trash-o delete">Delete</i></a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-file"></i>&nbsp;File
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip"></i>&nbsp;Attach File</a>
+                                        {% if pordr.file != "default.png" %}
+                                            <a class="dropdown-item" download  href="{{pordr.file.url }}"><i class="fa fa-download"></i>&nbsp;Download File</a>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
             </div>
         </div>
-
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgba(0,0,0,.01);">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                  <li class="nav-item active" >
-                    <a class="nav-link text-light btn btn-info" role="button" onclick="window.print()"><i class="fa fa-print">Print</i><span class="sr-only">(current)</span></a>
-                  </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light btn btn-outline-info" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-share"></i> Share
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
-                            <a class="dropdown-item" href="#">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light btn btn-outline-info" href="#" id="navbarDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-exchange"></i>Convert 
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{% url 'convertbilled' pordr.porderid %}"><i class="fas fa-receipt"></i>To Bill</a>
-                            <a class="dropdown-item" href="{% url 'convertapproved' pordr.porderid %}">To Approved</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light btn btn-outline-info" role="button" href="javascript:generatePDF()">
-                            <i class="fa fa-file-pdf-o">&nbsp;Pdf</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light btn btn-outline-info" role="button" href="goeditpurchaseorder/{{ pordr.porderid }}{{ pitem.pid }}" class=" fa fa-pencil"><i class=" fa fa-pencil"></i> Edit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-light btn btn-outline-info" role="button" href="deletepurchasorder/{{ pordr.porderid }}{{ pitem.pid }}"><i class="fa fa-trash-o delete">Delete</i></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
     
-        <div  id="whatToPrint">
+        <div id="whatToPrint">
                 <div class="my-5 page" size="A4" >
                     <div class="p-5">
                         <div id="ember2512" class="tooltip-container ember-view ribbon text-ellipsis">
@@ -338,8 +357,10 @@
                                 <thead>
                                     <tr>
                                         <td>Items</td>
+                                        <td>HSN Code</td>
                                         <td>Quantity</td>
                                         <td>Rate</td>
+                                        <td>Tax</td>
                                         <td>Total</td>
                                     </tr>
                                 </thead>
@@ -347,8 +368,10 @@
                                     {% for pordr in pitem %}
                                         <tr>
                                             <td class="text-center" style="color:#000">{{ pordr.items }}</td>
+                                            <td class="text-center" style="color:#000">{{ pordr.hsn }}</td>
                                             <td class="text-center" style="color:#000">{{ pordr.quantity }}</td>
                                             <td class="text-center" style="color:#000">{{ pordr.rate  }}</td>
+                                            <td class="text-center" style="color:#000">{{ pordr.tax  }}</td>
                                             <td class="text-center" style="color:#000">{{ pordr.amount }}</td>
                                         </tr>
                                     {% endfor %} 
@@ -368,25 +391,25 @@
                                             <td style="color:black">Sub Total :</td>
                                             <td style="color:black">{{pordr.sub_total}}</td>
                                         </tr>
-                                        {% if pordr.discount != "0.00" %}
+                                        {% if pordr.discount != "0" %}
                                         <tr>
                                             <td style="color:black">Discount</td>
                                             <td style="color:black">{{pordr.discount}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if pordr.igst != "0.00" %}
+                                        {% if pordr.igst != "0" %}
                                         <tr>
                                             <td style="color:black">IGST :</td>
                                             <td style="color:black">{{pordr.igst}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if pordr.cgst != "0.00" %}
+                                        {% if pordr.cgst != "0" %}
                                         <tr>
                                             <td style="color:black">CGST :</td>
                                             <td style="color:black">{{pordr.cgst}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if pordr.sgst != "0.00" %}
+                                        {% if pordr.sgst != "0" %}
                                         <tr>
                                             <td style="color:black">SGST :</td>
                                             <td style="color:black">{{pordr.sgst}}</td>
@@ -418,6 +441,54 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="file" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="background-color: #213b52;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add File</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{% url 'porder_add_file' pordr.porderid  %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="modal-body">
+                            <input type="file" class="form-control" name="file">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-outline-info">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(function () {
+                $('#cmd').click(function () {
+                    var doc = new jsPDF();
+                    doc.addHTML($('#content')[0], 15, 15, {
+                        'background': '#fff',
+                    }, function() {
+                        doc.save('sample-file.pdf');
+                    });
+                });
+            });
+        </script>
+
+        <script> 
+            function printDiv() { 
+                var divContents = document.getElementById("panel").innerHTML; 
+                var a = window.open('', '', 'height=800, width=800'); 
+                a.document.write('<html>'); 
+                a.document.write('<body > <h1> <br>'); 
+                a.document.write(divContents); 
+                a.document.write('</body></html>'); 
+                a.document.close(); 
+                a.print(); 
+            } 
+        </script>
 
         <script type="text/javascript">
             $('.delete').click(function(e){

@@ -30,7 +30,7 @@
                     <h4 class="mb-0">Vendor Details</h4>
                 </div>
                 <hr/>
-                <form action="{% url 'createbill' %}" method="post" autocomplete="off">
+                <form action="{% url 'createbill' %}" method="post" enctype="multipart/form-data" autocomplete="off">
                     {% csrf_token %}
                     
                     {% if user.is_authenticated %}
@@ -123,7 +123,7 @@
                             <div class="col-md-3 mt-2">
                                 <label for="">Destination of Supply</label>
                                 <select name="destiofsupply" id="" class="form-control">
-                                    <option>Choose..</option>
+                                    <option value=""></option>
                                     <option value="[AN] Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
                                     <option value="[AD] Andhra Predhesh">[AD] Andhra Predhesh</option>
                                     <option value="[AR] Arunachal Predesh">[AR] Arunachal Predesh</option>

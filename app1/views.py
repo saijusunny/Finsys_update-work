@@ -969,11 +969,15 @@ def createaccount(request):
     acctype = request.POST.get('acctype')
         
     name = request.POST.get('name')
-    description = request.POST.get('description')
+    description = request.POST.get('description')                           
     
     balance = request.POST.get('balance')
+    if balance=="":
+            balance=0.0
     asof = request.POST.get('asof')
     dbbalance=request.POST.get('dbbalance')
+    if dbbalance=="":
+            dbbalance=0.0
        
         
     account = accounts1(acctype=acctype, name=name, description=description,
@@ -13479,10 +13483,6 @@ def balancesheet(request):
 
 def profitandloss(request):
     
-
-  
-
-    
         cmp1 = company.objects.get(id=request.session["uid"])
         context = {'cmp1': cmp1}
         pur=purchasebill.objects.all()
@@ -13503,18 +13503,14 @@ def profitandloss(request):
         for i in ex:
             sum3+=i.amount
 
-
-
-
         sumtot=sum1+sum2+sum3  
-
-
 
         context={'pur':pur,'sum1':sum1,'inv': inv,'sum2':sum2,'sumtot':sumtot,'ex':ex,'sum3':sum3}
 
 
 
         return render(request, 'app1/profitandloss.html', context)
+        return redirect('godash')
 
 
 def profitandlossfiltered(request):
@@ -25711,7 +25707,7 @@ def estimate_create_item2(request,id):
 @login_required(login_url='regcomp')
 def editestimate(request, id):
     try:
-        cmp1 = company.objects.get(cid=request.session['uid'])
+        cmp1 = company.objects.get(id=request.session['uid'])
        
         inv = inventory.objects.filter(cid=cmp1).all()
         bun = bundle.objects.filter(cid=cmp1).all()
@@ -26255,7 +26251,7 @@ def sales_order_delete(request, id):
 @login_required(login_url='regcomp')
 def edit_sales_order(request, id):
     
-        cmp1 = company.objects.get(cid=request.session['uid'])
+        cmp1 = company.objects.get(id=request.session['uid'])
         edt = salesorder.objects.get(id=id, cid=cmp1)
         inv = inventory.objects.filter(cid=cmp1).all()
         bun = bundle.objects.filter(cid=cmp1).all()
@@ -29909,6 +29905,16 @@ def govendor(request):
         return render(request,'app1/govendor.html',{'cmp1': cmp1,'vndr':vndr})
     return redirect('govendor')
 
+def vendor_active(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    vndr = vendor.objects.filter(status='Active').all()
+    return render(request,'app1/govendor.html',{'cmp1':cmp1,'vndr':vndr})
+
+def vendor_inactive(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    vndr = vendor.objects.filter(status='Inactive').all()
+    return render(request,'app1/govendor.html',{'cmp1':cmp1,'vndr':vndr})
+
 @login_required(login_url='regcomp')
 def addvendor(request):
     if 'uid' in request.session:
@@ -30626,9 +30632,9 @@ def createpurchaseorder(request):
             tcs=request.POST['tcs']
             tcs_amount=request.POST['tcs']
             round_off=request.POST['round_off']
+            balance_due=request.POST['balance_due']
             grand_total=request.POST['grand_total']
             note=request.POST['note']
-            file=request.POST['file']
 
             porder = purchaseorder(vendor_name=vname,billing_address=baddress,
                                     sourceofsupply=supply,
@@ -30637,13 +30643,18 @@ def createpurchaseorder(request):
                                     date=date,deliver_date=deliver_dt,
                                     credit_period=credit_period,due_date=due_date,sub_total=sub_total,discount=discount,sgst=sgst,
                                     cgst=cgst,igst=igst,tax_amount=tax_amount,tcs=tcs,tcs_amount=tcs_amount,round_off=round_off,
-                                    grand_total=grand_total,note=note,file=file)
+                                    grand_total=grand_total,balance_due=balance_due,note=note)
+
+            if len(request.FILES) != 0:
+                porder.file=request.FILES['file'] 
+
             porder.save()
             porder.puchaseorder_no = int(porder.puchaseorder_no) + porder.porderid
             porder.save()
 
 
             items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
             quantity = request.POST.getlist("quantity[]")
             rate = request.POST.getlist("rate[]")
             tax = request.POST.getlist("tax[]")
@@ -30651,19 +30662,19 @@ def createpurchaseorder(request):
 
             prid=purchaseorder.objects.get(porderid=porder.porderid)
 
-            if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount:
-                mapped=zip(items,quantity,rate,tax,amount)
+            if len(items)==len(hsn)==len(quantity)==len(rate)==len(tax)==len(amount) and items and hsn and quantity and rate and tax and amount:
+                mapped=zip(items,hsn,quantity,rate,tax,amount)
                 mapped=list(mapped)
                 for ele in mapped:
-                    porderAdd,created = purchaseorder_item.objects.get_or_create(items = ele[0],quantity=ele[1],rate=ele[2],
-                    tax=ele[3],amount=ele[4],pid=prid)
+                    porderAdd,created = purchaseorder_item.objects.get_or_create(items = ele[0],hsn = ele[1],quantity=ele[2],rate=ele[3],
+                    tax=ele[4],amount=ele[5],porder=prid)
 
                     itemqty = itemtable.objects.get(name=ele[0],cid=cmp1)
                     if itemqty.stock != 0:
                         temp=0
                         temp = itemqty.stock 
 
-                        temp = temp-int(ele[1])
+                        temp = temp-int(ele[2])
                         itemqty.stock =temp
                         itemqty.save()
 
@@ -30680,9 +30691,22 @@ def viewpurchaseorder(request,id):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         pordr=purchaseorder.objects.get(porderid=id)
-        pitem = purchaseorder_item.objects.all().filter(pid=id)
-        return render(request,'app1/view_prchsorder.html',{'cmp1': cmp1,'pordr':pordr,'pitem':pitem})
+        pitem = purchaseorder_item.objects.all().filter(porder=id)
+        return render(request,'app1/viewpurchaseorder.html',{'cmp1': cmp1,'pordr':pordr,'pitem':pitem})
     return redirect('gopurchaseorder')
+
+@login_required(login_url='regcomp')
+def porder_add_file(request,id):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    po = purchaseorder.objects.get(porderid=id)
+
+    if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if po.file != "default.png":
+                os.remove(po.file.path)    
+            po.file=request.FILES['file']
+        po.save()
+        return redirect('viewpurchaseorder',id)
 
 @login_required(login_url='regcomp')
 def goeditpurchaseorder(request,id):
@@ -30692,9 +30716,10 @@ def goeditpurchaseorder(request,id):
         else:
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
+        itm = itemtable.objects.all()
         pordr=purchaseorder.objects.get(porderid=id)
-        pitem = purchaseorder_item.objects.all().filter(pid=id)
-        return render(request,'app1/editpurchaseorder.html',{'cmp1': cmp1,'pordr':pordr,'pitem':pitem})
+        pitem = purchaseorder_item.objects.all().filter(porder=id)
+        return render(request,'app1/editpurchaseorder.html',{'cmp1': cmp1,'pordr':pordr,'pitem':pitem,'itm':itm})
     return redirect('gopurchaseorder')
 
 def editpurchaseorder(request,id):
@@ -30730,28 +30755,45 @@ def editpurchaseorder(request,id):
             pordr.round_off=request.POST['round_off']
             pordr.grand_total=request.POST['grand_total']
             pordr.note=request.POST['note']
-            pordr.file=request.POST['file']
+
+            if len(request.FILES) != 0:
+                if len(pordr.file) > 0  :
+                    os.remove(pordr.file.path)    
+                pordr.file = request.FILES['file']
 
             pordr.save()
 
             items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
             quantity = request.POST.getlist("quantity[]")
             rate = request.POST.getlist("rate[]")
             tax = request.POST.getlist("tax[]")
             amount = request.POST.getlist("amount[]")
 
-            pitem=purchaseorder.objects.get(porderid=pordr.porderid)
-
-            if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount:
-                mapped=zip(items,quantity,rate,tax,amount)
+            pitemid = request.POST.getlist("id[]")
+            porderid=purchaseorder.objects.get(porderid=pordr.porderid)
+            
+            if len(items)==len(hsn)==len(quantity)==len(rate)==len(tax)==len(amount)==len(pitemid) and items and hsn and quantity and rate and tax and amount and pitemid:
+                mapped=zip(items,hsn,quantity,rate,tax,amount,pitemid)
                 mapped=list(mapped)
                 for ele in mapped:
-                    porderAdd,created = purchaseorder_item.objects.get_or_create(items = ele[0],quantity=ele[1],rate=ele[2],
-                    tax=ele[3],amount=ele[4],pid=pitem)
+                    created = purchaseorder_item.objects.filter(id=ele[6]).update(items = ele[0],hsn = ele[1],quantity=ele[2],rate=ele[3],
+                    tax=ele[4],amount=ele[5])
+
+                    itemqty = itemtable.objects.get(name=ele[0],cid=cmp1)
+                    if itemqty.stock != 0:
+                        temp=0
+                        temp = itemqty.stock 
+
+                        temp = temp-int(ele[2])
+                        itemqty.stock =temp
+                        itemqty.save()
+
+            pitem = purchaseorder_item.objects.filter(porder=pordr.porderid)
+            print(pitem)
             return redirect('gopurchaseorder')
         return render(request,'app1/gopurchaseorder.html',{'cmp1': cmp1})
     return redirect('/') 
-
 
 @login_required(login_url='regcomp')
 def deletepurchasorder(request, id):
@@ -30762,7 +30804,7 @@ def deletepurchasorder(request, id):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         pordr=purchaseorder.objects.get(porderid=id)
-        pitem = purchaseorder.objects.all().filter(pid=id)
+        pitem = purchaseorder.objects.all().filter(porder=id)
         pordr.delete() 
         pitem.delete() 
         return redirect('gopurchaseorder')
@@ -30791,8 +30833,71 @@ def convertbilled(request,id):
         pordr = purchaseorder.objects.get(porderid=id)
         pordr.status = 'Billed'
         pordr.save()
+
+        upd = purchasebill()
+        upd.cid =  cmp1 
+        upd.vendor_name  = pordr.vendor_name
+        upd.billing_address = pordr.billing_address
+        upd.date = pordr.date
+        upd.destiofsupply= pordr.destiofsupply
+        upd.branch= pordr.branch
+        upd.reference= pordr.reference
+        upd.contact_name= pordr.contact_name
+        upd.deliverto= pordr.deliverto
+        upd.deliver_date= pordr.deliver_date
+        upd.credit_period= pordr.credit_period
+        upd.due_date= pordr.due_date
+        upd.sub_total= pordr.sub_total
+        upd.sgst= pordr.sgst
+        upd.cgst= pordr.cgst
+        upd.igst= pordr.igst
+        upd.discount= pordr.discount
+        upd.tcs= pordr.tcs
+        upd.tcs_amount= pordr.tcs_amount
+        upd.round_off= pordr.round_off
+        upd.grand_total= pordr.grand_total
+        upd.balance_due= pordr.balance_due
+        upd.amtrecvd= pordr.amtrecvd
+        upd.note= pordr.note
+        upd.file= pordr.file
+        upd.status= pordr.status
+        
+        upd.bill_no = '1000'
+
+        upd.save()
+        upd.bill_no = int(upd.bill_no) + upd.billid
+        upd.save()
+
+        po =purchaseorder_item.objects.filter(porder=id)
+        blid = purchasebill.objects.get(billid=upd.billid)
+        for i in po:
+            a=purchasebill_item()
+            a. bill = blid 
+            a.items = i.items
+            a.hsn = i.hsn
+            a.quantity  = i.quantity
+            a.rate = i.rate
+            a.tax = i.tax
+            a.amount = i.amount
+            a.save()
+
         return redirect(viewpurchaseorder,id)
     return redirect('/')
+
+def porder_draft(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    pordr = purchaseorder.objects.filter(status='Draft').all()
+    return render(request,'app1/gopurchaseorder.html',{'cmp1':cmp1,'pordr':pordr})
+
+def porder_billed(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    pordr = purchaseorder.objects.filter(status='Billed').all()
+    return render(request,'app1/gopurchaseorder.html',{'cmp1':cmp1,'pordr':pordr})
+
+def porder_approved(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    pordr = purchaseorder.objects.filter(status='Approved').all()
+    return render(request,'app1/gopurchaseorder.html',{'cmp1':cmp1,'pordr':pordr})
 
 @login_required(login_url='regcomp')
 def gobilling(request):
@@ -30862,7 +30967,6 @@ def createbill(request):
             balance_due=request.POST['balance_due']
             amtrecvd=request.POST['amtrecvd']
             note=request.POST['note']
-            file=request.POST['file']
 
             billed = purchasebill(vendor_name=vname,billing_address=baddress,
                                     sourceofsupply=supply,
@@ -30871,7 +30975,11 @@ def createbill(request):
                                     date=date,deliver_date=deliver_dt,
                                     credit_period=credit_period,due_date=due_date,sub_total=sub_total,discount=discount,sgst=sgst,
                                     cgst=cgst,igst=igst,tax_amount=tax_amount,tcs=tcs,tcs_amount=tcs_amount,round_off=round_off,
-                                    grand_total=grand_total,balance_due=balance_due,amtrecvd=amtrecvd,note=note,file=file,cid=cmp1)
+                                    grand_total=grand_total,balance_due=balance_due,amtrecvd=amtrecvd,note=note,cid=cmp1)
+
+            if len(request.FILES) != 0:
+                billed.file=request.FILES['file'] 
+
             billed.save()
             billed.bill_no = int(billed.bill_no) + billed.billid
             billed.save()
@@ -30888,6 +30996,7 @@ def createbill(request):
             statment2.save()
 
             items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
             quantity = request.POST.getlist("quantity[]")
             rate = request.POST.getlist("rate[]")
             tax = request.POST.getlist("tax[]")
@@ -30895,19 +31004,19 @@ def createbill(request):
 
             bll=purchasebill.objects.get(billid=billed.billid)
 
-            if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount:
-                mapped=zip(items,quantity,rate,tax,amount)
+            if len(items)==len(hsn)==len(quantity)==len(rate)==len(tax)==len(amount) and items and hsn and quantity and rate and tax and amount:
+                mapped=zip(items,hsn,quantity,rate,tax,amount)
                 mapped=list(mapped)
                 for ele in mapped:
-                    billAdd,created = purchasebill_item.objects.get_or_create(items = ele[0],quantity=ele[1],rate=ele[2],
-                    tax=ele[3],amount=ele[4],bid=bll)
+                    billAdd,created = purchasebill_item.objects.get_or_create(items = ele[0],hsn = ele[1],quantity=ele[2],rate=ele[3],
+                    tax=ele[4],amount=ele[5],bill=bll)
 
                     itemqty = itemtable.objects.get(name=ele[0],cid=cmp1)
                     if itemqty.stock != 0:
                         temp=0
                         temp = itemqty.stock 
 
-                        temp = temp-int(ele[1])
+                        temp = temp-int(ele[2])
                         itemqty.stock =temp
                         itemqty.save()
 
@@ -30929,6 +31038,19 @@ def viewbill(request,id):
     return redirect('gobilling')
 
 @login_required(login_url='regcomp')
+def bill_add_file(request,id):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    pbl = purchasebill.objects.get(billid=id,cid=cmp1)
+
+    if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if pbl.file != "default.png":
+                os.remove(pbl.file.path)    
+            pbl.file=request.FILES['file']
+        pbl.save()
+        return redirect('viewbill',id)
+
+@login_required(login_url='regcomp')
 def goeditbill(request,id):
     if 'uid' in request.session:
         if request.session.has_key('uid'):
@@ -30944,7 +31066,7 @@ def goeditbill(request,id):
         context = {
                     'cmp1': cmp1,
                     'vndr':vndr,
-                    'item':itm ,
+                    'itm':itm ,
                     'cust':cust,
                     'pbill':pbill,
                     'bitem':bitem         
@@ -30982,14 +31104,21 @@ def editpurchasebill(request,id):
             pbill.tax_amount=request.POST['tax_amount']
             pbill.tcs=request.POST['tcs']
             pbill.tcs_amount=request.POST['tcs_amount']
+            pbill.balance_due=request.POST['balance_due']
+            pbill.amtrecvd=request.POST['amtrecvd']
             pbill.round_off=request.POST['round_off']
             pbill.grand_total=request.POST['grand_total']
             pbill.note=request.POST['note']
-            pbill.file=request.POST['file']
+
+            if len(request.FILES) != 0:
+                if len(pbill.file) > 0  :
+                    os.remove(pbill.file.path)    
+                pbill.file = request.FILES['file']
 
             pbill.save()
 
             items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
             quantity = request.POST.getlist("quantity[]")
             rate = request.POST.getlist("rate[]")
             tax = request.POST.getlist("tax[]")
@@ -30997,16 +31126,23 @@ def editpurchasebill(request,id):
 
             bitmid = request.POST.getlist("id[]")
 
-            bill_id=purchasebill.objects.get(billid=pbill.billid)
+            billid=purchasebill.objects.get(billid=pbill.billid)
 
-            if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount and bitmid:
-                mapped=zip(items,quantity,rate,tax,amount,bitmid)
+            if len(items)==len(hsn)==len(quantity)==len(rate)==len(tax)==len(amount)==len(bitmid) and items and hsn and quantity and rate and tax and amount and bitmid:
+                mapped=zip(items,hsn,quantity,rate,tax,amount,bitmid)
                 mapped=list(mapped)
                 for ele in mapped:
-                    created = purchasebill_item.objects.filter(bill=ele[5]).update(items = ele[0],quantity=ele[1],rate=ele[2],
-                    tax=ele[3],amount=ele[4])
-            bitm = purchasebill_item.objects.filter(bill=pbill.billid)
-            print(bitm)
+                    created = purchasebill_item.objects.filter(id=ele[6]).update(items = ele[0],hsn = ele[1],quantity=ele[2],rate=ele[3],
+                    tax=ele[4],amount=ele[5])
+
+                    itemqty = itemtable.objects.get(name=ele[0],cid=cmp1)
+                    if itemqty.stock != 0:
+                        temp=0
+                        temp = itemqty.stock 
+
+                        temp = temp-int(ele[2])
+                        itemqty.stock =temp
+                        itemqty.save()
 
             return redirect('gobilling')
         return render(request,'app1/gobilling.html',{'cmp1': cmp1})
@@ -31021,7 +31157,7 @@ def deletebill(request, id):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         pbill=purchasebill.objects.get(billid=id)
-        bitem = purchasebill_item.objects.all().filter(bid=id)
+        bitem = purchasebill_item.objects.all().filter(bill=id)
         pbill.delete() 
         bitem.delete() 
         return redirect('gobilling')
@@ -31039,6 +31175,16 @@ def billconvert(request,id):
         pbill.save()
         return redirect(viewbill,id)
     return redirect('/')
+
+def bill_draft(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    pbill = purchasebill.objects.filter(status='Draft').all()
+    return render(request,'app1/gobilling.html',{'cmp1':cmp1,'pbill':pbill})
+
+def bill_billed(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    pbill = purchasebill.objects.filter(status='Billed').all()
+    return render(request,'app1/gobilling.html',{'cmp1':cmp1,'pbill':pbill})
 
 def getdata2(request):
     if 'uid' in request.session:
@@ -31127,11 +31273,14 @@ def createexpense(request):
             tax=request.POST['tax']
             reference=request.POST['reference']
             note=request.POST['note']
-            file=request.POST['file']
 
             exp = purchase_expense(date=date,expenseaccount=eacc,expensetype=etyp,hsn_sac=hsnsac,amount=amount,
                             paidthrough=paidthrough,vendor=vendor,gsttype=gsttype, sourceofsupply=supply, 
-                            destinofsupply=destsupply,customer=customer,tax=tax,reference=reference,note=note,file=file)
+                            destinofsupply=destsupply,customer=customer,tax=tax,reference=reference,note=note)
+
+            if len(request.FILES) != 0:
+                exp.file=request.FILES['file'] 
+
             exp.save()
             exp.expense_no = int(exp.expense_no) + exp.expenseid
             exp.save()
@@ -31151,6 +31300,19 @@ def viewexpense(request,id):
         expnce=purchase_expense.objects.get(expenseid=id)
         return render(request,'app1/viewexpense.html',{'cmp1': cmp1,'expnce':expnce})
     return redirect('/')
+
+@login_required(login_url='regcomp')
+def expense_add_file(request,id):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    ex = purchase_expense.objects.get(expenseid=id)
+
+    if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if ex.file != "default.png":
+                os.remove(ex.file.path)    
+            ex.file=request.FILES['file']
+        ex.save()
+        return redirect('viewexpense',id)
 
 @login_required(login_url='regcomp')
 def goeditexpense(request,id):
@@ -31196,6 +31358,10 @@ def editexpense(request,id):
             expnce.reference=request.POST['reference']
             expnce.note=request.POST['note']
 
+            if len(request.FILES) != 0:
+                if len(expnce.file) > 0  :
+                    os.remove(expnce.file.path)    
+                expnce.file = request.FILES['file']
             expnce.save()
 
             return redirect('goexpenses')
@@ -31263,26 +31429,6 @@ def credit_period2(request):
         return render(request,'app1/addbilling.html',{'cmp1':cmp1})
     return redirect('/')
 
-def porder_draft(request):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    pordr = purchaseorder.objects.filter(status='Draft').all()
-    return render(request,'app1/purchaseorder.html',{'cmp1':cmp1,'pordr':pordr})
-
-def porder_billed(request):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    pordr = purchaseorder.objects.filter(status='Billed').all()
-    return render(request,'app1/purchaseorder.html',{'cmp1':cmp1,'pordr':pordr})
-
-def porder_approved(request):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    pordr = purchaseorder.objects.filter(status='Approved').all()
-    return render(request,'app1/purchaseorder.html',{'cmp1':cmp1,'pordr':pordr})
-
-def bill_draft(request):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    pbill = purchasebill.objects.filter(status='Draft').all()
-    return render(request,'app1/billing.html',{'cmp1':cmp1,'pbill':pbill})
-
 def getbilldata(request):
     if 'uid' in request.session:
         if request.session.has_key('uid'):
@@ -31317,7 +31463,7 @@ def addpurchasepymnt(request):
         cmp1 = company.objects.get(id=request.session['uid'])
         vndr = vendor.objects.all()  
         pymt = paymentmethod.objects.all()  
-        return render(request,'app1/purchasepayment.html',{'cmp1':cmp1,'vndr':vndr,'pymt':pymt})
+        return render(request,'app1/addpurchasepymnt.html',{'cmp1':cmp1,'vndr':vndr,'pymt':pymt})
     return redirect('/')
 
 def createpurchasepymnt(request):
@@ -31353,21 +31499,22 @@ def createpurchasepymnt(request):
             billdate = request.POST.getlist("billdate[]")
             billno = request.POST.getlist("billno[]")
             billamount = request.POST.getlist("billamount[]")
+            duedate = request.POST.getlist("duedate[]")
             amountdue = request.POST.getlist("amountdue[]")
             payments = request.POST.getlist("payment[]")
 
             pyitm=purchasepayment.objects.get(pymntid=pymnt1.pymntid)
 
-            if len(billdate)==len(billno)==len(billamount)==len(amountdue)==len(payments) and billdate and billno and billamount and amountdue and payments :
-                mapped=zip(billdate,billno,billamount,amountdue,payments)
+            if len(billdate)==len(billno)==len(billamount)==len(duedate)==len(amountdue)==len(payments) and billdate and billno and billamount and duedate and amountdue and payments :
+                mapped=zip(billdate,billno,billamount,duedate,amountdue,payments)
                 mapped=list(mapped)
                 for ele in mapped:
                     billAdd,created = purchasepayment1.objects.get_or_create(billdate = ele[0],billno=ele[1],billamount=ele[2],
-                    amountdue=ele[3],payments=ele[4],pymnt=pyitm)
+                    duedate=ele[3],amountdue=ele[4],payments=ele[5],pymnt=pyitm)
 
             paymentamount = float(request.POST['paymentamount'])
             accont = accounts1.objects.get(
-                name='Account Receivable(Debtors)',cid=cmp1)
+                name='Accounts Payable(Creditors)',cid=cmp1)
             accont.balance = accont.balance - paymentamount
             accont.save()
             depositeto = request.POST['depto']
@@ -31395,8 +31542,8 @@ def createpurchasepymnt(request):
                         pbl = purchasebill.objects.get(bill_no=i.billno)
                         pbl.amtrecvd = int(pbl.amtrecvd) + int(i.payments)
                         pbl.balance_due = float(i.amountdue) - float(i.payments)
-                        # if pbl.balance_due == 0.0:
-                        #     pbl.status = "Paid"
+                        if pbl.balance_due == 0.0:
+                            pbl.status = "Paid"
                         pbl.save()
             except:
                 pass
@@ -31414,9 +31561,84 @@ def viewpurchasepymnt(request,id):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         paymt=purchasepayment.objects.get(pymntid=id)
-        py = purchasepayment1.objects.all().filter(pymnt=id)
-        return render(request,'app1/viewpurchasepymnt.html',{'cmp1': cmp1,'paymt':paymt,'py':py})
+        paymt1 = purchasepayment1.objects.all().filter(pymnt=id)
+        return render(request,'app1/viewpurchasepymnt.html',{'cmp1': cmp1,'paymt':paymt,'py':paymt1})
     return redirect('gopurchasepymnt')
+
+@login_required(login_url='regcomp')
+def goeditpurchasepymnt(request,id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        paymt=purchasepayment.objects.get(pymntid=id)
+        paymt1 = purchasepayment1.objects.all().filter(pymnt=id)
+
+        count = purchasepayment1.objects.filter(pymnt=paymt).count()
+        print(count)
+       
+        context = {
+                    'cmp1': cmp1,
+                    'paymt':paymt,
+                    'paymt1':paymt1, 
+                    'count':count       
+                }
+        return render(request,'app1/editpurchasepymnt.html',context)
+    return redirect('/')
+
+def editpurchasepymnt(request,id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        if request.method == 'POST':
+            paymt=purchasepayment.objects.get(pymntid=id)
+            paymt.vendor = request.POST['vendor']
+            paymt.reference= request.POST['reference']
+            paymt.paymentdate=request.POST['paymentdate']
+            paymt.paymentmethod=request.POST['paymentmethod']
+            paymt.depositeto=request.POST['depto']
+            paymt.amtreceived=request.POST['amtreceived']
+            paymt.paymentamount=request.POST['paymentamount']
+            paymt.amtcredit=request.POST['amtcredit']
+
+            paymt.save()
+
+            billdate = request.POST.getlist("billdate[]")
+            billno = request.POST.getlist("billno[]")
+            billamount = request.POST.getlist("billamount[]")
+            duedate = request.POST.getlist("duedate[]")
+            amountdue = request.POST.getlist("amountdue[]")
+            payments = request.POST.getlist("payments[]")
+    
+            pyid = request.POST.getlist("id[]")
+
+            pymntid = purchasepayment.objects.get(pymntid=paymt.pymntid)
+
+            if len(billdate)==len(billno)==len(billamount)==len(duedate)==len(amountdue)==len(payments)==len(pyid) and billdate and billno and billamount and duedate and amountdue and payments and pyid:
+                mapped=zip(billdate,billno,billamount,duedate,amountdue,payments,pyid)
+                mapped=list(mapped)
+                for ele in mapped:
+                    created = purchasepayment1.objects.filter(id=ele[6]).update(billdate = ele[0],billno = ele[1],billamount=ele[2],duedate=ele[3],
+                    amountdue=ele[4],payments=ele[5])
+
+            statment2=vendor_statment.objects.get(cid=cmp1,paymnt=paymt)
+            statment2.vendor = paymt.vendor
+            statment2.cid = cmp1
+            statment2.transactions = "Payable"
+            statment2.paymnt = paymt
+            statment2.details = paymt.reference
+            statment2.date = paymt.paymentdate
+            statment2.payments = paymt.paymentamount
+            statment2.save()
+
+            return redirect('gopurchasepymnt')
+        return render(request,'app1/gopurchasepymnt.html',{'cmp1': cmp1})
+    return redirect('/') 
 
 @login_required(login_url='regcomp')
 def deletepurchasepymnt(request, id):
@@ -31446,7 +31668,7 @@ def payment_method(request):
             npm=paymentmethod(newmethod = meth)
             npm.save()
             return redirect('addpurchasepymnt')
-        return render(request,'app1/purchasepayment.html',{'cmp1':cmp1})
+        return render(request,'app1/addpurchasepymnt.html',{'cmp1':cmp1})
     return redirect('/')
 
 def gopurchasedebit(request):
@@ -31519,6 +31741,7 @@ def createpurchasedebit(request):
 
 
             items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
             quantity = request.POST.getlist("quantity[]")
             price = request.POST.getlist("price[]")
             tax = request.POST.getlist("tax[]")
@@ -31526,19 +31749,19 @@ def createpurchasedebit(request):
 
             pdeb=purchasedebit.objects.get(pdebitid=pdebit.pdebitid)
 
-            if len(items)==len(quantity)==len(price)==len(tax)==len(total) and items and quantity and price and tax and total:
-                mapped=zip(items,quantity,price,tax,total)
+            if len(items)==len(hsn)==len(quantity)==len(price)==len(tax)==len(total) and items and hsn and quantity and price and tax and total:
+                mapped=zip(items,hsn,quantity,price,tax,total)
                 mapped=list(mapped)
                 for ele in mapped:
-                    porderAdd,created = purchasedebit1.objects.get_or_create(items = ele[0],quantity=ele[1],price=ele[2],
-                    tax=ele[3],total=ele[4],pdebit=pdeb)
+                    porderAdd,created = purchasedebit1.objects.get_or_create(items = ele[0],hsn=ele[1],quantity=ele[2],price=ele[3],
+                    tax=ele[4],total=ele[5],pdebit=pdeb)
 
                     itemqty = itemtable.objects.get(name=ele[0],cid=cmp1)
                     if itemqty.stock != 0:
                         temp=0
                         temp = itemqty.stock 
 
-                        temp = temp-int(ele[1])
+                        temp = temp-int(ele[2])
                         itemqty.stock =temp
                         itemqty.save()
 
@@ -31555,57 +31778,86 @@ def viewpurchasedebit(request,id):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         pdebt=purchasedebit.objects.get(pdebitid=id)
-        pdeb = purchasedebit1.objects.all().filter(pdebit=id)
-        return render(request,'app1/viewpurchasedebit.html',{'cmp1': cmp1,'pdebt':pdebt,'pdeb':pdeb})
+        pdebt1 = purchasedebit1.objects.all().filter(pdebit=id)
+        return render(request,'app1/viewpurchasedebit.html',{'cmp1': cmp1,'pdebt':pdebt,'pdeb':pdebt1})
     return redirect('gopurchasedebit')
 
-def purchase_acctransactions(request,id):
+@login_required(login_url='regcomp')
+def goeditpurchasedebit(request,id):
     if 'uid' in request.session:
         if request.session.has_key('uid'):
             uid = request.session['uid']
         else:
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
-
-        x = id.split()
-        x.append(" ")
-        a = x[0]
-        b = x[1]
-
-        toda = date.today()
-        tod = toda.strftime("%Y-%m-%d")
-
-        to=toda.strftime("%d-%m-%Y")
-        
-        vndrobject = vendor.objects.get(firstname=a, lastname=b, cid=cmp1)
-        opnbal =vndrobject.openingbalance
-        print(opnbal) 
-        
-        statment = vendor_statment.objects.filter(vendor=id,cid=cmp1)
-        total1 = purchasebill.objects.filter(cid=cmp1,vendor_name=id).all().aggregate(t2=Sum('balance_due'))
-
-        debit=0
-        credit=0
-        total2 = 0
-
-        for i in statment :
-            if i.transactions =="Billed":
-                credit+=i.payments
-
-            if i.transactions =="Payable":
-                debit+=i.payments
-        
-            if i.payments:
-                total2+=i.payments
-
-        fdate =""
-        ldate =""
-
-        context = {'statment':statment, 'cmp1':cmp1, 'total1':total1, 'total2':total2, 'credit':credit, 'debit':debit, 'vndr2':id, 'to':to,
-            'fdate':fdate, 'ldate':ldate,    
-        }
-        return render(request,'app1/purchase_acctransactions.html',context)
+        pdebt=purchasedebit.objects.get(pdebitid=id)
+        pdebt1 = purchasedebit1.objects.all().filter(pdebit=id)
+        context = {
+                    'cmp1': cmp1,
+                    'pdebt':pdebt,
+                    'pdebt1':pdebt1         
+                }
+        return render(request,'app1/editpurchasedebit.html',context)
     return redirect('/')
+
+def editpurchasedebit(request,id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        if request.method == 'POST':
+            pdebt=purchasedebit.objects.get(pdebitid=id)
+            pdebt.vendor = request.POST['vendor']
+            pdebt.address = request.POST['address']
+            pdebt.debit_no= request.POST['debit_no']
+            pdebt.supply=request.POST['supply']
+            pdebt.debitdate=request.POST['debitdate']
+            pdebt.email=request.POST['email']
+            pdebt.billno=request.POST['billno']
+            pdebt.subtotal=request.POST['subtotal']
+            pdebt.taxamount=request.POST['taxamount']
+            pdebt.grandtotal=request.POST['grandtotal']
+
+            pdebt.save()
+
+            items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
+            quantity = request.POST.getlist("quantity[]")
+            price = request.POST.getlist("price[]")
+            tax = request.POST.getlist("tax[]")
+            total = request.POST.getlist("total[]")
+
+            pdebid = request.POST.getlist("id[]")
+
+            pdebitid=purchasedebit.objects.get(pdebitid=pdebt.pdebitid)
+
+            if len(items)==len(hsn)==len(quantity)==len(price)==len(tax)==len(total)==len(pdebid) and items and hsn and quantity and price and tax and total and pdebid:
+                mapped=zip(items,hsn,quantity,price,tax,total,pdebid)
+                mapped=list(mapped)
+                for ele in mapped:
+                    created = purchasedebit1.objects.filter(id=ele[6]).update(items = ele[0],hsn = ele[1],quantity=ele[2],price=ele[3],
+                    tax=ele[4],total=ele[5])
+
+            return redirect('gopurchasedebit')
+        return render(request,'app1/gopurchasedebit.html',{'cmp1': cmp1})
+    return redirect('/') 
+
+@login_required(login_url='regcomp')
+def deletepurchasedebit(request, id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        pdebt=purchasedebit.objects.get(pdebitid=id)
+        pdebt1 = purchasedebit1.objects.all().filter(pdebit=id)
+        pdebt.delete() 
+        pdebt1.delete() 
+        return redirect('gopurchasedebit')
+    return redirect('gopurchasedebit')
 
 def purchase_acctransactions(request,id):
     if 'uid' in request.session:
@@ -31700,44 +31952,227 @@ def purchase_acctransactions1(request):
 
 @login_required(login_url='regcomp')
 def bnnk(request):
-    g=accounts1.objects.filter(acctype='Equity')
-    h=accounts1.objects.filter(acctype='Account Receivable')
+    
     i=accounts1.objects.filter(acctype='Bank')
-    j=accounts1.objects.filter(acctype='Current Assets')
-    bnk=accounts1.objects.filter(acctype='Fixed Assets')
-    fx=accounts1.objects.filter(acctype='Non-Current Assets')
-    apy=accounts1.objects.filter(acctype='Accounts Payable')
-    cd=accounts1.objects.filter(acctype='Credit Card')
-    nca=accounts1.objects.filter(acctype='Credit Card')
-    ncl=accounts1.objects.filter(acctype='Non-Current Liabilities')
-    inc=accounts1.objects.filter(acctype='Income')
-    oi=accounts1.objects.filter(acctype='Income')
-    eq=accounts1.objects.filter(acctype='Cost Of Goods Sold')
-    ex=accounts1.objects.filter(acctype='Expenses')
-   
-
-    context={'g':g,'h':h,'i':i,'j':j,'bnk':bnk,'fx':fx,'apy':apy,'cd':cd,'nca':nca,'ncl':ncl,'inc':inc,'oi':oi,
-    'eq':eq,'ex':ex}
+    c=accounts1.objects.filter(acctype='Cash')
+    u=accounts1.objects.filter(acctype='Undepposited Funds')
+    
+    context={'i':i,'c':c,'u':u}
     return render(request,'app1/bnk.html',context)
-
 
 def bnk1(request,pk):
     bk=accounts1.objects.get(accounts1id=pk)
     context={'bk':bk,}
     return render(request,"app1/bnk1.html",context)
 
+def accpayment(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    acctype = request.POST.get('acctype')
+        
+    name = request.POST.get('name')
+    description = request.POST.get('description')
+    
+    balance = request.POST.get('balance')
+    asof = request.POST.get('asof')
+       
+        
+    account = accounts(acctype=acctype, name=name, description=description,
+                                    balance=balance, asof=asof, cid=cmp1)
+    account.save()
+                
+    return redirect('paymentindex')
 
 def trial(request):
-    return render(request,"app1/trialbalance.html")
+    tr=accounts1.objects.filter(acctype='Current Assets')
+    ac=accounts1.objects.filter(acctype='Account Receivable')
+    cul=accounts1.objects.filter(acctype='Current Liabilities')
+    fx=accounts1.objects.filter(acctype='Fixed Assets')
+    noca=accounts1.objects.filter(acctype='Non-Current Assetss')
+    acp=accounts1.objects.filter(acctype='Accounts Payable')
+    cr=accounts1.objects.filter(acctype='Credit Card')
+    ncl=accounts1.objects.filter(acctype='Non-Current Liabilities')
+    eq=accounts1.objects.filter(acctype='Equity')
+    inc=accounts1.objects.filter(acctype='Income')
+    onc=accounts1.objects.filter(acctype='Other Incomes')
+    co=accounts1.objects.filter(acctype='Cost Of Goods Sold')
+    ex=accounts1.objects.filter(acctype='Expenses')
+    ox=accounts1.objects.filter(acctype='Other Expenses')
+    
+
+    sum1=0
+    sum2=0
+    for i in tr:
+        sum1+=i.balance
+    for j in tr:
+        sum2+=j.dbbalance  
+
+    sum3=0
+    sum4=0
+    for a in ac:
+        sum3+=a.balance
+    for b in ac:
+        sum4+=b.dbbalance   
+
+    cl1=0
+    cl2=0
+    for a in cul:
+        cl1+=a.balance
+        cl2+=b.dbbalance 
+
+    fx1=0
+    fx2=0
+    for a in fx:
+        fx1+=a.dbbalance
+        fx2+=a.dbbalance    
+
+    nc1=0.0
+    nc2=0.0
+    for a in noca:
+        nc1+=a.balance       
+        nc2+=a.dbbalance 
+
+    acp1=0
+    acp2=0
+    for a in acp:
+        acp1+=a.balance
+        acp2+=a.dbbalance  
+
+    cr1=0
+    cr2=0
+    for a in cr:
+        cr1+=a.balance
+        cr2+=a.dbbalance     
+
+    ncl1=0
+    ncl2=0
+    for a in ncl:
+        ncl1+=a.balance
+        ncl2+=a.dbbalance   
+
+    eq1=0
+    eq2=0
+    for a in eq:
+        eq1+=a.balance
+        eq2+=a.dbbalance  
+
+    inc1=0
+    inc2=0
+    for a in inc:
+        inc1+=a.balance
+        inc2+=a.dbbalance      
+
+
+    onc1=0
+    onc2=0
+    for i in onc:
+        onc1+=i.balance
+        onc2+=i.dbbalance   
+
+
+    co1=0
+    co2=0
+    for a in co:
+        co1+=a.balance
+        co2+=a.dbbalance      
+
+    ex1=0
+    ex2=0
+    for a in ex:
+        ex1+=a.balance
+        ex2+=a.dbbalance     
+
+    ox1=0
+    ox2=0
+    for a in ox:
+        ox1+=a.balance
+        ox2+=a.dbbalance    
+
+    crtot=sum1+sum3+cl1+fx1+nc1+acp1+cr1+ncl1+eq1+inc1+onc1+co1+ex1+ox1
+    drtot=sum2+sum4+cl2+fx2+nc2+acp2+cr2+ncl2+eq2+inc2+onc2+co2+ex2+ox2
+
+    diff=crtot-drtot
+
+    context={'tr':tr,'sum1':sum1,'sum2':sum2,'sum3':sum3,'sum4':sum4,'cl1':cl1,'cl2':cl2,'fx1':fx1,'fx2':fx2,
+    'nc1':nc1,'nc2':nc2,'acp1':acp1,'acp2':acp2,'cr1':cr1,'cr2':cr2,'ncl1':ncl1,'ncl2':ncl2,'eq1':eq1,'eq2':eq2,
+    'inc1':inc1,'inc2':inc2,'onc1':onc1,'onc2':onc2,'co1':co1,'co2':co2,'ex1':ex1,'ex2':ex2,'ox1':ox1,'ox2':ox2,
+    'crtot':crtot,'drtot':drtot,'diff':diff}
+    return render(request,"app1/trialbalance.html",context)
 
 def cras(request):
     cras=accounts1.objects.filter(acctype='Current Assets')
-    context={'cras':cras}
+
+    cr=0
+    dr=0
+    for a in cras:
+        cr+=a.balance
+        dr+=a.dbbalance
+
+    context={'cras':cras,'cr':cr,'dr':dr}
     return render(request,"app1/crassets.html",context)  
 
-def crass(request,pk):
+def acre(request):
+    ac=accounts1.objects.filter(acctype='Account Receivable')
+    context={'ac':ac}
+    return render(request,"app1/acre.html",context)  
+
+def curli(request):
+    li= accounts1.objects.filter(acctype='Current Liabilities')   
+    context={'li':li} 
+    return render(request,"app1/curli.html",context)
+
+def fix(request):
+    fix=accounts1.objects.filter(acctype='Fixed Assets') 
+    context={'fix':fix}
+    return render(request,"app1/fix.html",context)
+
+def nonass(request):
+    nona=accounts1.objects.filter(acctype='Non-Current Assets')
+    context={'nona':nona} 
+    return render(request,"app1/nonass.html",context) 
+
+def accpay(request):
+    acp= accounts1.objects.filter(acctype='Accounts Payable')  
+    context={'acp':acp}
+    return render(request,"app1/accpay.html",context)
+
+def credc(request):
+    cre= accounts1.objects.filter(acctype='Credit Card')  
+    context={'cre':cre}
+    return render(request,"app1/credc.html",context)    
+
+def nonli(request):
+    nli= accounts1.objects.filter(acctype='Non-Current Liabilities')  
+    context={'nli':nli}
+    return render(request,"app1/nonli.html",context)        
+
+def eqt(request):
+    eq= accounts1.objects.filter(acctype='Equity')  
+    context={'eq':eq}
+    return render(request,"app1/eqt.html",context)    
+
+def incm(request):
+    inc= accounts1.objects.filter(acctype='Income')  
+    context={'inc':inc}
+    return render(request,"app1/incm.html",context) 
+
+def oincm(request):
+    oinc= accounts1.objects.filter(acctype='Other Incomes')  
+    context={'oinc':oinc}
+    return render(request,"app1/oincm.html",context)                
+
+def cog(request):
+    co= accounts1.objects.filter(acctype='Cost Of Goods Sold')  
+    context={'co':co}
+    return render(request,"app1/cog.html",context) 
+
+def exp(request):
+    ex=accounts1.objects.filter(acctype='Expenses')  
+    context={'ex':ex}
+    return render(request,"app1/exp.html",context)                            
+
+def acres(request,pk):
     cr=accounts1.objects.get(accounts1id=pk)
     context={'cr':cr}
-    return render(request,'app1/ledger.html',context)    
+    return render(request,'app1/ledger.html',context)   
 
       

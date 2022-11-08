@@ -30,7 +30,7 @@
                     <h4 class="mb-0">Vendor Details</h4>
                 </div>
                 <hr/>
-                <form action="{% url 'createpurchaseorder' %}" method="post" autocomplete="off">
+                <form action="{% url 'createpurchaseorder' %}" method="post" enctype="multipart/form-data" autocomplete="off">
                     {% csrf_token %}
                     
                     {% if user.is_authenticated %}
@@ -123,7 +123,7 @@
                             <div class="col-md-3 mt-2">
                                 <label for="">Destination of Supply</label>
                                 <select name="destiofsupply" id="" class="form-control">
-                                    <option selected disabled>Choose..</option>
+                                    <option value=""></option>
                                     <option value="[AN] Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
                                     <option value="[AD] Andhra Predhesh">[AD] Andhra Predhesh</option>
                                     <option value="[AR] Arunachal Predesh">[AR] Arunachal Predesh</option>
@@ -278,8 +278,8 @@
                                                 class="form-control price" step="0.00" min="0">
                                             </td> 
                                             <td>
-                                                <select name="tax[]" id="tax1" class="form-control tax" onchange="filtertax()">
-                                                    <option id="ta1" value=0 text={{ cmp1.state }}>Choose</option>
+                                                <select name="tax[]" id="tax1" class="form-control tax">
+                                                    <option id="ta1" value=0 text={{ cmp1.state }}></option>
                                                     <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
                                                     <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
                                                     <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
@@ -362,7 +362,7 @@
                                     </div>
                                     <div class="row container-fluid p-2 m-0">
                                         <div class="col-sm-4 mt-2"><label for="a" class="text-center">Discount</label></div>
-                                        <div class="col-sm-8 mt-2"><input type="number" name='discount' step="any" id="disc1" placeholder=0 
+                                        <div class="col-sm-8 mt-2"><input type="number" name='discount' id="disc1" placeholder=0 
                                             class="form-control disc"/>
                                         </div>
                                         <div class="col-sm-4 m-0 p-0"></div>
@@ -414,6 +414,13 @@
                                         </div>
                                         <div class="col-sm-4 m-0 p-0"></div>
                                     </div><hr>
+                                    <div class="row container-fluid  p-2 m-0" style="display: none;">
+                                        <div class="col-sm-4 mt-2"><label for="a" class="text-center">Balance Due</label></div>
+                                        <div class="col-sm-8 mt-2"><input type="number" name='balance_due' id="due" placeholder="0" step="any" 
+                                            class="form-control" readonly>
+                                        </div>
+                                        <div class="col-sm-4 m-0 p-0"></div>
+                                    </div>
                                     <div class="row container-fluid  p-2 m-0">
                                         <div class="col-sm-4 mt-2"><label for="a" class="text-center">Grand Total</label></div>
                                         <div class="col-sm-8 mt-2"><input type="number" name='grand_total' id="grandtotal" placeholder="0" step="any" 
@@ -1873,6 +1880,7 @@
             
             $('#tcs_amount').val((z).toFixed(2));
             $('#grandtotal').val((y).toFixed(2));
+            $('#due').val((y).toFixed(2));
             $('#round_off').val((y).toFixed(2));  
             
             test()

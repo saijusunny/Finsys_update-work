@@ -28,18 +28,7 @@ class Migration(migrations.Migration):
                 ('cid', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='app1.company')),
             ],
         ),
-        migrations.CreateModel(
-            name='purchasedebit1',
-            fields=[
-                ('pdebid', models.AutoField(primary_key=True, serialize=False, verbose_name='pddid')),
-                ('items', models.CharField(max_length=100, null=True)),
-                ('quantity', models.CharField(max_length=100, null=True)),
-                ('price', models.CharField(max_length=100, null=True)),
-                ('tax', models.CharField(max_length=100, null=True)),
-                ('total', models.CharField(max_length=100, null=True)),
-                ('pdebit', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='app1.purchasedebit')),
-            ],
-        ),
+        
         migrations.CreateModel(
             name='purchaseorder_item',
             fields=[

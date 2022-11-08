@@ -305,20 +305,13 @@
                     
                     <option  value="yes"></option>
                  
-                    <option value="Equity">Equity</option>
-                    <option value="Bank">Bank</option>
-                    <option value="Current Assets">Current Assets</option>
-                    <option value="Account Receivable" >Account Receivable</option>
-                    <option value="Fixed Assets">Fixed Assets</option>
-                    <option value="Non-Current Assets">Non-Current Assets</option>
-                    <option value="Accounts Payable">Accounts Payable</option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Current Liabilities">Current Liabilities</option>
                     
-                    <option value="Income">Income</option>
-                    <option value="Other Incomes">Other Incomes</option>
-                    <option value="Cost Of Goods Sold">Cost Of Goods Sold</option>
-                    <option value="Expenses">Expenses</option>
+                    <option value="Bank">Bank</option>
+                   
+                    
+                    <option value="Cash">Cash</option>
+                    <option value="Undepposited Funds">Undepposited Funds</option>
+                 
                     
                    
                     
@@ -417,17 +410,17 @@
                     </td>
                     
                 </tr  class="rw">
-                {% for g in g %}
+                {% for c in c %}
                 <tr class="rw" >
                     <td name="name" id="name"  style="text-align: center;">
                          
-                        <a href="{% url 'bnk1' g.accounts1id   %}">{{ g.name }}</a> 
+                        <a href="{% url 'bnk1' c.accounts1id   %}">{{ c.name }}</a> 
                     </td>
                     <td style="text-align: center;">
-                       {{ g.acctype }}
+                       {{ c.acctype }}
                     </td>
                     <td  style="text-align: center;">
-                       {{ g.balance }}
+                       {{ c.balance }}
                     </td>
                     
                 </tr>
@@ -478,6 +471,7 @@
                         {{ i.balance }}
                        
                     </td>
+                   
                     
                 </tr>
                 {% endfor %}
@@ -648,17 +642,17 @@
                     </td>
                     
                 </tr  class="rw">
-                {% for apy in apy %}
+                {% for u in u %}
                 <tr class="rw" >
                     <td name="name" id="name"  style="text-align: center;">
                          
-                        <a href="{% url 'bnk1' apy.accounts1id   %}">{{ apy.name }}</a> 
+                        <a href="{% url 'bnk1' u.accounts1id   %}">{{ u.name }}</a> 
                     </td>
                     <td style="text-align: center;">
-                       {{ apy.acctype }}
+                       {{ u.acctype }}
                     </td>
                     <td  style="text-align: center;">
-                       {{ apy.balance }}
+                       {{ u.balance }}
                     </td>
                     
                 </tr>
@@ -1026,7 +1020,7 @@ $('.under').change(function(){
                 $('#pDetails').removeClass("show");
                 $('#pDetails').addClass("hidden");
             }
-            if(responseID =="Equity"){
+            if(responseID =="Cash"){
                 $('#pDetail').removeClass("hi");
                 $('#pDetail').addClass("show");
            }else{
@@ -1040,7 +1034,7 @@ $('.under').change(function(){
                 $('#odac').removeClass("show");
                 $('#odac').addClass("od");
             }
-            if(responseID =="Fixed Assets"){
+            if(responseID ==""){
                 $('#bnk1').removeClass("bnk");
                 $('#bnk1').addClass("show");
            }else{
@@ -1054,14 +1048,14 @@ $('.under').change(function(){
                 $('#fx1').removeClass("show");
                 $('#fx1').addClass("fx");
             }
-            if(responseID =="Current Liabilities"){
+            if(responseID ==""){
                 $('#nca1').removeClass("nca");
                 $('#nca1').addClass("show");
            }else{
                 $('#nca1').removeClass("show");
                 $('#nca1').addClass("nca");
             }
-            if(responseID =="Accounts Payable"){
+            if(responseID =="Undepposited Funds"){
                 $('#apy1').removeClass("apy");
                 $('#apy1').addClass("show");
            }else{

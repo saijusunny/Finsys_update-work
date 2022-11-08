@@ -649,6 +649,8 @@ urlpatterns = [
     #Jisha
 
     re_path(r'^govendor$',views.govendor,name='govendor'),
+    re_path(r'^vendor_active$',views.vendor_active,name='vendor_active'),
+    re_path(r'^vendor_inactive$',views.vendor_inactive,name='vendor_inactive'),
     re_path(r'^addvendor$',views.addvendor,name='addvendor'),
     re_path(r'^createvendor$',views.createvendor,name='createvendor'),
     re_path(r'^viewvendor/(?P<id>\d+)$', views.viewvendor, name='viewvendor'),
@@ -710,6 +712,7 @@ urlpatterns = [
     re_path(r'^porder_billed$', views.porder_billed, name='porder_billed'),
     re_path(r'^porder_approved$', views.porder_approved, name='porder_approved'),
     re_path(r'^bill_draft$', views.bill_draft, name='bill_draft'),
+    re_path(r'^bill_billed$', views.bill_billed, name='bill_billed'),
 
     re_path(r'^getbilldata$', views.getbilldata, name='getbilldata'),
 
@@ -717,12 +720,21 @@ urlpatterns = [
     re_path(r'^addpurchasepymnt$', views.addpurchasepymnt, name='addpurchasepymnt'),
     re_path(r'^createpurchasepymnt$', views.createpurchasepymnt, name='createpurchasepymnt'),
     re_path(r'^viewpurchasepymnt/(?P<id>\d+)$', views.viewpurchasepymnt, name='viewpurchasepymnt'),
+    re_path(r'^viewpurchasepymnt/goeditpurchasepymnt/(?P<id>\d+)$', views.goeditpurchasepymnt, name='goeditpurchasepymnt'),
+    re_path(r'^viewpurchasepymnt/goeditpurchasepymnt/editpurchasepymnt/(?P<id>\d+)$', views.editpurchasepymnt, name='editpurchasepymnt'),
     re_path(r'^viewpurchasepymnt/deletepurchasepymnt/(?P<id>\d+)$', views.deletepurchasepymnt, name='deletepurchasepymnt'),
 
     re_path(r'^gopurchasedebit$', views.gopurchasedebit, name='gopurchasedebit'),
     re_path(r'^addpurchasedebit$', views.addpurchasedebit, name='addpurchasedebit'),
     re_path(r'^createpurchasedebit$', views.createpurchasedebit, name='createpurchasedebit'),
     re_path(r'^viewpurchasedebit/(?P<id>\d+)$', views.viewpurchasedebit, name='viewpurchasedebit'),
+    re_path(r'^viewpurchasedebit/goeditpurchasedebit/(?P<id>\d+)$', views.goeditpurchasedebit, name='goeditpurchasedebit'),
+    re_path(r'^viewpurchasedebit/goeditpurchasedebit/editpurchasedebit/(?P<id>\d+)$', views.editpurchasedebit, name='editpurchasedebit'),
+    re_path(r'^viewpurchasedebit/deletepurchasedebit/(?P<id>\d+)$', views.deletepurchasedebit, name='deletepurchasedebit'),
+
+    re_path(r'^bill_add_file/(?P<id>\d+)$', views.bill_add_file, name='bill_add_file'),
+    re_path(r'^porder_add_file/(?P<id>\d+)$', views.porder_add_file, name='porder_add_file'),
+    re_path(r'^expense_add_file/(?P<id>\d+)$', views.expense_add_file, name='expense_add_file'),
 
     path('purchase_acctransactions/<str:id>',views.purchase_acctransactions,name='purchase_acctransactions'),
     path('purchase_acctransactions1',views.purchase_acctransactions1,name='purchase_acctransactions1'),
@@ -732,9 +744,23 @@ urlpatterns = [
 
     re_path(r'^bnnk',views.bnnk,name='bnnk'),
     re_path(r'^bnk1/(?P<pk>\d+)$',views.bnk1,name='bnk1'),
+    re_path(r'^accpayment$',views.accpayment,name='accpayment'),
     re_path(r'^trial$',views.trial,name='trial'),
     re_path(r'^cras$',views.cras,name='cras'),
-    re_path(r'^crass/(?P<pk>\d+)$',views.crass,name='crass'),
+    
+    re_path(r'^acre$',views.acre,name='acre'),
+    re_path(r'^acres/(?P<pk>\d+)$',views.acres,name='acres'),
+    re_path(r'^curli$',views.curli,name='curli'),
+    re_path(r'^fix$',views.fix,name='fix'),
+    re_path(r'^nonass$',views.nonass,name='nonass'),
+    re_path(r'^accpay$',views.accpay,name='accpay'),
+    re_path(r'^credc$',views.credc,name='credc'),
+    re_path(r'^nonli$',views.nonli,name='nonli'),
+    re_path(r'^eqt$',views.eqt,name='eqt'),
+    re_path(r'^incm$',views.incm,name='incm'),
+    re_path(r'^oincm$',views.oincm,name='oincm'),
+    re_path(r'^cog$',views.cog,name='cog'),
+    re_path(r'^exp$',views.exp,name='exp'),
 
 
         

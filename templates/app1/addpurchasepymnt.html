@@ -113,6 +113,7 @@
                                         <th class="text-center">Date</th>
                                         <th class="text-center">Bill Number</th>
                                         <th class="text-center">Bill Amount</th>
+                                        <th class="text-center">Bill Due Date</th>
                                         <th class="text-center">Amount Due</th>
                                         <th class="text-center">Payment</th>
 
@@ -253,6 +254,7 @@
                                     <td><input type="text" name='billamount[]' value="${data[i].grand_total}" id=""
                                         class="form-control qty" step="0" min="0"/>
                                     </td>
+                                    <td><input type="text" name="duedate[]" id="" value="${data[i].deliver_date}" class="form-control"/></td>
                                     <td><input type="number" name='amountdue[]' id="openbal${i}" value="${data[i].balance_due}"
                                         class="form-control price" step="0.00" min="0"/>
                                     </td>
