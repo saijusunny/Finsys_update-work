@@ -654,6 +654,7 @@ urlpatterns = [
     re_path(r'^addvendor$',views.addvendor,name='addvendor'),
     re_path(r'^createvendor$',views.createvendor,name='createvendor'),
     re_path(r'^viewvendor/(?P<id>\d+)$', views.viewvendor, name='viewvendor'),
+    # re_path(r'^viewvendor/viewvendor1/(?P<id>\d+)$', views.viewvendor1, name='viewvendor1'),
     re_path(r'^goeditvendor/(?P<id>\d+)$', views.goeditvendor, name='goeditvendor'),
     re_path(r'^goeditvendor/editvendor/(?P<id>\d+)$', views.editvendor, name='editvendor'),
     re_path(r'^deletevendor/(?P<id>\d+)$', views.deletevendor, name='deletevendor'),
