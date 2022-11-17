@@ -143,6 +143,23 @@
                                 <a class="nav-link btn head" role="button" onclick="Statment()"><i class="fa fa-tasks">&nbsp;Statment</i></a>
                             </li>
                         </ul>
+                        <ul class="navbar-nav navbar-right">
+                            <li class="nav-item">
+                                <a class="nav-link btn head" role="button" href="{% url 'addvendor' %}">
+                                    <i class="fa fa-plus">&nbsp;New</i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn head" role="button" href="{% url 'goeditvendor' vndr.vendorid %}">
+                                    <i class="fa fa-edit">&nbsp;Edit</i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn head delete" role="button" href="{% url 'deletevendor' vndr.vendorid %}">
+                                    <i class="fa fa-trash-o">&nbsp;Delete</i>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </nav>
             </div>
@@ -154,7 +171,7 @@
                         <div class="col-lg-8">
                             <div class="p-5">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
-                                    <h1 class="fw-bold mb-0 text-black">{{ vndr.title }}. {{ vndr.firstname }} {{ vndr.lastname }}</h1>
+                                    <h1 class="fw-bold mb-0 text-black">{{ vndr.firstname }} {{ vndr.lastname }}</h1>
                                     <h6 class="mb-0 text-muted">{{ cmp1.cname }}</h6>
                                 </div>
                                 <hr class="my-4">
@@ -272,17 +289,6 @@
                         </div>
                         <div class="col-lg-4 bg-grey">
                             <div class="p-5">
-                                <div class="row">
-                                    <div class="col-md-4"></div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-2"><a class="ed" href="{% url 'goeditvendor' vndr.vendorid %}" role="button">
-                                        <h6><i class="fa fa-edit">&nbsp;Edit</i></h6></a>
-                                    </div>
-                                    <div class="col-md-1"></div>
-                                    <div class="col-md-2"><a href="{% url 'deletevendor' vndr.vendorid %}" role="button">
-                                        <h6><i class="fa fa-trash">&nbsp;Delete</i></h6></a>
-                                    </div>
-                                </div> 
                                 <h3 class="fw-bold mb-5 mt-2 pt-1">GST</h3>
                                 <hr class="my-4">
                                 <div class="d-flex justify-content-between mb-4">
@@ -581,8 +587,8 @@
                         <tbody>
                             {% for p in pbl %}
                                  <tr class="table-row tr" onclick=window.location='{% url "viewbill" p.billid %}';>
-                                    <td style="text-align: center;">{{ p.date }}</td>
-                                    <th style="text-align: center;">{{ p.bill_no }}</th>
+                                    <th style="text-align: center;">{{ p.date }}</th>
+                                    <td style="text-align: center;">{{ p.bill_no }}</td>
                                     <td style="text-align: center;">{{ p.reference }}</td>
                                     <td style="text-align: center;">{{ p.status }}</td>
                                     <td style="text-align: center;">{{ p.due_date }}</td>
@@ -670,7 +676,7 @@
                             {% for po in pordr %}
                                 <tr tr class="table-row tr" onclick=window.location="{% url 'viewpurchaseorder' po.porderid %}">
                                     <th style="text-align: center;">{{ po.date | date:'d-m-Y' }}</th>
-                                    <td style="text-align: center;">{{ po.puchaseorder_no }}</td>
+                                    <td style="text-align: center;">PO - {{ po.puchaseorder_no }}</td>
                                     <td style="text-align: center;"> {{ po.reference }}</td>
                                     <td style="text-align: center;">{{ po.contact_name }}</td>
                                     <td style="text-align: center;"> {{ po.status }}</td>
@@ -680,9 +686,47 @@
                         </tbody>
                     </table>
                 </div>
+                <div style=" margin-top: 20px;">
+                    <a style="padding: 10px; cursor: pointer; font-size: 20px;" class="head" onclick="dispdeb()">Debit Note</a>
+                    <a href="{% url 'addpurchasedebit' %}" class="fa fa-plus new" style="float: right; margin-right: 20px;">&nbsp;Add New</a>   
+                </div> 
+                <div id="pdebtable" style="display:none;">
+                    <table class="table table-responsive-md mt-3">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">DATE</th>
+                                <th style="text-align: center;">DEBIT NOTE</th>
+                                <th style="text-align: center;">VENDOR</th>
+                                <th style="text-align: center;">BILL NO</th>
+                                <th style="text-align: center;">GRAND TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in pdeb %}
+                                 <tr class="table-row tr" onclick=window.location='{% url "viewpurchasedebit" p.pdebitid %}';>
+                                    <th style="text-align: center;">{{ p.debitdate |date:'d-m-Y' }}</th>
+                                    <td style="text-align: center;">DN - {{ p.debit_no }}</td>
+                                    <td style="text-align: center;">{{ p.vendor }}</td>
+                                    <td style="text-align: center;">{{ p.billno }}</td>
+                                    <td style="text-align: center;">{{ p.grandtotal }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div><br>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+        $('.delete').click(function(e){
+            var result = confirm("Are you sure you want to delete this record ?");
+
+            if(!result) {
+                e.preventDefault();
+            }
+        });
+    </script>
 
    <script>
         $(document).ready(function () {
@@ -757,6 +801,9 @@
     <script>
         function dispinv(){
             document.getElementById('invtable').style.display = 'block';
+        }
+        function dispdeb(){
+            document.getElementById('pdebtable').style.display = 'block';
         }
         function dispay(){
             document.getElementById('paytable').style.display = 'block';

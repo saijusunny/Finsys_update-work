@@ -10,7 +10,7 @@
             margin-top: -30px;
             /* margin-top: 392px; */
         }
-        .table-row{
+        .td{
             cursor:pointer;
         }
     </style>
@@ -20,7 +20,8 @@
         <div class="card radius-15">
             <div class="card-body">
                 <div class="card-title">
-                    <center><h2 class="mb-0">A/P AGEING SUMMARY REPORT</h2></center>
+                    <center><h2 class="mb-0">ACCOUNT PAYABLE REPORT</h2></center>
+                    <!-- <center><h2 class="mb-0">A/P AGEING SUMMARY REPORT</h2></center> -->
                 </div>
                 <hr/>
             </div>
@@ -85,30 +86,19 @@
                                 <h2 style="margin-left: 200px;">{{ cmp1.cname }}</h2>
                             </div>
                             <div class="table-responsive" style="margin-top: 100px;">
-                                <table class="table table-hover ">
+                                <table class="table table-hover">
                                     <thead>
-                                    <tr>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">CUSTOMER
-                                            NAME
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                            TRANSACTION TYPE
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                            CURRENT
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">0-30</th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">30-60</th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">60-90
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">90 AND
-                                            OVER
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">TOTAL
-                                        </th>
-
-
-                                    </tr>
+                                        <tr>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">VENDOR NAME</th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">DATE</th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">TRANSACTION TYPE</th>
+                                            <!-- <th class="center font-weight-dark border-dark" style="color: black;">0-30</th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">30-60</th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">60-90</th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">90 AND OVER</th> -->
+                                            <th class="center font-weight-dark border-dark" style="color: black;">TOTAL AMOUNT</th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">BALANCE</th>
+                                        </tr>
                                     </thead>
 
                                     <tbody>
@@ -163,15 +153,15 @@
                                     {% endfor %}
 
                                     {% for pb in pbl %}
-                                        <tr onclick=window.location='{% url "purchase_acctransactions" pb.vendor_name %}';>
+                                        <tr class="td" onclick=window.location='{% url "purchase_acctransactions" pb.vendor_name %}';>
                                             <td class="center text-dark">{{ pb.vendor_name }}</td>
+                                            <td class="center text-dark">{{ pb.date }}</td>
                                             <td class="center text-dark">Bill Balance Due</td>
+                                            <td class="center text-dark">{{ pb.t2 }}</td>
+                                            <!--<td class="center text-dark"></td>
+                                            <td class="center text-dark"></td>
+                                            <td class="center text-dark"></td> -->
                                             <td class="center text-dark">{{ pb.t1 }}</td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark">{{ pb.t1 }}
                                         </tr>
                                     {% endfor %}
 
@@ -235,18 +225,14 @@
                                     <thead>
                                     <tr>
                                         <th class="center font-weight-dark border-dark" style="color: black;">TOTAL</th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-
-                                        </th>
+                                        <th class="center font-weight-dark border-dark" style="color: black;"></th>
                                         <th class="center font-weight-dark border-dark" style="color: black;"
                                             id="t2"></th>
                                         <th class="center font-weight-dark border-dark" style="color: black;"></th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                        </th>
+                                        <!-- <th class="center font-weight-dark border-dark" style="color: black;"></th> -->
+                                        <!-- <th class="center font-weight-dark border-dark" style="color: black;"></th> -->
+                                        <!-- <th class="center font-weight-dark border-dark" style="color: black;">
+                                        </th> -->
                                         <th class="center font-weight-dark border-dark" style="color: black;" id="t1">
                                         </th>
 
@@ -297,7 +283,7 @@
 
 
                                             document.getElementById('t1').innerHTML = "&#8377;" + t
-                                            document.getElementById('t2').innerHTML = "&#8377;" + t
+                                            // document.getElementById('t2').innerHTML = "&#8377;" + t
 
 
                                         });

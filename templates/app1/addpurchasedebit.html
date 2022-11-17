@@ -224,9 +224,9 @@
                                 <div class="col-md-5 mt-3">
                                     <label for="validationCustom02">Bill Number</label>
                                     <select name="billno" id="" class="form-control">
-                                        <option selected>Select Vendor</option>
+                                        <option selected>Select Bill</option>
                                         {% for p in pbill %}
-                                            <option value="{{ p.bill_no }}">{{ p.bill_no }} - {{ p.vendor_name }}</option>
+                                            <option value="{{ p.bill_no }}">Bill - {{ p.bill_no }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -290,9 +290,11 @@
                                             class="form-control hsn"/>
                                         </td>
                                         <td>
-                                            <input type="number" name='quantity[]' placeholder='Enter Qty' id="qty1" value=0 step="any"
-                                            class="form-control qty" min=0/>
-                                            <div><span>Available Qty :</span><span id="qtyspan" class='text-muted'></span></div>
+                                            <div class="d-flex">
+                                                <input type="number" name='quantity[]' placeholder='Qty' id="qty1" step="any"
+                                                    class="form-control qty" min=0 style="width: 80px;">
+                                                <div class="form-control" style="color: rgba(255,255,255,0.6);"><span>Available Qty :</span><span id="qtyspan"></span></div>
+                                            </div>    
                                         </td>
                                         <td>
                                             <input type="text" name='price[]' id="unit1" placeholder='Enter Unit Price'
@@ -303,7 +305,7 @@
                                         </td>
                                         <td>
                                             <select name="tax[]" id="tax1" class="form-control tax">
-                                                <option id="ta1" value=0 text={{ cmp1.state }}>Choose</option>
+                                                <option id="ta1" value=0 text={{ cmp1.state }}></option>
                                                 <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
                                                 <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
                                                 <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
@@ -1274,7 +1276,7 @@
                             </td>                                
                             <td>
                                 <select name="tax[]" id="tax${roinc+1}" class="form-control tax">
-                                    <option id="ta1${roinc}" value=0 text={{ cmp1.state }}>Choose</option>
+                                    <option id="ta1${roinc}" value=0 text={{ cmp1.state }}></option>
                                     <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
                                     <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
                                     <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
@@ -1311,6 +1313,7 @@
                 $('#addr0'+row_id+'').remove();
             });
 
+            var place = document.getElementById('plosu').value;
             $(document).on('click','#product',function(){
                 select = $('#product').val();
                 $.ajax({

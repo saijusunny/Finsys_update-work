@@ -69,24 +69,63 @@
                         <div class="col-md-3 mt-3">
                             <label for="">Amount</label>
                             <div class="d-flex">
-                                <p style="width: 60px;" class="form-control">INR</p>
-                                <input type="number" name="amount" class="form-control">
+                                <select style="width: 84px;" class="form-control">
+                                    <option value="INR">INR</option>
+                                </select>
+                                <input type="number" name="amount" id="" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-3 mt-3">
                             <label for="">Paid Through</label>
                             <select class="form-control" name="paidthrough">
-                                <option selected disabled>Choose..</option>
-                                <option value="By Bank">By Bank</option>
-                                <option disabled>By Cash</option>
-                                <option value="Petty Cash">Petty Cash</option>
+                                <option value="Bank">Bank</option>
+                                <option disabled>Cash</option>
+                                <option value="Petty Cash" selected>Petty Cash</option>
                                 <option value="Undeposited Founds">Undeposited Founds</option>
                             </select>
                         </div>
                         <div class="col-md-3 mt-3">
-                            <label for="">Deposite Through</label>
-                            <select class="form-control" name="paidthrough">
-                                <option>Choose..</option>
+                            <label>Source of Supply</label>
+                            <select name="sourceofsupply" id="plosu" class="form-control" onchange="state(this)">
+                                <option value="{{ cmp1.state }}" selected>{{ cmp1.state }}</option>
+                                <option value="[AN] Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
+                                <option value="[AD] Andhra Predhesh">[AD] Andhra Predhesh</option>
+                                <option value="[AR] Arunachal Predesh">[AR] Arunachal Predesh</option>
+                                <option value="[AS] Assam">[AS] Assam</option>
+                                <option value="[BR] Bihar">[BR] Bihar</option>
+                                <option value="[CH] Chandigarh">[CH] Chandigarh</option> Haveli</option>
+                                <option value="[DD] Damn anad Diu">[DD] Damn anad Diu</option>
+                                <option value="[DL] Delhi">[DL] Delhi</option>
+                                <option value="[GA] Goa">[GA] Goa</option>
+                                <option value="[GJ] Gujarat">[GJ] Gujarat</option>
+                                <option value="[HR] Haryana">[HR] Haryana</option>
+                                <option value="[HP] Himachal Predesh">[HP] Himachal Predesh</option>
+                                <option value="[JK] Jammu and Kashmir">[JK] Jammu and Kashmir</option>
+                                <option value="[JH] Jharkhand">[JH] Jharkhand</option>
+                                <option value="[KA] Karnataka">[KA] Karnataka</option>
+                                <option value="[KL] Kerala">[KL] Kerala</option>
+                                <option value="[CG] Chhattisgarh">[CG] Chhattisgarh</option>
+                                <option value="[DNH] Dadra and Nagar Haveli">[DNH] Dadra and Nagar</option>
+                                <option value="[LA] Ladakh">[LA] Ladakh</option>
+                                <option value="[LD] Lakshadweep">[LD] Lakshadweep</option>
+                                <option value="[MP] Madhya Predesh">[MP] Madhya Predesh</option>
+                                <option value="[MH] Maharashtra">[MH] Maharashtra</option>
+                                <option value="[MN] Manipur">[MN] Manipur</option>
+                                <option value="[ML] Meghalaya">[ML] Meghalaya</option>
+                                <option value="[MZ] Mizoram">[MZ] Mizoram</option>
+                                <option value="[NL] Nagaland">[NL] Nagaland</option>
+                                <option value="[OD] Odisha">[OD] Odisha</option>
+                                <option value="[PY] Puducherry">[PY] Puducherry</option>
+                                <option value="[PB] Punjab">[PB] Punjab</option>
+                                <option value="[RJ] Rajasthan">[RJ] Rajasthan</option>
+                                <option value="[SK] Sikkim">[SK] Sikkim</option>
+                                <option value="[TN] Tamil Nadu">[TN] Tamil Nadu</option>
+                                <option value="[TS] Telangana">[TS] Telangana</option>
+                                <option value="[TR] Tripura">[TR] Tripura</option>
+                                <option value="[UP] Uttar Predesh">[UP] Uttar Predesh</option>
+                                <option value="[UK] Uttarakhand">[UK] Uttarakhand</option>
+                                <option value="[WB] West Bengal">[WB] West Bengal</option>
+                                <option value="[OT] Other Territory">[OT] Other Territory</option>
                             </select>
                         </div>
                         <div class="col-md-3 mt-3">
@@ -102,7 +141,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row hide" id="vendordetail">
+                    <!-- <div class="row hide" id="vendordetail">
                         <div class="col-md-4 mt-3">
                             <label for="validationCustom04">GST Treatment</label>
                             <select class="form-control" id="gsttyp" name="gsttype">
@@ -205,7 +244,7 @@
                                 <option value="[OT] Other Territory">[OT] Other Territory</option>     
                             </select>
                         </div>
-                    </div><hr>
+                    </div><hr> -->
                     <div class="row">
                         <div class="col-md-3 mt-3">
                             <label for="">Customer</label>
@@ -222,26 +261,29 @@
                         </div>
                         <div class="col-md-3 mt-3">
                             <label for="">Tax</label>
-                            <select name="tax" id="tax" class="form-control">
-                                <option value="" selected>Choose</option>
-                                <option value="28.0% GST">28.0% GST(28%)</option>
-                                <option value="28.0% IGST">28.0% IGST(28%)</option>
-                                <option value="18.0% GST">18.0% GST(18%)</option>
-                                <option value="18.0% IGST">18.0% IGST(18%)</option>
-                                <option value="12.0% GST">12.0% GST(12%)</option>
-                                <option value="12.0% IGST">12.0% IGST(12%)</option>
-                                <option value="06.0% GST">06.0% GST(06%)</option>
-                                <option value="06.0% IGST">06.0% IGST(06%)</option>
-                                <option value="05.0% GST">05.0% GST(05%)</option>
-                                <option value="05.0% IGST">05.0% IGST(05%)</option>
-                                <option value="03.0% GST">03.0% GST(03%)</option>
-                                <option value="03.0% IGST">03.0% IGST(03%)</option>
-                                <option value="0.25% GST">0.25% GST(0.25%)</option>
-                                <option value="0.25% IGST">0.25% IGST(0.25%)</option>
-                                <option value="0.0% GST">0.0% GST(0%)</option>
-                                <option value="Exempt GST(0%)">Exempt GST(0%)</option>
-                                <option value="Exempt IGST(0%)">Exempt IGST(0%)</option>
-                                <option value="Out of Scope(0%)">Out of Scope(0%)</option>
+                            <select name="tax" id="tax1" class="form-control">
+                                <option id="ta1" value=0 text={{ cmp1.state }}>Choose</option>
+                                <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
+                                <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
+                                <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
+                                <option value=6 text={{ cmp1.state }}>06.0% GST(06%)</option>
+                                <option value=5 text={{ cmp1.state }}>05.0% GST(05%)</option>
+                                <option value=3 text={{ cmp1.state }}>03.0% GST(03%)</option>
+                                <option value=.25 text={{ cmp1.state }}>0.25% GST(0.25%)</option>
+                                <option value=0 text={{ cmp1.state }}>0.0% GST(0%)</option>
+                                <option value=0 text={{ cmp1.state }}>Exempt GST(0%)</option>
+                                <option value=0 text={{ cmp1.state }}>Out of Scope(0%)</option>
+                                <option id="ta5" value=0 text=" ">Choose</option>
+                                <option value=28 text=" ">28.0% IGST(28%)</option>
+                                <option value=18 text=" ">18.0% IGST(18%)</option>
+                                <option value=12 text=" ">12.0% IGST(12%)</option>
+                                <option value=6 text=" ">06.0% IGST(06%)</option>
+                                <option value=5 text=" ">05.0% IGST(05%)</option>
+                                <option value=3 text=" ">03.0% IGST(03%)</option>
+                                <option value=.25 text=" ">0.25% IGST(0.25%)</option>
+                                <option value=0 text=" ">0.0% IGST(0%)</option>
+                                <option value=0 text=" ">Exempt IGST(0%)</option>
+                                <option value=0 text=" ">Out of Scope(0%)</option>
                           </select>
                         </div>
                         <div class="col-md-3 mt-3">
@@ -257,6 +299,20 @@
                         <div class="col-md-4 mt-3">
                             <label for="">Note</label>
                             <textarea class="form-control" name="note"></textarea>
+                        </div>
+                        <div class="col-md-2 mt-3">
+                            <label for="">Calc</label>
+                            <input type="text" id="calc" class="form-control calc">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label for=""></label>
+                            <input type="text" id="amount" value="2" class="form-control">
+                        </div>
+                        <div class="col-md-2 mt-3">
+                            <label for=""></label>
+                            <input type="text" id="tax" value="2" class="form-control">
                         </div>
                     </div>
                     <div class="row">
@@ -1319,5 +1375,64 @@
             });
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            var $select1 = $('#plosu'),
+            $select2 = $('#tax1'),
+            $select3 = $('#tax2'),
+            $select4 = $('#tax3'),
+            $select5 = $('#tax4'),
+            $options = $select2.find('option'),
+            $options1 = $select3.find('option'),
+            $options2 = $select4.find('option'),
+            $options3 = $select5.find('option');
+            if ($options1.value == '{{ cmp1.state }}') {
+                $options1.text = "{{ cmp1.state }}"
+            }
+            $select1.on('change', function() {
+                if (this.value == "{{ cmp1.state }}") {
+                    $select2.html($options.filter('[text="' + this.value + '"]'));
+                    $select3.html($options1.filter('[text="' + this.value + '"]'));
+                    $select4.html($options2.filter('[text="' + this.value + '"]'));
+                    $select5.html($options3.filter('[text="' + this.value + '"]'));
+                } 
+                else {
+                    $select2.html($options.filter('[text="' + " " + '"]'));
+                    $select3.html($options1.filter('[text="' + " " + '"]'));
+                    $select4.html($options2.filter('[text="' + " " + '"]'));
+                    $select5.html($options3.filter('[text="' + " " + '"]'));
+                }
+            }).trigger('change');
+        });
+    </script>
+
+    <script>
+    //    $('#amount, #tax').keyup(function(){
+    //         var amount = parseFloat($('#amount').val()) || 0;
+    //         var tax = parseFloat($('#tax').val()) || 0;
+
+    //         $('#calc').val(amount * tax);    
+    //     });
+
+        $("#amount,#tax").keyup(function () {
+
+            $('#calc').val($('#amount').val() * $('#tax').val());
+
+        });
+    </script>
+
+    <!-- <script>
+        function calc() {
+            amount = Number($('#amount').val());
+            tax = Number($('#tax1').val());
+            if(amount && tax && !isNaN(amount) && !isNaN(tax)){
+                $('#calc').val(amount * tax);
+            }
+            else {
+                $('#calc').val(0);
+            }
+        }
+    </script> -->
 
 {% endblock %}

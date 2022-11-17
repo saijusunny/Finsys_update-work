@@ -275,7 +275,6 @@
                                             <td>
                                                 <input type="number" name='quantity[]' onchange="qtychange1(this)" placeholder='Enter Qty'
                                                 id="qty1" class="form-control qty" step=0 min=0>
-                                                <div class="text-secondary">Available Qty : <span id="qtyspan" class='text-secondary'></span></div>
                                             </td> 
                                             <td><input type="number" name='rate[]' id="unit1" placeholder='Enter Rate' 
                                                 class="form-control price" step="0.00" min="0">
@@ -1658,7 +1657,6 @@
                             <input type="text" name='hsn[]' id="hsn1${roinc}" placeholder='Enter HSN Code' class="form-control"/>
                         </td>                
                         <td><input type="number" name='quantity[]' onchange="qtychange1(this)" placeholder='Enter Qty' id="qty1" class="form-control qty" step=0 min=0>
-                            <div><span>Available Qty :</span> <span id="qtyspan${roinc}"class='text-muted'></span></div>
                         </td>                
                         <td>
                             <input type="number" name='price[]' id="unit1${roinc}" placeholder='Enter Rate' class="form-control price" step="0.00" min="0">
@@ -1705,6 +1703,7 @@
             $('#addr0'+row_id+'').remove();
         });
 
+        var place = document.getElementById('plosu').value;
         $(document).on('click','#product',function(){
             select = $('#product').val();
             $.ajax({
@@ -1716,12 +1715,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn1').value = data
-                    document.getElementById('qtyspan').innerHTML = data2;
                     document.getElementById('unit1').value = data3
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta1').innerHTML = data4 + ' % GST';
@@ -1744,12 +1741,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn11').value = data
-                    document.getElementById('qtyspan1').innerHTML = data2;
                     document.getElementById('unit11').value = data3
                     if (place == '{{ cmp1.state }}')
                     {
@@ -1773,14 +1768,12 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data1 = response.qty
                     data2 = response.price
                     data3 = response.gst
                     data4 = response.sgst
                     document.getElementById('hsn12').value = data
-                    document.getElementById('qtyspan2').innerHTML = data1;
                     document.getElementById('unit12').value = data2            
-                    if (supply == '{{ cmp1.state }}')
+                    if (place == '{{ cmp1.state }}')
                         {
                             document.getElementById('ta12').innerHTML = data3 + ' % GST';
                             document.getElementById('ta12').value=data3
@@ -1802,14 +1795,12 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data1 = response.qty
                     data2 = response.price
                     data3 = response.gst
                     data4 = response.sgst
                     document.getElementById('hsn13').value = data
-                    document.getElementById('qtyspan3').innerHTML = data1;
                     document.getElementById('unit13').value = data2
-                    if (supply == '{{ cmp1.state }}')
+                    if (place == '{{ cmp1.state }}')
                     {
                         document.getElementById('ta13').innerHTML = data3 + ' % GST';
                         document.getElementById('ta13').value=data3
@@ -1831,12 +1822,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn14').value = data
-                    document.getElementById('qtyspan4').innerHTML = data2;
                     document.getElementById('unit14').value = data3
                     if (place == '{{ cmp1.state }}')
                     {
@@ -1860,12 +1849,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn15').value = data
-                    document.getElementById('qtyspan5').innerHTML = data2;
                     document.getElementById('unit15').value = data3
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta15').innerHTML = data4 + ' % GST';
@@ -1888,12 +1875,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn16').value = data
-                    document.getElementById('qtyspan6').innerHTML = data2;
                     document.getElementById('unit16').value = data3
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta16').innerHTML = data4 + ' % GST';
@@ -1916,12 +1901,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn  
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn17').value = data 
-                    document.getElementById('qtyspan7').innerHTML = data2;
                     document.getElementById('unit17').value = data3
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta17').innerHTML = data4 + ' % GST';
@@ -1944,12 +1927,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst        
                     document.getElementById('hsn18').value = data        
-                    document.getElementById('qtyspan8').innerHTML = data2;
                     document.getElementById('unit18').value = data3
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta18').innerHTML = data4 + ' % GST';
@@ -1970,15 +1951,12 @@
                 id: select
                 },
                 success:function(response){
-                            console.log(response)
-                            data = response.hsn
-                            
-                            data2 = response.qty
-                            data3 = response.price
-                            data4 = response.gst
+                    console.log(response)
+                    data = response.hsn
+                    data3 = response.price
+                    data4 = response.gst
                     data5 = response.sgst       
                     document.getElementById('hsn19').value = data   
-                    document.getElementById('qtyspan9').innerHTML = data2;
                     document.getElementById('unit19').value = data3        
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta19').innerHTML = data4 + ' % GST';
@@ -2001,12 +1979,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst       
                     document.getElementById('hsn110').value = data
-                    document.getElementById('qtyspan10').innerHTML = data2;
                     document.getElementById('unit110').value = data3        
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta110').innerHTML = data4 + ' % GST';
@@ -2029,12 +2005,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst                      
                     document.getElementById('hsn111').value = data
-                    document.getElementById('qtyspan11').innerHTML = data2;
                     document.getElementById('unit111').value = data3        
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta111').innerHTML = data4 + ' % GST';
@@ -2057,12 +2031,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn112').value = data
-                    document.getElementById('qtyspan12').innerHTML = data2;
                     document.getElementById('unit112').value = data3
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2086,12 +2058,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst       
                     document.getElementById('hsn113').value = data
-                    document.getElementById('qtyspan13').innerHTML = data2;
                     document.getElementById('unit113').value = data3        
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2115,12 +2085,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst       
                     document.getElementById('hsn114').value = data
-                    document.getElementById('qtyspan14').innerHTML = data2;
                     document.getElementById('unit114').value = data3        
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2144,14 +2112,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data1 = response.desp
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn115').value = data
-                    document.getElementById('description15').value = data1
-                    document.getElementById('qtyspan15').innerHTML = data2;
                     document.getElementById('unit115').value = data3
                     if (place == '{{ cmp1.state }}'){
                         document.getElementById('ta115').innerHTML = data4 + ' % GST';
@@ -2174,12 +2138,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst        
                     document.getElementById('hsn116').value = data
-                    document.getElementById('qtyspan16').innerHTML = data2;
                     document.getElementById('unit116').value = data3        
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2203,12 +2165,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn117').value = data
-                    document.getElementById('qtyspan17').innerHTML = data2;
                     document.getElementById('unit117').value = data3
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2233,12 +2193,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst        
                     document.getElementById('hsn118').value = data
-                    document.getElementById('qtyspan18').innerHTML = data2;
                     document.getElementById('unit118').value = data3        
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2262,12 +2220,10 @@
                 success:function(response){
                         console.log(response)
                         data = response.hsn
-                        data2 = response.qty
                         data3 = response.price
                         data4 = response.gst
                         data5 = response.sgst   
                         document.getElementById('hsn119').value = data
-                        document.getElementById('qtyspan19').innerHTML = data2;
                         document.getElementById('unit119').value = data3        
                     if (place == '{{ cmp1.state }}')
                     {
@@ -2291,12 +2247,10 @@
                 success:function(response){
                     console.log(response)
                     data = response.hsn
-                    data2 = response.qty
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
                     document.getElementById('hsn120').value = data
-                    document.getElementById('qtyspan20').innerHTML = data2;
                     document.getElementById('unit120').value = data3
                     if (place == '{{ cmp1.state }}')
                     {

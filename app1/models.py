@@ -1208,7 +1208,7 @@ class itemtable(models.Model):
     intra_st = models.CharField(max_length=100,null=True)
     inter_st = models.CharField(max_length=100,null=True)
     inventry = models.CharField(max_length=100, default='',null=True,blank=True)
-    stock = models.IntegerField(default='')
+    stock = models.IntegerField(blank=True,null=True,default='')
     status = models.CharField(max_length=100,null=True)
 
 class unittable(models.Model):
@@ -1455,9 +1455,9 @@ class purchase_expense(models.Model):
     amount = models.IntegerField(null=True)
     paidthrough = models.CharField(max_length=100,null=True)
     vendor = models.CharField(max_length=100,null=True)
-    gsttype = models.CharField(max_length=100,null=True)
+    # gsttype = models.CharField(max_length=100,null=True)
     sourceofsupply = models.CharField(max_length=100,null=True)
-    destinofsupply = models.CharField(max_length=100,null=True)
+    # destinofsupply = models.CharField(max_length=100,null=True)
     customer = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)
     reference = models.CharField(max_length=100,null=True)
@@ -1523,4 +1523,5 @@ class vendor_statment(models.Model):
     details	= models.CharField(max_length=255,blank=True,null=True)
     details2= models.CharField(max_length=255,blank=True,null=True)
     amount	= models.FloatField(blank=True,null=True)
+    balance	= models.FloatField(blank=True,null=True)
     payments=models.FloatField(blank=True,null=True)	

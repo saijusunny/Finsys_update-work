@@ -33,7 +33,8 @@
                         </div>
                         <div class="col-md-4"></div>
                         <div class="col-md-3"></div>
-                        <div class="btn-group col-md-2">
+                        <div class="col-md-1"></div>
+                            <!-- <div class="btn-group col-md-2"> -->
                             <!-- <a class="btn btn-outline-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 role="button">Filter By
                             </a>
@@ -42,7 +43,7 @@
                                 <a class="dropdown-item" href="#">Billed</a>
                                 <a class="dropdown-item" href="#">Approved</a>
                             </div> -->
-                            <a href="{% url 'addpurchasedebit' %}" class="btn btn-outline-info" role="button">New</a>
+                            <a href="{% url 'addpurchasedebit' %}" class="btn btn-outline-info fa fa-plus" role="button">&nbsp;New</a>
                         </div>
                     </div>
 
@@ -61,7 +62,7 @@
                             {% for p in pdebit %}
                                 <tr onclick="window.location='viewpurchasedebit/{{ p.pdebitid }}';">
                                     <th>{{ p.debitdate |date:'d-m-Y' }}</th>
-                                    <td>{{ p.debit_no }}</td>
+                                    <td>DN - {{ p.debit_no }}</td>
                                     <td>{{ p.vendor }}</a></td>
                                     <td>{{ p.taxamount }}</td>
                                     <td>{{ p.grandtotal }}</td>

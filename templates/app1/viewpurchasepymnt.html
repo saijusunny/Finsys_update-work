@@ -87,13 +87,13 @@
                             <tbody>
                             
                             <tr>
-                                <td height="49" align="end" valign="bottom" style=" font-size:20px; color:#f05b5b; font-weight:800; font-family: 'Muli', sans-serif;">Payment Payable</td>
+                                <td height="49" align="end" valign="bottom" style=" font-size:20px; color:#f05b5b; font-weight:800; font-family: 'Muli', sans-serif;">Payment Made</td>
                             </tr>
                             <tr>
-                                <td height="30" align="end" valign="bottom" style="color:#000; font-weight:800; font-family: 'Muli', sans-serif;">Reference No : {{ paymt.reference }}</td>
+                                <td height="30" align="end" valign="bottom" style="color:#000; font-weight:800; font-family: 'Muli', sans-serif;">Payment : {{ paymt.pymntid }}</td>
                             </tr>
                             <tr>
-                                <td style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" >{{ cmp1.cname }}</td>
+                                <td style=" font-size:20px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" ><b>{{ cmp1.cname }}</b></td>
                             </tr>
                             <tr>
                                 <td style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" >{{cmp1.email}}</td>
@@ -122,15 +122,56 @@
                                 <td><table style="border:1px solid #9a0d0d;" width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tbody>
                                     <tr>
-                                    <td width="16%" height="25"><strong><span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">Vendor </span></strong></td>
-                                    <td width="49%"><span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">{{ paymt.vendor }}</span></td>
-                                    <td width="20%"><strong><span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">Payment Date</span></strong></td>
-                                    <td width="15%"><span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">{{ paymt.paymentdate |date:'d-m-Y' }}</span></td>
+                                    <td width="16%" height="25">
+                                        <strong>
+                                            <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                                Paid To
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td width="49%">
+                                        <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                            {{ paymt.vendor }}
+                                        </span>
+                                    </td>
+                                    <td width="20%">
+                                        <strong>
+                                            <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                                Payment Date
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td width="15%">
+                                        <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                            {{ paymt.paymentdate |date:'d-m-Y' }}
+                                        </span>
+                                    </td>
                                     </tr>
                                     <tr>
-                                    <td height="25"><strong><span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">Payment Method</span></strong></td>
-                                    <td><span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">{{ paymt.paymentmethod }}</span></td>
-                                    
+                                    <td height="25">
+                                        <strong>
+                                            <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                                Payment Method
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                            {{ paymt.paymentmethod }}
+                                        </span>
+                                    </td>
+                                    <td height="25">
+                                        <strong>
+                                            <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                                Reference Number
+                                            </span>
+                                        </strong>
+                                    </td>
+                                    <td>
+                                        <span style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                            {{ paymt.reference }}
+                                        </span>
+                                    </td>
                                     </tr>
                                     <tr>
                                     
@@ -144,15 +185,15 @@
                                 <td height="31" style="border-top:1px solid #999999;">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td><table style="border:1px solid #9a0d0d;" width="100%" border="1" cellpadding="0" cellspacing="0" class="tb2">
+                                <td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="tb2">
                                 <tbody>
                                     <tr style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
                                     <td width="7%" height="30" align="center"><strong>S.N</strong></td>
                                     <td width="20%" align="center"><strong>Bill Date</strong></td>
                                     <td width="20%" align="center"><strong>Bill Number</strong></td>
                                     <td width="20%" align="center"><strong>Total Amount</strong></td>
-                                    <td width="13%" align="center"><strong>Balance Due</strong></td>
-                                    <td width="13%" align="center"><strong>payments</strong></td>
+                                    <td width="20%" align="center"><strong>Balance Due</strong></td>
+                                    <!-- <td width="13%" align="center"><strong>payments</strong></td> -->
                                     </tr>
                                     
                                     {% for p in py %}
@@ -162,16 +203,25 @@
                                             <td align="center">{{ p.billno }}</td>
                                             <td align="center">{{ p.billamount }}</td>
                                             <td align="center">{{ p.amountdue }}</td>
-                                            <td align="center">{{ p.payments }}</td>
+                                            <!-- <td align="center">{{ p.payments }}</td> -->
                                         </tr>
                                     {% endfor %} 
                                     
                                     <tr style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
-                                        <td height="30" align="center" style="border: none;">&nbsp;</td>
+                                        <td height="50" align="center" style="border: none;">&nbsp;</td>
                                         <td align="center" style="border: none;">&nbsp;</td>
                                         <td align="center" style="border: none;">&nbsp;</td>
-                                        <td align="center">&nbsp; <strong>Amount Recieved</strong></td>
-                                        <td align="end" style="border: none;">&nbsp;<strong>{{ paymt.paymentamount }}</strong></td>
+                                        <td align="center" style="font-size: 20px;">&nbsp; <strong></strong></td>
+                                        <td align="end" style="border: none;">&nbsp;<strong></strong></td>
+                                    
+                                    </tr>
+                                    <tr style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;">
+                                        <td height="50" align="center" style="border: none;">&nbsp;</td>
+                                        <td align="center" style="border: none;">&nbsp;</td>
+                                        <td align="center" style="border: none;">&nbsp;</td>
+                                        <td align="center" style="border: none;">&nbsp;</td>
+                                        <td align="center" style="font-size: 20px; background-color: #e24d4d;">&nbsp; <strong>Amount Paid <br> ₹ {{ paymt.paymentamount }}</strong></td>
+                                        <!-- <td align="end" style="border: none;">&nbsp;<strong></strong></td> -->
                                     
                                     </tr>
                                 </tbody>
@@ -193,8 +243,12 @@
                         </tr>
                         <tr>
                         <td height="32">&nbsp;</td>
-                        <td style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" width="47%" height="32"><strong>Authorised Signature</strong></td>
-                        <td style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" width="47%" align="right"><strong>For : Online Reciept</strong></td>
+                        <td style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" width="47%" height="32">
+                            <strong>Authorised Signature</strong>
+                        </td>
+                        <td style=" font-size:13px; color:#000; padding:5px; font-family: 'Muli', sans-serif;" width="47%" align="right">
+                            <strong>For : Online Reciept</strong>
+                        </td>
                         <td height="32">&nbsp;</td>
                         </tr>
                         <tr>

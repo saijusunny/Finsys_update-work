@@ -740,6 +740,8 @@ urlpatterns = [
     path('purchase_acctransactions/<str:id>',views.purchase_acctransactions,name='purchase_acctransactions'),
     path('purchase_acctransactions1',views.purchase_acctransactions1,name='purchase_acctransactions1'),
 
+    re_path(r'^demo$', views.demo, name='demo'),
+
     re_path(r'^itemdata$', views.itemdata, name='itemdata'),
     re_path(r'^payment_method$', views.payment_method, name='payment_method'),
 

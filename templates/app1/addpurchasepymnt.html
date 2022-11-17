@@ -36,8 +36,8 @@
                                 <label class="col-form-label">Payment Method</label>
                                 <div class="d-flex">
                                     <select name="paymentmethod" id="paymeth" class="form-control" style="width:87%">
-                                        <option></option>
-                                        <option value="Cash">Cash</option>
+                                        <option value="Cash">Bank Transfer</option>
+                                        <option value="Cash" selected>Cash</option>
                                         <option value="Cheque">Cheque</option>
                                         <option value="Credit Card">Credit Card</option>
                                         {% for p in pymt %}
@@ -49,13 +49,17 @@
                             </div>
                             <div class="col-md-4"></div>
                             <div class="col-md-4 mt-3">
-                                <label class="col-form-label">Deposit to</label>
+                                <label class="col-form-label">Paid Through</label>
                                 <div class="d-flex">
                                     <select name="depto" id="" class="form-control" style="width: 95%;">
-                                        {% for acc in accoun %}
+                                        <option value="Bank">Bank</option>
+                                        <option disabled>Cash</option>
+                                        <option value="Petty Cash">Petty Cash</option>
+                                        <option value="Undeposited Funds">Undeposited Funds</option>
+                                        <!-- {% for acc in accoun %}
                                             <option value="{{ acc.name }}">{{ acc.name }}</option>
-                                        {% endfor %}
-                                        <option value="Deferred CGST">Deferred CGST</option>
+                                        {% endfor %} -->
+                                        <!-- <option value="Deferred CGST">Deferred CGST</option>
                                         <option value="Deferred GST Input Credit">Deferred GST Input Credit</option>
                                         <option value="Deferred IGST">Deferred IGST</option>
                                         <option value="Deferred Krishi Kalyan Cess Input Credit">Deferred Krishi
@@ -73,8 +77,7 @@
                                         <option value="Prepaid Insurance">Prepaid Insurance</option>
                                         <option value="Service Tax Refund">Service Tax Refund</option>
                                         <option value="TDS Receivable">TDS Receivable</option>
-                                        <option value="Uncategorised Asset">Uncategorised Asset</option>
-                                        <option value="Undeposited Fund">Undeposited Fund</option>
+                                        <option value="Uncategorised Asset">Uncategorised Asset</option>-->
                                     </select>
                                     <a href="{% url 'paymentcoacreate' %}"><button type="button" class="btn btn-outline-secondary ml-1">+</button></a>
                                 </div>

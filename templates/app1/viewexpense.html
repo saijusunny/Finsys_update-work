@@ -38,6 +38,27 @@
             background-color:#000000;
             height: 1px;
         }
+        .in{
+            border: none;
+            color: #fff;
+            text-align: end;
+            font-size: large;
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+        .calc{
+            border: none;
+            color: #fff;
+            text-align: left;
+            font-size: 40px;
+            background-color: rgba(0, 0, 0, 0.001);
+        }
+        .tx{
+            border: none;
+            width: 21px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0.01);
+        }
     </style>
 
     <div class="page-content">
@@ -45,6 +66,18 @@
             <div class="card-body">
                 <div class="card-title">
                     <center><h2 class="mb-0">EXPENSE VIEW</h2></center>
+                    <div class="row">
+                        <!-- <div class="col-md-2">
+                            <input type="text" id="amount" value="{{ expnce.amount }}" class="form-control amount 1">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" id="tax" value="{{ expnce.tax }}" class="form-control tax 1">
+                        </div> -->
+                        <!-- <div class="col-md-2">
+                            <input type="text" id="calc" value="" class="form-control calc_1">
+                        </div> -->
+                    </div>
+                    
                     <hr class="hr">
                     <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgba(0,0,0,.01);">
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,27 +117,21 @@
                         <div class="p-5">
                             <p class="text-muted">Expense Amount</p>
                             <div class="d-flex justify-content-between align-items-center mb-5">
-                                <h1 class="fw-bold mb-0 text-black">{{ expnce.amount }} <span class="text-muted" style="font-size: 20px;">INR</span></h1>
+                                <b><span class="text-muted" style="font-size: 30px;">₹<input type="text" value="" class="calc_1 calc"></span></b>
                                 <h6 class="mb-0 text-muted">{{ cmp1.cname }}</h6>
                             </div>
                             <hr class="my-4">
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                                 <div class="col-md-2 mt-3">
-                                    <h6 class="mb-0">Date</h6>
-                                </div>
-                                <div class="col-md-4 mt-3">
-                                    <p class="mb-0">{{ expnce.date |date:'d-m-Y' }}</p>
-                                </div>
-                                <div class="col-md-4 mt-3">
-                                    <h6 class="mb-0">{{ expnce.expenseaccount }}</h6>
+                                    <h6 class="mb-0" style="font-size: 20px;"><b>{{ expnce.expenseaccount }}</b></h6>
                                 </div>
                             </div>
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                                 <div class="col-md-3 mt-3">
-                                    <h6 class="mb-0">Expense Type</h6>
+                                    <h6 class="mb-0">Date</h6>
                                 </div>
                                 <div class="col-md-2 mt-3">
-                                    <p class="mb-0">{{ expnce.expensetype }}</p>
+                                    <p class="mb-0">{{ expnce.date |date:'d-m-Y' }}</p>
                                 </div>
                                 <div class="col-md-2 mt-3 vl">
                                     <h6 class="mb-0">Hsn/Sac</h6>
@@ -115,24 +142,24 @@
                             </div>
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                                 <div class="col-md-3 mt-3">
-                                    <h6 class="mb-0">Reference</h6>
+                                    <h6 class="mb-0">Expense Type</h6>
                                 </div>
                                 <div class="col-md-2 mt-3">
-                                    <p class="mb-0">{{ expnce.reference }}</p>
+                                    <p class="mb-0">{{ expnce.expensetype }}</p>
                                 </div>
                                 <div class="col-md-2 mt-3 vl">
                                     <h6 class="mb-0">Tax</h6>
                                 </div>
                                 <div class="col-md-4 mt-3">
-                                    <p class="mb-0">{{ expnce.tax }}</p>
+                                    <span>GST</span>&nbsp;<input type="text" value="{{ expnce.tax }}" class="tax 1 tx"><span>%</span>
                                 </div>
                             </div>
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
                                 <div class="col-md-3 mt-3">
-                                    <h6 class="mb-0">Customer</h6>
+                                    <h6 class="mb-0">Reference</h6>
                                 </div>
                                 <div class="col-md-2 mt-3">
-                                    <p class="mb-0">{{ expnce.customer }}</p>
+                                    <p class="mb-0">{{ expnce.reference }}</p>
                                 </div>
                                 <div class="col-md-3 mt-3 vl">
                                     <h6 class="mb-0">Paid Through</h6>
@@ -146,22 +173,23 @@
                     </div>
                     <div class="col-lg-4 bg-grey">
                         <div class="p-5">
-                            <div class="d-flex justify-content-between mb-4">
+                            <div class="d-flex justify-content-between mb-5">
                                 <h5 class="">Vendor</h5>
                                 <h6>{{ expnce.vendor }}</h6>
                             </div>
-                            <h5 class="mb-3">GST Type</h5>
-                            <div class="mb-4 pb-2">
-                                {{ expnce.gsttype }}
-                            </div>
+                            
                             <hr class="my-4">
+                            <div class="d-flex justify-content-between mb-5">
+                                <h6 class="">Amount</h5>
+                                <input type="text" value="{{ expnce.amount }} INR" class="amount 1 in" readonly>   
+                            </div>
                             <div class="d-flex justify-content-between mb-5">
                                 <h6 class="">Sorce Of Supply</h6>
                                 <h6>{{ expnce.sourceofsupply }}</h6>
                             </div>
                             <div class="d-flex justify-content-between mb-5">
-                                <h6 class="">Destination of Supply</h6>
-                                <h6>{{ expnce.destinofsupply }}</h6>
+                                <h6 class="">Customer</h6>
+                                <h6>{{ expnce.customer }}</h6>
                             </div> 
                             <div class="d-flex justify-content-between mb-5">
                                 <h6 class="">Note</h6>
@@ -195,5 +223,40 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        calculateResult();
+        function calculateResult(){
+            var sameArr = [];
+            for(var i=1; i<= 3 ;i++)
+            {
+                var arrEle = document.getElementsByClassName("amount "+i);
+                sameArr.push(arrEle);
+                console.log(sameArr);
+            }
+            for(var j=0;j< sameArr.length; j++)
+            {
+                var sumElement = $(".calc_" + (j+1));
+                var multyEleVal= document.getElementsByClassName("tax "+(j+1))[0].value;
+                var sum=multyEleVal;
+               
+                for(var z=0;z<sameArr[j].length; z++)
+                {
+                    sum *= parseInt(sameArr[j][z].value) 
+                    console.log("calc :"+sum)
+                }
+                sumElement.val(sum);
+            }
+        }
+    </script>
+
+    <!-- <script>
+       $('#amount, #tax').keyup(function(){
+            var amount = parseFloat($('#amount').val()) || 0;
+            var tax = parseFloat($('#tax').val()) || 0;
+
+            $('#calc').val(amount * tax);    
+        });
+    </script> -->
 
 {% endblock %}

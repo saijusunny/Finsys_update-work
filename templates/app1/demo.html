@@ -1,0 +1,58 @@
+{% extends 'app1/base.html' %}
+{% block body %}
+
+    {% load static %}
+    {% if user.is_authenticated %}
+   
+    Values :
+
+    <input type="text" class="amount 1" value="2" />
+    
+    <Hr>
+    <br>
+    Multiplier :
+    <input  type="text" class="tax 1" value="6" />
+    
+    <Hr>
+        <br>
+            Result :
+        
+        
+    <input type="text" class="calc_1" value="" />
+    
+
+
+    <script>
+      
+
+calculateResult();
+function calculateResult(){
+  var sameArr = [];
+  for(var i=1; i<= 3 ;i++)
+   {
+     var arrEle = document.getElementsByClassName("amount "+i);
+       sameArr.push(arrEle);
+       console.log(sameArr);
+   }
+   
+    for(var j=0;j< sameArr.length; j++)
+    {
+         var sumElement = $(".calc_" + (j+1));
+        var multyEleVal= document.getElementsByClassName("tax "+(j+1))[0].value;
+        var sum=multyEleVal;
+       
+        for(var z=0;z<sameArr[j].length; z++)
+        {
+             sum *= parseInt(sameArr[j][z].value) 
+            console.log("calc :"+sum)
+        }
+         sumElement.val(sum);
+    }
+  
+
+}
+
+    </script>
+
+    {% endif %}
+{% endblock %}

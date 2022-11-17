@@ -128,7 +128,6 @@
                             <div class="col-md-3 mt-2">
                                <label for="">Place of Supply</label>
                                 <select class="form-control" id="" name="sourceofsupply">
-                                    <option selected disabled>Choose..</option>
                                     <option value="[AN] Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
                                     <option value="[AD] Andhra Predhesh">[AD] Andhra Predhesh</option>
                                     <option value="[AR] Arunachal Predesh">[AR] Arunachal Predesh</option>
@@ -146,7 +145,7 @@
                                     <option value="[JK] Jammu and Kashmir">[JK] Jammu and Kashmir</option>
                                     <option value="[JH] Jharkhand">[JH] Jharkhand</option>
                                     <option value="[KA] Karnataka">[KA] Karnataka</option>
-                                    <option value="[KL] Kerala">[KL] Kerala</option>
+                                    <option value="[KL] Kerala" selected>[KL] Kerala</option>
                                     <option value="[LA] Ladakh">[LA] Ladakh</option>
                                     <option value="[LD] Lakshadweep">[LD] Lakshadweep</option>
                                     <option value="[MP] Madhya Predesh">[MP] Madhya Predesh</option>
@@ -184,8 +183,12 @@
                             <div class="col-md-3 mt-2">
                                 <label for="">Currency</label>
                                 <div class="d-flex">
-                                    <input type="text" class="form-control" id="" name="currency" placeholder="INR - Indian Rupee"
-                                        id="">
+                                    <select name="currency" id="" class="form-control">
+                                        <option value="INR - Indian Rupee">INR - Indian Rupee</option>
+                                        {% for c in cr %}
+                                            <option value="{{ c.code }} - {{ c.name }}">{{ c.code }} - {{ c.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                     <a href="#">
                                         <button type="button" class="btn btn-outline-secondary ml-1">+</button>
                                     </a> 
@@ -196,18 +199,17 @@
                                <label for="">Opening Balance</label>
                                <div class="d-flex">
                                 <p class="form-control" style="width: 60px;">INR</p>
-                                <input type="number" class="form-control" name="openingbalance" placeholder="INR">
+                                <input type="number" class="form-control" name="openingbalance">
                                </div>
                             </div>
                             <div class="col-md-3 mt-2">
                                <label for="">Payment Terms</label>
                                <div class="d-flex">
                                 <select class="form-control" name="paymentterms">
-                                    <option selected id="trmopt"></option>
-                                    <option value="0">Due on Receipt</option>
-                                    <option value="15">NET 15</option>
-                                    <option value="30">NET 30</option>
-                                    <option value="60">NET 60</option>
+                                    <option value="Due on Receipt">Due on Receipt</option>
+                                    <option value="Net 15">NET 15</option>
+                                    <option value="Net 30">NET 30</option>
+                                    <option value="Net 60">NET 60</option>
                                     {% for pd in cpd %}
                                         <option value="{{ pd.newperiod }}">NET {{ pd.newperiod }}</option>
                                     {% endfor %}
