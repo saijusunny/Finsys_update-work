@@ -25726,9 +25726,6 @@ def editestimate(request, id):
     except:
         return redirect('goestimate')
 
-
-
-
 @login_required(login_url='regcomp')
 def updateestimate2(request, id):
     if request.method =="POST":
@@ -29560,17 +29557,56 @@ def update_stock_adjustment(request,id):
 
 @login_required(login_url='regcomp')
 def stocksummary(request):
-    try:
         cmp1 = company.objects.get(id=request.session["uid"])
-        item = itemtable.objects.filter(cid=cmp1).exclude(inventry="")
-        stock = stockadjust.objects.filter(cid=cmp1)
+
+        item = itemtable.objects.all()
+        for i in item:
+            itemname = i.name
+
+            billitm = purchasebill_item.objects.all().filter(items=itemname)
+            qtyin=0
+            for j in billitm :
+                if j.quantity:
+                    qtyin+=j.quantity
+
+            qtyout=0
+            tot1=0
+            tot2=0
+            debitm1 = purchasedebit1.objects.filter(items=itemname).all()
+            for j in debitm1 :
+                if j.quantity:
+                    tot1+=j.quantity
+
+            initm1 = invoice_item.objects.filter(product=itemname).all()
+            for j in initm1 :
+                if j.qty:
+                    tot2+=j.qty
+
+            qtyout = tot1+tot2
+
+        qtyin1 = purchasebill_item.objects.filter().aggregate(t2=Sum('quantity'))
+
+        qtyout1=0
+        tot3=0
+        tot4=0
+
+        bitm = purchasedebit1.objects.filter()
+        for j in bitm :
+            if j.quantity:
+                tot3+=j.quantity
+
+        initm = invoice_item.objects.filter()
+        for j in initm :
+            if j.qty:
+                tot4+=j.qty
+
+        qtyout1 = tot3+tot4
+   
+        # stock = stockadjust.objects.filter(cid=cmp1)
         
-        context = {'item': item,'stock':stock,'cmp1':cmp1}
+        context = {'item':item,'cmp1':cmp1,'qtyin':qtyin,'qtyin1':qtyin1,'qtyout1':qtyout1,'qtyout':qtyout}
         return render(request, 'app1/stocksummary.html', context)
-    except:
-        return redirect('godash')       
-
-
+        # return redirect('godash') 
 
 @login_required(login_url='regcomp')
 def stockvaluation(request):
@@ -31107,8 +31143,22 @@ def createbill(request):
                         itemqty.stock =temp
                         itemqty.save()
 
+                    elif itemqty.stock == 0:
+                        temp=0
+                        temp = itemqty.stock 
+                        temp = temp+int(ele[2])
+                        itemqty.stock =temp
+                        itemqty.save()
+
                     itempcst = itemtable.objects.get(name=ele[0],cid=cmp1)
                     if itempcst.purchase_cost != 0:
+                        temp=0
+                        temp = itemqty.purchase_cost
+                        temp = int(ele[3])
+                        itempcst.purchase_cost =temp
+                        itempcst.save()
+
+                    elif itempcst.purchase_cost == 0:
                         temp=0
                         temp = itemqty.purchase_cost
                         temp = int(ele[3])
@@ -31129,7 +31179,8 @@ def viewbill(request,id):
         cmp1 = company.objects.get(id=request.session['uid'])
         pbill=purchasebill.objects.get(billid=id)
         bitem = purchasebill_item.objects.all().filter(bill=id)
-        return render(request,'app1/viewpurchasebill.html',{'cmp1': cmp1,'pbill':pbill,'bitem':bitem})
+        tot6 = purchasebill_item.objects.filter(bill=id).all().aggregate(t2=Sum('quantity'))
+        return render(request,'app1/viewpurchasebill.html',{'cmp1': cmp1,'pbill':pbill,'bitem':bitem,'tot6':tot6})
     return redirect('gobilling')
 
 @login_required(login_url='regcomp')
@@ -31235,7 +31286,14 @@ def editpurchasebill(request,id):
                         temp=0
                         temp = itemqty.stock 
 
-                        temp = temp-int(ele[2])
+                        temp = temp+int(ele[2])
+                        itemqty.stock =temp
+                        itemqty.save()
+
+                    elif itemqty.stock == 0:
+                        temp=0
+                        temp = itemqty.stock 
+                        temp = temp+int(ele[2])
                         itemqty.stock =temp
                         itemqty.save()
 
@@ -31733,7 +31791,7 @@ def editpurchasepymnt(request,id):
             statment2.payments = paymt.paymentamount
             statment2.save()
 
-            pymtbill = purchasepayment1.objects.filter()               
+            pymtbill = purchasepayment1.objects.filter(pymnt=paymt)               
             try:
                 for i in pymtbill:
                     if purchasebill.objects.get(bill_no=i.billno) and i.billno != 'undefined':

@@ -491,7 +491,7 @@
                                                                                     <td></td>
                                                                                     <td>{{ tot2.t2 }}</td>
                                                                                     <td></td>
-                                                                                    <td>{{ tot6.t2 }}</td>
+                                                                                    <td>{{ tot6.t2 }}{{ tot8.t2 }}</td>
                                                                                 </tr>
                                                                                 {% for i in statment %}
                                                                                     <tr>
@@ -607,11 +607,11 @@
                     <table class="table table-responsive-md mt-4">
                         <thead>
                             <tr>
-                                <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;">Payment No</th>
-                                <th style="text-align: center;">Payment Method</th>
-                                <th style="text-align: center;">Applied Amount</th>
-                                <th style="text-align: center;">Amount</th>
+                                <th style="text-align: center;">DATE</th>
+                                <th style="text-align: center;">PAYMENT NO</th>
+                                <th style="text-align: center;">PAYMENT METHOD</th>
+                                <th style="text-align: center;">APPLIED AMOUNT</th>
+                                <th style="text-align: center;">CREDITED AMOUNT</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -663,12 +663,12 @@
                     <table class="table table-responsive-md mt-4">
                         <thead>
                             <tr>
-                                <th style="text-align: center;">Date</th>
-                                <th style="text-align: center;">Purchase Order No</th>
-                                <th style="text-align: center;">Reference Number</th>
-                                <th style="text-align: center;">Coustomer Name</th>
-                                <th style="text-align: center;">Status</th>
-                                <th style="text-align: center;">Amount</th>
+                                <th style="text-align: center;">DATE</th>
+                                <th style="text-align: center;">PURCHASE ORDER N0</th>
+                                <th style="text-align: center;">REFERENCE NUMBER</th>
+                                <th style="text-align: center;">CUSTOMER NAME</th>
+                                <th style="text-align: center;">STATUS</th>
+                                <th style="text-align: center;">AMOUNT</th>
                                 <!-- <th style="text-align: center;">ACTION</th> -->
                             </tr>
                         </thead>
@@ -685,7 +685,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                </div>
+                </div><br>
                 <div style=" margin-top: 20px;">
                     <a style="padding: 10px; cursor: pointer; font-size: 20px;" class="head" onclick="dispdeb()">Debit Note</a>
                     <a href="{% url 'addpurchasedebit' %}" class="fa fa-plus new" style="float: right; margin-right: 20px;">&nbsp;Add New</a>   

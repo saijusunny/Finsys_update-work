@@ -63,7 +63,7 @@
                             <tbody>
                             {% for p in pbill %}
                                 <tr onclick="window.location='viewbill/{{ p.billid }}';">
-                                    <th>{{ p.date }}</th>
+                                    <th>{{ p.date | date:'d-m-Y' }}</th>
                                     <td>{{ p.branch }}</td>
                                     <td>{{ p.bill_no }}</a></td>
                                     <td>{{ p.reference }}</td>

@@ -66,18 +66,6 @@
             <div class="card-body">
                 <div class="card-title">
                     <center><h2 class="mb-0">EXPENSE VIEW</h2></center>
-                    <div class="row">
-                        <!-- <div class="col-md-2">
-                            <input type="text" id="amount" value="{{ expnce.amount }}" class="form-control amount 1">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" id="tax" value="{{ expnce.tax }}" class="form-control tax 1">
-                        </div> -->
-                        <!-- <div class="col-md-2">
-                            <input type="text" id="calc" value="" class="form-control calc_1">
-                        </div> -->
-                    </div>
-                    
                     <hr class="hr">
                     <nav class="navbar navbar-expand-lg navbar-light" style="background-color:rgba(0,0,0,.01);">
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,20 +74,20 @@
                         <div class="collapse navbar-collapse" id="navbarScroll">
                             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link text-light btn" role="button" href="{% url 'goeditexpense' expnce.expenseid %}" class=" fa fa-pencil"><i class=" fa fa-pencil"></i> Edit</a>
+                                    <a class="nav-link text-light btn" role="button" href="{% url 'goeditexpense' expnce.expenseid %}"><i class=" fa fa-pencil">&nbsp;Edit</i></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light btn" role="button" href="{% url 'deleteexpense' expnce.expenseid %}"><i class="fa fa-trash-o delete">Delete</i></a>
+                                    <a class="nav-link text-light btn" role="button" href="{% url 'deleteexpense' expnce.expenseid %}"><i class="fa fa-trash-o delete">&nbsp;Delete</i></a>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-file"></i>&nbsp;File
+                                        <i class="fa fa-file">&nbsp;File</i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip"></i>&nbsp;Attach File</a>
+                                        <a class="dropdown-item" style="cursor: pointer;" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip">&nbsp;Attach File</i></a>
                                         {% if expnce.file != "default.png" %}
-                                            <a class="dropdown-item" download  href="{{expnce.file.url }}"><i class="fa fa-download"></i>&nbsp;Download File</a>
+                                            <a class="dropdown-item" download  href="{{expnce.file.url }}"><i class="fa fa-download">&nbsp;Download File</i></a>
                                         {% endif %}
                                     </div>
                                 </li>
@@ -122,7 +110,7 @@
                             </div>
                             <hr class="my-4">
                             <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                <div class="col-md-2 mt-3">
+                                <div class="col-md-8 mt-3">
                                     <h6 class="mb-0" style="font-size: 20px;"><b>{{ expnce.expenseaccount }}</b></h6>
                                 </div>
                             </div>

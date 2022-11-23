@@ -250,36 +250,33 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-share"></i> Share
+                                        <i class="fa fa-share-alt">Share</i> 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
-                                        <a class="dropdown-item" href="#">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
+                                        <a class="dropdown-item fa fa-email">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
+                                        <a class="dropdown-item" href="">&nbsp;{% post_to_whatsapp object_or_url "Whatsapp" %}</a>
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-exchange"></i>Convert 
+                                        <i class="fa fa-exchange">Convert</i>
                                     </a>
                                     {% if pbill.status == "Draft"  %}
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item" href="{% url 'billconvert' pbill.billid %}">
-                                                <i class="fas fa-receipt"></i>To Bill
+                                                <i class="fas fa-receipt">To Bill</i>
                                             </a>
                                         </div>
                                     {% endif %}
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light btn" role="button" href="javascript:generatePDF()">
-                                        <i class="fa fa-file-pdf-o">&nbsp;Pdf</i>
+                                        <i class="fa fa-file-pdf-o">Pdf</i>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link"></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light btn" role="button" href="goeditbill/{{ pbill.billid }}{{ bitem.bill }}" class=" fa fa-pencil"><i class=" fa fa-pencil"></i> Edit</a>
+                                    <a class="nav-link text-light btn" role="button" href="goeditbill/{{ pbill.billid }}{{ bitem.bill }}"><i class=" fa fa-pencil">Edit</i></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light btn" role="button" href="deletebill/{{ pbill.billid }}{{ bitem.id }}"><i class="fa fa-trash-o delete">Delete</i></a>
@@ -287,12 +284,12 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-download"></i>Attach File
+                                        <i class="fa fa-file">File</i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip"></i>&nbsp;Attach File</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip">&nbsp;Attach File</i></a>
                                         {% if pbill.file != "default.png" %}
-                                            <a class="dropdown-item" download  href="{{pbill.file.url }}"><i class="fa fa-download"></i>&nbsp;Download File</a>
+                                            <a class="dropdown-item" download  href="{{pbill.file.url }}"><i class="fa fa-download">&nbsp;Download File</i></a>
                                         {% endif %}
                                     </div>
                                 </li>
@@ -350,6 +347,7 @@
                                     <div class="col-5">
                                         <p>Date : <span>{{ pbill.date | date:'d-m-Y' }}</span></p>
                                         <p>Excpected Date : <span> {{ pbill.deliver_date | date:'d-m-Y' }}</span></p>
+                                        <p>Total Quantity<span> {{ tot6.t2 }}</span></p>
                                     </div>
                                 </div>
                             </div>

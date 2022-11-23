@@ -250,7 +250,7 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-share-alt"></i> Share
+                                        <i class="fa fa-share-alt">Share</i> 
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item">&nbsp;{% send_email object.title "New:{{object.title}}" object_or_url "Email" %}</a>
@@ -260,27 +260,27 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-exchange"></i>Convert 
+                                        <i class="fa fa-exchange">Convert</i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{% url 'convertapproved' pordr.porderid %}">Approved</a>
                                         {% if pordr.status != 'Billed' %}
                                             <a class="dropdown-item" href="{% url 'convertbilled' pordr.porderid %}">
-                                                <i class="fas fa-receipt"></i>Bill
+                                                Bill
                                             </a>
                                         {% endif %}    
                                     </div>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light btn" role="button" href="javascript:generatePDF()">
-                                        <i class="fa fa-file-pdf-o">&nbsp;Pdf</i>
+                                        <i class="fa fa-file-pdf-o">Pdf</i>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link"></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light btn" role="button" href="goeditpurchaseorder/{{ pordr.porderid }}{{ pitem.porder }}" class=" fa fa-pencil"><i class=" fa fa-pencil"></i> Edit</a>
+                                    <a class="nav-link text-light btn" role="button" href="goeditpurchaseorder/{{ pordr.porderid }}{{ pitem.porder }}"><i class=" fa fa-pencil">Edit</i></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-light btn" role="button" href="deletepurchasorder/{{ pordr.porderid }}{{ pitem.porder }}"><i class="fa fa-trash-o delete">Delete</i></a>
@@ -288,12 +288,12 @@
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-light btn" href="#" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-file"></i>&nbsp;File
+                                        <i class="fa fa-file">File</i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip"></i>&nbsp;Attach File</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#file"><i class="fa fa-paperclip">&nbsp;Attach File</i></a>
                                         {% if pordr.file != "default.png" %}
-                                            <a class="dropdown-item" download  href="{{pordr.file.url }}"><i class="fa fa-download"></i>&nbsp;Download File</a>
+                                            <a class="dropdown-item" download  href="{{pordr.file.url }}"><i class="fa fa-download">&nbsp;Download File</i></a>
                                         {% endif %}
                                     </div>
                                 </li>

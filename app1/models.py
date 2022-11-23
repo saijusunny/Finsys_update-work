@@ -1438,9 +1438,10 @@ class purchasebill(models.Model):
 
 class purchasebill_item(models.Model):
     bill = models.ForeignKey(purchasebill, on_delete=models.CASCADE,null=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE,null=True)
     items = models.CharField(max_length=100,null=True)
     hsn = models.CharField(max_length=100,null=True)
-    quantity = models.CharField(max_length=100,null=True)
+    quantity = models.IntegerField(null=True)
     rate = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)
     amount = models.CharField(max_length=100,null=True)
@@ -1508,7 +1509,7 @@ class purchasedebit1(models.Model):
     pdebit = models.ForeignKey(purchasedebit, on_delete=models.CASCADE,null=True)
     items = models.CharField(max_length=100,null=True)
     hsn = models.CharField(max_length=100,null=True)
-    quantity = models.CharField(max_length=100,null=True)
+    quantity = models.IntegerField(null=True)
     price = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)
     total = models.CharField(max_length=100,null=True)
@@ -1525,3 +1526,14 @@ class vendor_statment(models.Model):
     amount	= models.FloatField(blank=True,null=True)
     balance	= models.FloatField(blank=True,null=True)
     payments=models.FloatField(blank=True,null=True)	
+
+class item_stock(models.Model):
+    item = models.CharField(max_length=255, default='')
+    qtyin = models.IntegerField(blank=True,null=True)
+    qtyout = models.IntegerField(blank=True,null=True)
+    qty = models.IntegerField(blank=True,null=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE,null=True)
+    bitm = models.ForeignKey(purchasebill,on_delete=models.CASCADE,blank=True,null=True)
+    ditm = models.ForeignKey(purchasedebit1,on_delete=models.CASCADE,blank=True,null=True)
+    itm = models.ForeignKey(itemtable,on_delete=models.CASCADE,blank=True,null=True)
+    initm = models.ForeignKey(invoice_item,on_delete=models.CASCADE,blank=True,null=True)

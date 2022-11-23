@@ -84,74 +84,38 @@
                             <div class="table-responsive" style="margin-top: 100px;">
                                 <table class="table table-hover ">
                                     <thead>
-                                    <tr>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">ITEM
-                                            NAME
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                            QUANDITY IN
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                            QUANDITY OUT
-                                        </th>
-                                        
-                                        <th class="center font-weight-dark border-dark" style="color: black;">AVAILABLE FOR SALE
-                                        </th>
-
-
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-
-                                    {% for a in item %}
-
-
-
                                         <tr>
-
-                                            <td class="center text-dark">{{ a.name }}</td>
-                                            <td class="center text-dark">{{ a.stock }}.00</td>
-                                            
-                                            <td class="center text-dark">0.00</td>
-                                            
-                                            
-                                            
-                                            <td class="center text-dark">{{ a.stock }}.00</td>
-                                            
-
-
+                                            <th class="center font-weight-dark border-dark" style="color: black;">
+                                                ITEM NAME
+                                            </th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">
+                                                QUANDITY IN
+                                            </th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">
+                                                QUANDITY OUT
+                                            </th>
+                                            <th class="center font-weight-dark border-dark" style="color: black;">
+                                                AVAILABLE FOR SALE
+                                            </th>
                                         </tr>
-
-                                    {% endfor %}
-
-
-
-
-                                 
-
-
-
-
-                                    <thead>
-                                    <tr>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">TOTAL</th>
-                                      
-                                      
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;" id="t1">
-                                        </th>
-
-
-                                    </tr>
                                     </thead>
-
-                                   
-
-
+                                    <tbody>
+                                        {% for i in item %}
+                                            <tr>
+                                                <td class="center text-dark">{{ i.name }}</td>
+                                                <td class="center text-dark">{{ qtyin }}</td>  
+                                                <td class="center text-dark">{{ qtyout }}</td>         
+                                                <td class="center text-dark">{{ i.stock }}</td>       
+                                            </tr>
+                                        {% endfor %}
+                                        <thead>
+                                            <tr>
+                                                <th class="center font-weight-dark border-dark" style="color: black;">TOTAL</th>
+                                                <th class="center font-weight-dark border-dark" style="color: black;">{{ qtyin1.t2 }}</th>
+                                                <th class="center font-weight-dark border-dark" style="color: black;">{{ qtyout1 }}</th>
+                                                <th class="center font-weight-dark border-dark" style="color: black;" id="t1">{{ sum }}</th>
+                                            </tr>
+                                        </thead>
                                     </tbody>
                                 </table>
                             </div>
