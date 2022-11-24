@@ -118,19 +118,16 @@ def register(request, id):
             accountsecond = [
                 ['Account Receivable(Debtors)', 'Account Receivable(Debtors)',
                  'Account Receivable(Debtors)'],
-                ['Current Assets', 'Deferred Service Tax Input Credit', 'Deferred CGST'],
-                ['Current Assets', 'Deferred Service Tax Input Credit',
-                    'Deferred GST Input Credit'],
-                ['Current Assets', 'Deferred Service Tax Input Credit', 'Deferred IGST'],
+                
                 ['Current Assets', 'Deferred Service Tax Input Credit',
                     'Deferred Krishi Kalyan Cess Input Credit'],
                 ['Current Assets', 'Prepaid Expenses', 'Prepaid Expenses'],
                 ['Current Assets', 'Deferred Service Tax Input Credit',
                     'Deferred Service Tax Input Credit'],
-                ['Current Assets', 'Deferred Service Tax Input Credit', 'Deferred SGST'],
+                
                 ['Current Assets', 'Deferred Service Tax Input Credit',
                     'Deferred VAT Input Credit'],
-                ['Current Assets', 'Service Tax Refund', 'GST Refund'],
+                
                 ['Current Assets', 'Inventory', 'Inventory Asset'],
                 ['Current Assets', 'Service Tax Refund',
                     'Krishi Kalyan Cess Refund'],
@@ -148,18 +145,10 @@ def register(request, id):
                 ['Fixed Assets', 'Vehicles', 'Vehicles'],
                 ['Accounts Payable(Creditors)', 'Accounts Payable(Creditors)',
                  'Accounts Payable(Creditors)'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'CGST Payable'],
+                
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'CST Payable'],
                 ['Current Liabilities', 'Tax Suspense', 'CST Suspense'],
-                ['Current Liabilities', 'Sales And Service Tax Payable', 'GST Payable'],
-                ['Current Liabilities', 'Tax Suspense', 'GST Suspense'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'IGST Payable'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'Input CGST'],
-                ['Current Liabilities', 'Sales and Service Tax Payable',
-                    'Input CGST Tax RCM'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'Input IGST'],
-                ['Current Liabilities', 'Sales and Service Tax Payable',
-                    'Input IGST Tax RCM'],
+                
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Input Krishi Kalyan Cess'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
@@ -168,9 +157,7 @@ def register(request, id):
                     'Input Service Tax'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Input Service Tax RCM'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'Input SGST'],
-                ['Current Liabilities', 'Sales asnd Service Tax Payable',
-                    'Input SGST Tax RCM'],
+                
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Input VAT 14%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Input VAT 4%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Input VAT 5%'],
@@ -178,13 +165,9 @@ def register(request, id):
                     'Krishi Kalyan Cess Payable'],
                 ['Current Liabilities', 'Tax Suspense',
                     'Krishi Kalyan Cess Suspense'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'Output CGST'],
-                ['Current Liabilities', 'Sales and Service Tax Payable',
-                    'Output CGST Tax RCM'],
+                
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output CST 2%'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'Output IGST'],
-                ['Current Liabilities', 'Sales and Service Tax Payable',
-                    'Output IGST Tax RCM'],
+                
                 ['Current Liabilties', 'Sales and Service Tax Payable',
                     'Output Krishi Kaylan Cess'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
@@ -193,16 +176,12 @@ def register(request, id):
                     'Output Service Tax'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Output Service Tax RCM'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'Output SGST'],
-                ['Current Liabilities', 'Sales and Service Tax Payable',
-                    'Output SGST Tax RCM'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output VAT 14%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output VAT 4%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output VAT 5%'],
                 ['Current Liabilties', 'Sales and Service Tax Payable',
                     'Service Tax Payable'],
                 ['Current Liabilities', 'Tax Suspense', 'Service Tax Suspense'],
-                ['Current Liabilities', 'Sales and Service Tax Payable', 'SGST Payable'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Swachh Barath Cess Payable'],
                 ['Current Liabilities', 'Tax Suspense',
@@ -299,15 +278,10 @@ def register(request, id):
                 ['Other Income', 'Other Miscellaneous Income',
                     'Shipping and Delivery Income'],
                 ['Other Expenses', 'Other Expenses', 'Ask My Accountant'],
-                ['Other Expenses', 'Other Expenses', 'CGST Write-Off'],
-                ['Other Expense', 'Other Expense', 'GST Write-Off'],
-                ['Other Expenses', 'Other Expenses', 'IGST Write-Off'],
                 ['Other Expenses', 'Other Expenses', 'Miscellaneous Expense'],
                 ['Other Expenses', 'Other Expenses', 'Political Contributions'],
                 ['Other Expenses', 'Other Expenses',
                     'Reconciliation Discrepancies'],
-                ['Other Expenses', 'Other Expenses', 'SGST Write-Off'],
-                ['Other Expenses', 'Other Expenses', 'Tax Write-Off'],
                 ['Other Expenses', 'Other Expenses', 'Vehicle Expenses']]
 
             accounype = [['Deferred CGST'], ['Deferred GST Input Credit'], ['Deferred IGST'],
@@ -28733,6 +28707,7 @@ def create_item(request):
             itax = request.POST['taxref']
             ipcost = request.POST['pcost']
             iscost = request.POST['salesprice']
+            itmdate = request.POST['itmdate']
             #itrate = request.POST['tax']
             ipuracc = request.POST['pur_account']
             isalacc = request.POST['sale_account']
@@ -28747,6 +28722,7 @@ def create_item(request):
                                 hsn=ihsn,tax_reference=itax,
                                 purchase_cost=ipcost,
                                 sales_cost=iscost,
+                                itmdate=itmdate,
                                 #tax_rate=itrate,
                                 acount_pur=ipuracc,
                                 account_sal=isalacc,
@@ -28826,6 +28802,7 @@ def update_item(request, id):
             item.tax_reference = request.POST.get('taxref')
             item.purchase_cost = request.POST.get('pcost')
             item.sales_cost = request.POST.get('salesprice')
+            item.itmdate = request.POST.get('itmdate')
             # item.tax_rate = request.POST.get('tax')
             item.acount_pur = request.POST.get('pur_account')
             item.account_sal = request.POST.get('sale_account')
@@ -29606,7 +29583,116 @@ def stocksummary(request):
         
         context = {'item':item,'cmp1':cmp1,'qtyin':qtyin,'qtyin1':qtyin1,'qtyout1':qtyout1,'qtyout':qtyout}
         return render(request, 'app1/stocksummary.html', context)
-        # return redirect('godash') 
+        
+@login_required(login_url='regcomp')
+def stocksummary1(request):
+        cmp1 = company.objects.get(id=request.session["uid"])
+
+        toda = date.today()
+        tod = toda.strftime("%Y-%m-%d")
+        filmeth = request.POST['reportperiod']
+        if filmeth == 'Today':
+            fromdate = tod
+            todate = tod
+        elif filmeth == 'Custom':
+            fromdate = request.POST['fper']
+            todate = request.POST['tper']
+        elif filmeth == 'This month':
+            fromdate = toda.strftime("%Y-%m-01")
+            todate = toda.strftime("%Y-%m-31")
+        elif filmeth == 'This financial year':
+            if int(toda.strftime("%m")) >= 1 and int(toda.strftime("%m")) <= 3:
+                pyear = int(toda.strftime("%Y")) - 1
+                fromdate = f'{pyear}-03-01'
+                todate = f'{toda.strftime("%Y")}-03-31'
+            else:
+                pyear = int(toda.strftime("%Y")) + 1
+                fromdate = f'{toda.strftime("%Y")}-03-01'
+                todate = f'{pyear}-03-31'
+        else:
+            return redirect('stocksummary')
+
+        item = itemtable.objects.filter(itmdate__gte=fromdate, itmdate__lte=todate)
+        for i in item:
+            itemname = i.name
+
+            billitm = purchasebill_item.objects.all().filter(items=itemname)
+            qtyin=0
+            for j in billitm :
+                if j.quantity:
+                    qtyin+=j.quantity
+
+            qtyout=0
+            tot1=0
+            tot2=0
+            debitm1 = purchasedebit1.objects.filter(items=itemname).all()
+            for j in debitm1 :
+                if j.quantity:
+                    tot1+=j.quantity
+
+            initm1 = invoice_item.objects.filter(product=itemname).all()
+            for j in initm1 :
+                if j.qty:
+                    tot2+=j.qty
+
+            qtyout = tot1+tot2
+
+        qtyin1 = purchasebill_item.objects.filter().aggregate(t2=Sum('quantity'))
+
+        qtyout1=0
+        tot3=0
+        tot4=0
+
+        bitm = purchasedebit1.objects.filter()
+        for j in bitm :
+            if j.quantity:
+                tot3+=j.quantity
+
+        initm = invoice_item.objects.filter()
+        for j in initm :
+            if j.qty:
+                tot4+=j.qty
+
+        qtyout1 = tot3+tot4
+   
+        # stock = stockadjust.objects.filter(cid=cmp1)
+        
+        context = {'item':item,'cmp1':cmp1,'qtyin':qtyin,'qtyin1':qtyin1,'qtyout1':qtyout1,'qtyout':qtyout}
+        return render(request, 'app1/stocksummary.html', context)
+        
+@login_required(login_url='regcomp')
+def stockvaluation1(request):
+        cmp1 = company.objects.get(id=request.session["uid"])
+
+        toda = date.today()
+        tod = toda.strftime("%Y-%m-%d")
+        filmeth = request.POST['reportperiod']
+        if filmeth == 'Today':
+            fromdate = tod
+            todate = tod
+        elif filmeth == 'Custom':
+            fromdate = request.POST['fper']
+            todate = request.POST['tper']
+        elif filmeth == 'This month':
+            fromdate = toda.strftime("%Y-%m-01")
+            todate = toda.strftime("%Y-%m-31")
+        elif filmeth == 'This financial year':
+            if int(toda.strftime("%m")) >= 1 and int(toda.strftime("%m")) <= 3:
+                pyear = int(toda.strftime("%Y")) - 1
+                fromdate = f'{pyear}-03-01'
+                todate = f'{toda.strftime("%Y")}-03-31'
+            else:
+                pyear = int(toda.strftime("%Y")) + 1
+                fromdate = f'{toda.strftime("%Y")}-03-01'
+                todate = f'{pyear}-03-31'
+        else:
+            return redirect('stockvaluation')
+
+        item = itemtable.objects.filter(cid=cmp1,itmdate__gte=fromdate, itmdate__lte=todate).exclude(inventry="").annotate(total=F('stock')*F('purchase_cost'))
+        stock = stockadjust.objects.filter(cid=cmp1)
+        
+        context = {'item': item,'stock':stock,'cmp1':cmp1}
+        return render(request, 'app1/stockvaluation.html', context)
 
 @login_required(login_url='regcomp')
 def stockvaluation(request):
@@ -31874,6 +31960,10 @@ def itemdata(request):
         cmp1 = company.objects.get(id=request.session['uid'])
         id = request.GET.get('id')
 
+        toda = date.today()
+        tod = toda.strftime("%Y-%m-%d")
+        # to = toda.strftime("%d-%m-%Y")
+        context={'tod':tod}
         item = itemtable.objects.get(name=id,cid=cmp1)
         print(item)
         hsn = item.hsn
@@ -31881,7 +31971,7 @@ def itemdata(request):
         price = item.purchase_cost
         gst = item.intra_st
         sgst = item.inter_st
-        return JsonResponse({"status":" not",'hsn':hsn,'qty':qty,'price':price,'gst':gst,'sgst':sgst,})
+        return JsonResponse({"status":" not",'hsn':hsn,'qty':qty,'price':price,'gst':gst,'sgst':sgst},context)
     return redirect('/')
 
 def createpurchasedebit(request):

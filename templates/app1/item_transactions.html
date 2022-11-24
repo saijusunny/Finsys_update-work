@@ -157,14 +157,14 @@
                     {% for sale in pitems %}
                     {% if sale.items == a.name %}
                        
-                            <tr tr class="clickable-row " data-href="{% url 'viewpurchaseorder' sale.pid.porderid %}" >
-                            <th style="text-align: center;">{{ sale.pid.date | date:'d-m-Y' }}</th>
-                            <td style="text-align: center;">{{ sale.pid.puchaseorder_no }}</td>
-                            <td style="text-align: center;"> {{ sale.pid.vendor_name }}</td>
+                            <tr tr class="clickable-row " data-href="{% url 'viewpurchaseorder' sale.porder.porderid %}" >
+                            <th style="text-align: center;">{{ sale.porder.date | date:'d-m-Y' }}</th>
+                            <td style="text-align: center;">{{ sale.porder.puchaseorder_no }}</td>
+                            <td style="text-align: center;"> {{ sale.porder.vendor_name }}</td>
                             <td style="text-align: center;">{{ sale.quantity }}</td>
                             <td style="text-align: center;"> {{ sale.rate }}</td>
                             <td style="text-align: center;">{{ sale.amount }}</td>
-                            <td style="text-align: center;"> {{ sale.pid.status }}</td>
+                            <td style="text-align: center;"> {{ sale.porder.status }}</td>
                            
                         </tr>
                   {% endif %}

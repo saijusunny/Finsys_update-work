@@ -26,7 +26,7 @@
 
         <div class="card radius-15">
             <div class="card-body">
-                <form action="accpayables1" method="post" class="needs-validation" novalidate>
+                <form action="stocksummary1" method="post" class="needs-validation" novalidate>
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-sm-4">
@@ -43,13 +43,11 @@
                         </div>
                         <div class="col-sm-4" id="frdate" style="display: none;">
                             <label for="from">From</label>
-                            <input type="date" class="form-control" name="fper"
-                                   style="background-color: #2f516f;color: white;">
+                            <input type="date" class="form-control" name="fper">
                         </div>
                         <div class="col-sm-4" id="todate" style="display: none;">
                             <label for="from">To</label>
-                            <input type="date" class="form-control" name="tper"
-                                   style="background-color: #2f516f;color: white;">
+                            <input type="date" class="form-control" name="tper">
                         </div>
                         <div class="col-md-3"></div>
                     </div>
@@ -59,9 +57,9 @@
                         <div class="col-md-5"></div>
                         <div class="col-md-2"></div>
                         <div class="col-md-2"></div>
-                        <!--<div class="col-md-2">
+                        <div class="col-md-2">
                             <button class="btn btn-outline-info  rounded-pill w-100" type="submit">Run report</button>
-                        </div>-->
+                        </div>
                     </div>
                 </form>
             </div>

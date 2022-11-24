@@ -612,7 +612,11 @@
                                                         <label class="form-check-label" for="flexRadioDefault2">
                                                           Inactive
                                                         </label>
-                                                      </div>
+                                                    </div>
+                                                    <div class="col-md-1"></div>
+                                                    <div class="col-md-3" style="display: none;">
+                                                        <input type="date" name="itmdate" value="{{ a.itmdate|date:'Y-m-d' }}" class="form-control">
+                                                    </div>
                                                 </div>
                                             </div>
                                             </div>
@@ -738,16 +742,16 @@
                 
 
             });
-            /*$('#tax').on('change', function () {
-                alert(" INFORMATION \n\n Change saleprice before changing tax.\n Never mind if already done.")
-                tax = parseFloat($('#tax').val());
-                saleprice = parseFloat($('#saleprice').val());
-                if ($("#inclusive").prop('checked') == true) {
-                    taxm = 1 + (tax / 100)
-                    salep = saleprice / taxm
-                    document.getElementById('saleprice').value = salep.toFixed(2)
-                }
-            });
+            // $('#tax').on('change', function () {
+            //     alert(" INFORMATION \n\n Change saleprice before changing tax.\n Never mind if already done.")
+            //     tax = parseFloat($('#tax').val());
+            //     saleprice = parseFloat($('#saleprice').val());
+            //     if ($("#inclusive").prop('checked') == true) {
+            //         taxm = 1 + (tax / 100)
+            //         salep = saleprice / taxm
+            //         document.getElementById('saleprice').value = salep.toFixed(2)
+            //     }
+            // });
         </script>
 
       

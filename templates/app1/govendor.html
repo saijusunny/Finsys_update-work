@@ -58,7 +58,7 @@
                             </thead>
                             <tbody>
                             {% for v in vndr %}
-                            <tr onclick="window.location='viewvendor/{{ v.vendorid }}';">
+                            <tr onclick="window.location='viewvendor/{{ v.vendorid }} ';">
                                 <td>{{ v.firstname }} {{ v.lastname }}</td>
                                 <td>{{ v.companyname }}</td>
                                 <td>{{ v.email }}</td>
@@ -74,6 +74,38 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="porderno">
+            <div class="modal-dialog">
+                <div class="modal-content" style="background-color: #213b52;">
+                    <div class="modal-header">
+                        <h3 class="m-3">Prchase Order#</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Your Purchase Order number are set on auto-generate to save your time Are you shure about changing the setting ?</p>
+                    
+                        <div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" value="Taxable" name="taxpref">
+                                <label class="form-check-label">Continue auto generated purchase order number</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" value="Tax Exempt" name="taxpref">
+                                <label class="form-check-label">I will add them manually each time</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-info" data-dismiss="modal">Save</button>
+                        <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
 
         <script>
             var $rows = $('#table tr');

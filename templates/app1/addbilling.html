@@ -199,7 +199,7 @@
                         <div class="row">
                             <div class="col-md-3 mt-2">
                                 <label for="">Date</label>
-                                <input type="date" class="form-control" id="date" name="date" placeholder="">
+                                <input type="date" class="form-control" id="date" name="date" onchange="showdate()">
                             </div>
                             <div class="col-md-3 mt-2">
                                 <label for="">Expected Deliver Date</label>
@@ -241,6 +241,7 @@
                                         <tr>
                                             <th class="text-center"><Sl class="No"></Sl></th>
                                             <th class="text-center">Item</th>
+                                            <th class="text-center">Date</th>
                                             <th class="text-center">HSN Code</th>
                                             <th class="text-center">Quantity</th>
                                             <th class="text-center">Rate</th>
@@ -268,6 +269,9 @@
                                                     </a>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <input type="date" name='itmdt[]' id="itmdt1" class="form-control">
+                                            </td> 
                                             <td>
                                                 <input type="number" name='hsn[]' id="hsn1" placeholder='HSN Code' 
                                                 class="form-control">
@@ -1617,7 +1621,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+        function showdate(){      
+            var date = document.getElementById("date");
+            var itmdt = date.value;
+            document.getElementById("itmdt1").value= itmdt;
+        }
+
         $('#date').val(new Date().toJSON().slice(0,10));
+        $('#itmdt1').val(new Date().toJSON().slice(0,10));
     </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -1653,6 +1664,9 @@
                                 </a>                    
                             </div>
                         </td>
+                        <td>
+                            <input type="date" name='itmdt[]' id="itmdt1${roinc}" class="form-control">
+                        </td> 
                         <td>
                             <input type="text" name='hsn[]' id="hsn1${roinc}" placeholder='Enter HSN Code' class="form-control"/>
                         </td>                
@@ -1718,6 +1732,7 @@
                     data3 = response.price
                     data4 = response.gst
                     data5 = response.sgst
+                    data6 = response.to
                     document.getElementById('hsn1').value = data
                     document.getElementById('unit1').value = data3
                     if (place == '{{ cmp1.state }}'){
@@ -1725,7 +1740,8 @@
                         document.getElementById('ta1').value=data4
                     } 
                     document.getElementById('ta5').innerHTML  = data5 + ' % IGST';
-                    ocument.getElementById('ta5').value=data5
+                    document.getElementById('ta5').value=data5
+                    document.getElementById('itmdt1').value=data6
                 }
             });
         });     
