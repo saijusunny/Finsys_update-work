@@ -118,16 +118,19 @@ def register(request, id):
             accountsecond = [
                 ['Account Receivable(Debtors)', 'Account Receivable(Debtors)',
                  'Account Receivable(Debtors)'],
-                
+                ['Current Assets', 'Deferred Service Tax Input Credit', 'Deferred CGST'],
+                ['Current Assets', 'Deferred Service Tax Input Credit',
+                    'Deferred GST Input Credit'],
+                ['Current Assets', 'Deferred Service Tax Input Credit', 'Deferred IGST'],
                 ['Current Assets', 'Deferred Service Tax Input Credit',
                     'Deferred Krishi Kalyan Cess Input Credit'],
                 ['Current Assets', 'Prepaid Expenses', 'Prepaid Expenses'],
                 ['Current Assets', 'Deferred Service Tax Input Credit',
                     'Deferred Service Tax Input Credit'],
-                
+                ['Current Assets', 'Deferred Service Tax Input Credit', 'Deferred SGST'],
                 ['Current Assets', 'Deferred Service Tax Input Credit',
                     'Deferred VAT Input Credit'],
-                
+                ['Current Assets', 'Service Tax Refund', 'GST Refund'],
                 ['Current Assets', 'Inventory', 'Inventory Asset'],
                 ['Current Assets', 'Service Tax Refund',
                     'Krishi Kalyan Cess Refund'],
@@ -145,10 +148,18 @@ def register(request, id):
                 ['Fixed Assets', 'Vehicles', 'Vehicles'],
                 ['Accounts Payable(Creditors)', 'Accounts Payable(Creditors)',
                  'Accounts Payable(Creditors)'],
-                
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'CGST Payable'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'CST Payable'],
                 ['Current Liabilities', 'Tax Suspense', 'CST Suspense'],
-                
+                ['Current Liabilities', 'Sales And Service Tax Payable', 'GST Payable'],
+                ['Current Liabilities', 'Tax Suspense', 'GST Suspense'],
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'IGST Payable'],
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'Input CGST'],
+                ['Current Liabilities', 'Sales and Service Tax Payable',
+                    'Input CGST Tax RCM'],
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'Input IGST'],
+                ['Current Liabilities', 'Sales and Service Tax Payable',
+                    'Input IGST Tax RCM'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Input Krishi Kalyan Cess'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
@@ -157,7 +168,9 @@ def register(request, id):
                     'Input Service Tax'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Input Service Tax RCM'],
-                
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'Input SGST'],
+                ['Current Liabilities', 'Sales asnd Service Tax Payable',
+                    'Input SGST Tax RCM'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Input VAT 14%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Input VAT 4%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Input VAT 5%'],
@@ -165,9 +178,13 @@ def register(request, id):
                     'Krishi Kalyan Cess Payable'],
                 ['Current Liabilities', 'Tax Suspense',
                     'Krishi Kalyan Cess Suspense'],
-                
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'Output CGST'],
+                ['Current Liabilities', 'Sales and Service Tax Payable',
+                    'Output CGST Tax RCM'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output CST 2%'],
-                
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'Output IGST'],
+                ['Current Liabilities', 'Sales and Service Tax Payable',
+                    'Output IGST Tax RCM'],
                 ['Current Liabilties', 'Sales and Service Tax Payable',
                     'Output Krishi Kaylan Cess'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
@@ -176,12 +193,16 @@ def register(request, id):
                     'Output Service Tax'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Output Service Tax RCM'],
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'Output SGST'],
+                ['Current Liabilities', 'Sales and Service Tax Payable',
+                    'Output SGST Tax RCM'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output VAT 14%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output VAT 4%'],
                 ['Current Liabilities', 'Sales and Service Tax Payable', 'Output VAT 5%'],
                 ['Current Liabilties', 'Sales and Service Tax Payable',
                     'Service Tax Payable'],
                 ['Current Liabilities', 'Tax Suspense', 'Service Tax Suspense'],
+                ['Current Liabilities', 'Sales and Service Tax Payable', 'SGST Payable'],
                 ['Current Liabilities', 'Sales and Service Tax Payable',
                     'Swachh Barath Cess Payable'],
                 ['Current Liabilities', 'Tax Suspense',
@@ -278,10 +299,15 @@ def register(request, id):
                 ['Other Income', 'Other Miscellaneous Income',
                     'Shipping and Delivery Income'],
                 ['Other Expenses', 'Other Expenses', 'Ask My Accountant'],
+                ['Other Expenses', 'Other Expenses', 'CGST Write-Off'],
+                ['Other Expense', 'Other Expense', 'GST Write-Off'],
+                ['Other Expenses', 'Other Expenses', 'IGST Write-Off'],
                 ['Other Expenses', 'Other Expenses', 'Miscellaneous Expense'],
                 ['Other Expenses', 'Other Expenses', 'Political Contributions'],
                 ['Other Expenses', 'Other Expenses',
                     'Reconciliation Discrepancies'],
+                ['Other Expenses', 'Other Expenses', 'SGST Write-Off'],
+                ['Other Expenses', 'Other Expenses', 'Tax Write-Off'],
                 ['Other Expenses', 'Other Expenses', 'Vehicle Expenses']]
 
             accounype = [['Deferred CGST'], ['Deferred GST Input Credit'], ['Deferred IGST'],
@@ -13458,9 +13484,12 @@ def balancesheet(request):
 
 
 def profitandloss(request):
-    
-        cmp1 = company.objects.get(id=request.session["uid"])
-        context = {'cmp1': cmp1}
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
         
         pur=purchasebill.objects.all()
         sum1=0
@@ -13472,20 +13501,50 @@ def profitandloss(request):
         for i in inv:
             sum2+=i.grandtotal
 
-        ex=purchase_expense.objects.all()
-        sum3=0
-        for i in ex:
-            sum3+=i.amount
+        # ex = purchase_expense.objects.filter().values('expenseaccount').annotate(t1=Sum('amount'))
+        ex = expense2.objects.all()
+       
+        sum3 = 0
+        # for i in ex:
+        #     sum3+=i.amount
+
+        sum4 = sum2-sum1
 
         sumtot=sum1+sum2+sum3  
 
-        context={'pur':pur,'sum1':sum1,'inv': inv,'sum2':sum2,'sumtot':sumtot,'ex':ex,'sum3':sum3}
-
-
+        context={'pur':pur,'sum1':sum1,'inv': inv,'sum2':sum2,'sumtot':sumtot,'ex':ex,'sum3':sum3,'sum4':sum4,'cmp1': cmp1}
 
         return render(request, 'app1/profitandloss.html', context)
-        return redirect('godash')
+    return redirect('/')     
 
+def plreport(request,id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        # x = id.split()
+        # x.append(" ")
+        # a = x[0]
+        # b = x[1]
+        # cu = a +" "+ b
+        # exp = expense2.objects.filter(account=id)
+        exp = expense2.objects.get(id=id)
+        context = {'cmp1': cmp1, 'exp': exp}
+        if exp.account == 'Advertising and Marketing':
+            exp1 = purchase_expense.objects.filter(expenseaccount='Advertising and Marketing')
+            context = {'cmp1': cmp1, 'exp1': exp1,'exp': exp}
+        elif exp.account == 'Audit Fee':
+            exp2 = purchase_expense.objects.filter(expenseaccount='Audit Fee')
+            context = {'cmp1': cmp1, 'exp2': exp2,'exp': exp}
+        else:
+            context = {'cmp1': cmp1, 'exp': exp}
+
+        # ex=purchase_expense.objects.filter(expenseaccount='Audit Fee')  
+        # context = {'cmp1': cmp1,'ex':ex}
+        return render(request, 'app1/plreport.html', context)
+    return redirect(plreport)
 
 def profitandlossfiltered(request):
     try:
@@ -31265,8 +31324,7 @@ def viewbill(request,id):
         cmp1 = company.objects.get(id=request.session['uid'])
         pbill=purchasebill.objects.get(billid=id)
         bitem = purchasebill_item.objects.all().filter(bill=id)
-        tot6 = purchasebill_item.objects.filter(bill=id).all().aggregate(t2=Sum('quantity'))
-        return render(request,'app1/viewpurchasebill.html',{'cmp1': cmp1,'pbill':pbill,'bitem':bitem,'tot6':tot6})
+        return render(request,'app1/viewpurchasebill.html',{'cmp1': cmp1,'pbill':pbill,'bitem':bitem})
     return redirect('gobilling')
 
 @login_required(login_url='regcomp')
@@ -31525,6 +31583,10 @@ def createexpense(request):
             exp.save()
             exp.expense_no = int(exp.expense_no) + exp.expenseid
             exp.save()
+
+            exp2=expense2()
+            exp2.account = exp.expenseaccount
+            exp2.save()
 
             return redirect('goexpenses')
         return render(request,'app1/goexpenses.html',{'cmp1': cmp1})

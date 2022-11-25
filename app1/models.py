@@ -1467,6 +1467,9 @@ class purchase_expense(models.Model):
     note = models.CharField(max_length=255,null=True)
     file = models.FileField(upload_to='purchase/expense',default="default.png")
 
+class expense2(models.Model):
+    account = models.CharField(max_length=255,null=True)
+
 class creditperiod(models.Model):
     newperiod = models.IntegerField(null=True)
 

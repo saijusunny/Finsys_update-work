@@ -7,6 +7,9 @@
             margin-left: 660px;
             margin-top: -30px;
         }
+        .tr{
+            cursor:pointer;
+        }
     </style>
     <body>
     <br><br>
@@ -86,53 +89,60 @@
                         <div class="table-responsive" style="margin-top: 100px;">
                             <table class="table table-hover">
                                 <thead>
-                                <tr>
-                                    <th class="center font-weight-light border-secondary"
-                                        style="color: black; width: 85%;"></th>
-                                    <th class="center font-weight-bolder border-secondary" style="color: black;">TOTAL
-                                    </th>
-                                </tr>
+                                    <tr>
+                                        <th class="center font-weight-bolder border-secondary" style="color: black;">ACCOUNT
+                                        </th>
+                                        <th class="center font-weight-bolder border-secondary" style="color: black;">TOTAL
+                                        </th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-
-                                <tr>
-                                    <td style="color: black; padding-left: 30px;"><b>Income</b></td>
-                                </tr>
-                                <tr>
-                                    <th style="color: black; padding-left: 30px;">sales</th>
-                                </tr>
-                                {% for inv in inv %}
+                                    <tr>
+                                        <td style="color: black; padding-left: 30px;"><b>Sales</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center font-weight-light" style="color: black; width: 85%; padding-left: 60px">
+                                            Total for Operating Income
+                                        </td>
+                                        <td class="center font-weight-light" style="color: black;">
+                                            {{ sum2 }}
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td style="color: black; padding-left: 30px;"><b>Income</b></td>
+                                    </tr>
+                                    <tr>
+                                        <th style="color: black; padding-left: 30px;">sales</th>
+                                    </tr> -->
+                                    <!-- {% for inv in inv %}
+                                        
+                                            <tr>
+                                                <td class="center font-weight-light"
+                                                    style="color: black; width: 85%; padding-left: 60px">{{ inv.customername }}</td>
+                                                <td class="center font-weight-light"
+                                                    style="color: black;">{{ inv.grandtotal }}</td>
+                                            </tr>
                                     
-                                        <tr>
-                                            <td class="center font-weight-light"
-                                                style="color: black; width: 85%; padding-left: 60px">{{ inv.customername }}</td>
-                                            <td class="center font-weight-light"
-                                                style="color: black;">{{ inv.grandtotal }}</td>
-                                        </tr>
-                                   
-                                {% endfor %}
-                                {% for i in account2 %}
-                                    {% if i.balance != 0.0 %}
-                                        <tr>
-                                            <td class="center font-weight-light"
-                                                style="color: black; width: 85%; padding-left: 60px">{{ i.name }}</td>
-                                            <td class="center font-weight-light"
-                                                style="color: black;">{{ i.balance }}</td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
+                                    {% endfor %}
+                                    {% for i in account2 %}
+                                        {% if i.balance != 0.0 %}
+                                            <tr>
+                                                <td class="center font-weight-light"
+                                                    style="color: black; width: 85%; padding-left: 60px">{{ i.name }}</td>
+                                                <td class="center font-weight-light"
+                                                    style="color: black;">{{ i.balance }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %} -->
 
-                                <tr>
-                                    <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
-                                        <b>Total Income</b></td>
-                                    <td style="color: black;"
-                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum2 }}</td>
-                                </tr>
-
-
+                                    <!-- <tr>
+                                        <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
+                                            <b>Total Income</b></td>
+                                        <td style="color: black;"
+                                            class="center font-weight-light font-weight-bold border-secondary">{{ sum2 }}</td>
+                                    </tr> -->
                                 </tbody>
                             </table>
-                            <hr class="bg-secondary">
                             <hr class="bg-secondary">
                             <table class="table table-hover">
 
@@ -140,8 +150,15 @@
                                 <tr>
                                     <td style="color: black; padding-left: 30px;"><b>Cost Of Goods Sold</b></td>
                                 </tr>
+                                <tr>
+                                    <td class="center font-weight-light"
+                                        style="color: black; width: 85%; padding-left: 90px">Total for Cost of Goods Sold</td>
+                                    <td class="center font-weight-light"
+                                        style="color: black;">{{ sum1 }}</td>
+                                </tr>
 
-                                {% for i in account3 %}
+
+                                <!-- {% for i in account3 %}
                                     {% if i.balance != 0.0 %}
                                         <tr>
                                             <td class="center font-weight-light"
@@ -160,14 +177,14 @@
                                                 style="color: black;">{{ pur.grand_total }}</td>
                                         </tr>
                                     
-                                {% endfor %}
+                                {% endfor %} -->
 
 
                                 <tr>
                                     <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
                                         <b>Gross Profit</b></td>
                                     <td style="color: black;"
-                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum1 }}</td>
+                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum4 }}</td>
                                 </tr>
 
 
@@ -195,39 +212,33 @@
                                         </tr>
                                     {% endif %}
                                 {% endfor %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 <tr>
+                                    <td style="color: black; padding-left: 30px; width: 85%" class="border-secondary">
+                                        <b>Operating Expense</b>
+                                    </td>
+                                    <td class="center font-weight-light font-weight-bold border-secondary"></td>
+                                </tr>
+                                <!-- <tr>
                                     <td style="color: black; padding-left: 30px; width: 85%" class="border-secondary">
                                         <b>Expenses</b>
                                     </td>
                                     <td class="center font-weight-light font-weight-bold border-secondary"></td>
-                                </tr>
+                                </tr> -->
 
                                 {% for ex in ex %}
+                                    <tr class="tr" onclick=window.location='{% url "plreport" ex.id %}';>
                                     
-                                        <tr>
-                                            <td class="center font-weight-light"
-                                                style="color: black; width: 85%; padding-left: 90px">{{ ex.expensetype }}</td>
-                                            <td class="center font-weight-light"
-                                                style="color: black;">{{ ex.amount }}</td>
-                                        </tr>
-                                 
+                                        <td class="center font-weight-light" style="color: black; width: 85%; padding-left: 90px">
+                                            {{ ex.account }}
+                                            <!-- {{ ex.expenseaccount }} -->
+                                        </td>
+                                        <td class="center font-weight-light"
+                                        style="color: black;">{{ ex.t1 }}</td>
+                                        
+                                    </tr>
                                 {% endfor %}
 
-                                {% for i in account8 %}
+                                <!-- {% for i in account8 %}
                                     {% if i.balance != 0.0 %}
                                         <tr>
                                             <td class="center font-weight-light"
@@ -236,14 +247,30 @@
                                                 style="color: black;">{{ i.balance }}</td>
                                         </tr>
                                     {% endif %}
-                                {% endfor %}
+                                {% endfor %} -->
                                 <tr>
+                                    <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
+                                        <b>Total for Operating Expense</b></td>
+                                    <td style="color: black;"
+                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum3 }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: black; padding-left: 60px;"><b>Other Expenses</b>
+                                    </td>
+                                </tr>
+                                <!-- <tr>
                                     <td style="color: black; padding-left: 30px; width: 85%" class="border-secondary">
+                                        <b>Total for Operating Expense</b>
+                                    </td>
+                                    <td class="center font-weight-light font-weight-bold"></td>
+                                </tr> -->
+                                <!-- <tr>
+                                    <td style="color: black; padding-left: 30px; width: 85%">
                                         <b>Other Expenses</b>
                                     </td>
-                                    <td class="center font-weight-light font-weight-bold border-secondary"></td>
-                                </tr>
-                                {% for i in account9 %}
+                                    <td class="center font-weight-light font-weight-bold "></td>
+                                </tr> -->
+                                <!-- {% for i in account9 %}
                                     {% if i.balance != 0.0 %}
                                         <tr>
                                             <td class="center font-weight-light"
@@ -262,16 +289,7 @@
                                                 style="color: black;">{{ i.balance }}</td>
                                         </tr>
                                     {% endif %}
-                                {% endfor %}
-
-
-
-                                <tr>
-                                    <td style="color: black; width: 85%" class="border-secondary"><b>TOTAL EXPENSE</b>
-                                    </td>
-                                    <td class="center border-secondary" style="color: black;"><b>{{ sum3 }}</b></td>
-                                </tr>
-
+                                {% endfor %} -->
 
                                 <tr>
                                     <td style="color: black; width: 85%" class="border-secondary"><b>PROFIT OR LOSS</b>
