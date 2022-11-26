@@ -166,6 +166,17 @@
                                 <td style="text-align: center;"></td>
                                 <td style="text-align: center;"></td>    
                             </tr>
+                            {% for i in inv %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.Date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.Transactions }}</td>
+                                    <!-- <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td> -->
+                                    <td style="text-align: center;">{{ i.customer }}</td>
+                                    <td style="text-align: center;">{{ i.Payments }}</td>
+                                </tr>
+                            {% endfor %}
                             {% for i in exp1 %}
                                 <tr>
                                     <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>

@@ -13502,11 +13502,11 @@ def profitandloss(request):
             sum2+=i.grandtotal
 
         # ex = purchase_expense.objects.filter().values('expenseaccount').annotate(t1=Sum('amount'))
+        # ex = purchase_expense.objects.all()
         ex = expense2.objects.all()
-       
         sum3 = 0
-        # for i in ex:
-        #     sum3+=i.amount
+        for i in ex:
+            sum3+=i.amount
 
         sum4 = sum2-sum1
 
@@ -13515,9 +13515,33 @@ def profitandloss(request):
         context={'pur':pur,'sum1':sum1,'inv': inv,'sum2':sum2,'sumtot':sumtot,'ex':ex,'sum3':sum3,'sum4':sum4,'cmp1': cmp1}
 
         return render(request, 'app1/profitandloss.html', context)
-    return redirect('/')     
+    return redirect('/')   
 
-def plreport(request,id):
+def plreport1(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        statment = cust_statment.objects.all()
+        context = {'statment':statment,'cmp1':cmp1}
+        return render(request, 'app1/plreport1.html', context)
+    return redirect('/')  
+
+def plreport2(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        statment = vendor_statment.objects.all()
+        context = {'statment':statment,'cmp1':cmp1}
+        return render(request, 'app1/plreport2.html', context)
+    return redirect('/')  
+
+def plreport3(request,id):
     if 'uid' in request.session:
         if request.session.has_key('uid'):
             uid = request.session['uid']
@@ -13543,8 +13567,8 @@ def plreport(request,id):
 
         # ex=purchase_expense.objects.filter(expenseaccount='Audit Fee')  
         # context = {'cmp1': cmp1,'ex':ex}
-        return render(request, 'app1/plreport.html', context)
-    return redirect(plreport)
+        return render(request, 'app1/plreport3.html', context)
+    return redirect('/')
 
 def profitandlossfiltered(request):
     try:
@@ -31586,6 +31610,7 @@ def createexpense(request):
 
             exp2=expense2()
             exp2.account = exp.expenseaccount
+            exp2.amount = exp.amount
             exp2.save()
 
             return redirect('goexpenses')

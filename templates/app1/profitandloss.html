@@ -100,7 +100,7 @@
                                     <tr>
                                         <td style="color: black; padding-left: 30px;"><b>Sales</b></td>
                                     </tr>
-                                    <tr>
+                                    <tr class="tr" onclick="window.location='plreport1'">
                                         <td class="center font-weight-light" style="color: black; width: 85%; padding-left: 60px">
                                             Total for Operating Income
                                         </td>
@@ -150,7 +150,7 @@
                                 <tr>
                                     <td style="color: black; padding-left: 30px;"><b>Cost Of Goods Sold</b></td>
                                 </tr>
-                                <tr>
+                                <tr class="tr" onclick="window.location=' plreport2 '">
                                     <td class="center font-weight-light"
                                         style="color: black; width: 85%; padding-left: 90px">Total for Cost of Goods Sold</td>
                                     <td class="center font-weight-light"
@@ -226,14 +226,15 @@
                                 </tr> -->
 
                                 {% for ex in ex %}
-                                    <tr class="tr" onclick=window.location='{% url "plreport" ex.id %}';>
+                                    <tr class="tr" onclick=window.location='{% url "plreport3" ex.id %}';>
                                     
                                         <td class="center font-weight-light" style="color: black; width: 85%; padding-left: 90px">
+                                            <!-- Total Expenses -->
                                             {{ ex.account }}
                                             <!-- {{ ex.expenseaccount }} -->
                                         </td>
                                         <td class="center font-weight-light"
-                                        style="color: black;">{{ ex.t1 }}</td>
+                                        style="color: black;">{{ sum3 }}</td>
                                         
                                     </tr>
                                 {% endfor %}

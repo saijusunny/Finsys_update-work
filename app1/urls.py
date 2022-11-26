@@ -742,7 +742,9 @@ urlpatterns = [
     path('purchase_acctransactions/<str:id>',views.purchase_acctransactions,name='purchase_acctransactions'),
     path('purchase_acctransactions1',views.purchase_acctransactions1,name='purchase_acctransactions1'),
 
-    path('plreport/<int:id>', views.plreport, name='plreport'),
+    path('plreport1', views.plreport1, name='plreport1'),
+    path('plreport2', views.plreport2, name='plreport2'),
+    path('plreport3/<int:id>', views.plreport3, name='plreport3'),
     # path('plreport/<str:id>', views.plreport, name='plreport'),
 
     re_path(r'^demo$', views.demo, name='demo'),
