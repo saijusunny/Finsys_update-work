@@ -1,0 +1,107 @@
+{% extends 'app1/base.html' %}
+{% block body %}
+{% load static %}
+<style>
+#bottom {
+    position:fixed;
+    bottom: 0;
+
+    background-color: #1b2f40;
+    padding: 0.5%;
+    margin: 0 auto;
+}
+</style>
+
+<div class="page-content" >
+    <div class="container card radius-15 ">
+        <div class="card radius-15">
+            <div class="card-body">
+                <div class="card-title">
+                    <center><h2 class="mb-0">BANK RECONCILATION</h2></center>
+                    <hr>
+                </div>
+            </div>
+            
+        </div>
+        <table class="table">
+            <thead>
+                <tr style="text-align:center ;background-color: rgba(51, 51, 75, 0.829);" class="rw">
+                <th>Date</th>
+                <th>Transaction Details</th>
+                <th>Type</th>
+                <th>Deposits</th>
+                <th>Withdrawal</th>
+                <th>Select</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for pym in cust_pym %}
+                {% if pym.cid_id == cmp1.cid %}
+                <tr style="text-align:center ;" class="rw" data-href="">
+
+                    <td>{{ pym.date }}</td>
+                    
+                    <td></td>
+                    <td><a href="{% url 'cus_view' pym.customerpymid %}" >Customer Payment:<br>{{ pym.customer }}</a> </td>
+                    <td>{{ pym.running_bal }}</td>
+                    <td></td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+                {% for pym2 in vend_pym %}
+                {% if pym2.cid_id == cmp1.cid %}
+                <tr style="text-align:center ;" class="rw">
+
+                    <td>{{ pym2.date }}</td>
+                    <td></td>
+                    <td><a href="{% url 'vend_view' pym2.vendorpymid %}"  >Vendor Payment:<br>{{ pym2.vendor }}</a</td>
+                    <td></td>
+                    <td>{{ pym2.amount_received }}</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    
+                </tr>
+                {% endif %}
+                {% endfor %}
+                
+                {% for exp in exppenses %}
+                {% if exp.cid_id == cmp1.cid %}
+                <tr style="text-align:center ;" class="rw">
+                    <!-- data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal" -->
+                    <td>{{ exp.date }}</td>
+                    <td></td>
+                    <td><a href="{% url 'exp_view' exp.expenseid %}" >Expense:<br>{{ exp.expenseaccount }}</a></td>
+                    <td></td> 
+                    <td>{{ exp.amount }}</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    
+                </tr>
+                {% endif %}
+                {% endfor %}
+
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td> 
+                    <td></td> 
+                    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div id="bottom" class=".col-sm-12">
+            <h5>dsbhfjsdhjfgdsvjhfgvsdj</h5>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

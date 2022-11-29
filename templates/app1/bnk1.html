@@ -1506,14 +1506,10 @@
 
 
 
-
-
-
-
-
-
-
+       
         <div style="text-align: right;" class="dropdown ">
+            <a href="" class="btn" style="color: black;"  data-target="#bnk_rec"
+                data-toggle="modal" ><button  class=" btn btn-info">Bank Reconcilation</button></a>
             <button  class=" btn btn-info dropdown-toggle" href="" data-toggle="dropdown" data-flip="false"  >Add Transactions</button>
             <div class="dropdown-menu PerfectScrollbar " style="background-color:white;">
                 
@@ -1542,6 +1538,67 @@
             </div>
         </div>
         <hr><br><br>
+
+        <div class="modal fade" id="bnk_rec">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content" style="background-color: #213b52;">
+                    <div class="modal-header">
+                        <h3 class="m-3">Bank Reconcilation</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card p-3 m-3">
+                            <form method="post" action="{% url 'bank_recon' bk.accounts1id %}">
+                                {% csrf_token %}
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-12" style="margin: 0 auto;">
+    
+                                        <label for="">Start Date:</label>
+                                        <input type="date" class="form-control" name="st_dt" required>
+                                    </div>
+                                    
+                                </div>
+                                <br>
+                                <div class="row mt-2 mb-2">
+                                    <div class="col-md-12" style="margin: 0 auto;">
+                                        <label for="">End Date:</label>
+                                        <input type="date" class="form-control" name="end_dt" required>
+    
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row mt-2 mb-2" >
+                                    <div class="col-md-12" style="margin: 0 auto;">
+                                        <label for="">Closing Balance:</label>
+                                        <div class="d-flex" >
+                                            <div style="background-color: rgb(255 255 255 / 14%); width: 35px;">
+                                            <h4 style="padding-top: 4px; padding-left: 10px;">₹</h4>
+                                            </div>
+                                            <input type="number" class="form-control" name="cl_bal" required>
+                                        </div>
+                                        
+    
+                                    </div>
+                                </div><br>
+
+                                <div class="col-md-4"></div>
+                                <div class="col-md-12" style="margin: 0 auto;">
+                                    <button class="btn btn-outline-info rounded-pill text-grey w-100 mt-3 mb-3"
+                                            type="submit">
+                                        Submit form
+                                    </button>
+                                </div>
+    
+                                
+    
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
        
        
