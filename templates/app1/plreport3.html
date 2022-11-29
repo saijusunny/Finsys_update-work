@@ -89,7 +89,7 @@
 
     <div class="card radius-15">
         <div class="card-body">
-            <form action="{% url 'purchase_acctransactions1'%}" method="post" class="needs-validation" novalidate>
+            <form action="" method="post" class="needs-validation" novalidate>
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-sm-4">
@@ -120,7 +120,7 @@
                     </div>
                     <div class="col-md-3" >
                         <button class="btn btn-outline-info" onclick="printDiv()">Print</button>
-                        <button class="btn btn-outline-info" onclick="ExportToExcel('xlsx')">Export to excel</button>
+                        <!-- <button class="btn btn-outline-info" onclick="ExportToExcel('xlsx')">Export to excel</button> -->
                     </div>
                 </div>
             </form>
@@ -135,12 +135,12 @@
                             <tr>
                                 <th style="text-align: center;">Date</th>
                                 <th style="text-align: center;">Account</th>
-                                <th style="text-align: center;">Account Type</th>
                                 <th style="text-align: center;">Transaction Details</th>
+                                <th style="text-align: center;">Transaction Type</th>
+                                <th style="text-align: center;">Transaction</th>
                                 <th style="text-align: center;">Reference#</th>
-                                <th style="text-align: center;">Vendor</th>
-                                <!-- <th style="text-align: center;">Debit</th>
-                                <th style="text-align: center;">credit</th> -->
+                                <th style="text-align: center;">Debit</th>
+                                <th style="text-align: center;">Credit</th>
                                 <th style="text-align: center;">Amount</th>
                             </tr>
                         </thead>
@@ -157,36 +157,23 @@
                                 <td style="text-align: center;"> </td>
                                 <td style="text-align: center;"></td>
                                 <td style="text-align: center;"> </td>
-                                <td style="text-align: center;"></td>
-                                <td style="text-align: center;">
-                                    <!-- {% if prebalance %}
-                                        ₹{{prebalance}}
-                                    {% endif %} -->
-                                </td>
-                                <td style="text-align: center;"></td>
+                                <td style="text-align: center;"> </td>
+                                <td style="text-align: center;"> </td>
+                                <td style="text-align: center;">0.00</td>
                                 <td style="text-align: center;"></td>    
                             </tr>
-                            {% for i in inv %}
-                                <tr>
-                                    <td style="text-align: center;"> {{ i.Date | date:'d-m-Y' }} </td>
-                                    <td style="text-align: center;">{{ i.Transactions }}</td>
-                                    <!-- <td style="text-align: center;">{{ i.expensetype }}</td>
-                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
-                                    <td style="text-align: center;">{{ i.reference }}</td> -->
-                                    <td style="text-align: center;">{{ i.customer }}</td>
-                                    <td style="text-align: center;">{{ i.Payments }}</td>
-                                </tr>
-                            {% endfor %}
                             {% for i in exp1 %}
-                                <tr>
-                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
-                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
-                                    <td style="text-align: center;">{{ i.expensetype }}</td>
-                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
-                                    <td style="text-align: center;">{{ i.reference }}</td>
-                                    <td style="text-align: center;">{{ i.vendor }}</td>
-                                    <td style="text-align: center;">{{ i.amount }}</td>
-                                </tr>
+                            <tr>
+                                <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                <td style="text-align: center;">{{ i.expensetype }}</td>
+                                <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                <td style="text-align: center;">{{ i.reference }}</td>
+                                <td style="text-align: center;">{{ i.vendor }}</td>
+                                <td style="text-align: center;">{{ i.amount }}</td>
+                                <td style="text-align: center;"></td>
+                                <td style="text-align: center;">{{ i.amount }}Dr</td>
+                            </tr>
                             {% endfor %}
 
                             {% for i in exp2 %}
@@ -198,18 +185,190 @@
                                     <td style="text-align: center;">{{ i.reference }}</td>
                                     <td style="text-align: center;">{{ i.vendor }}</td>
                                     <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
                                 </tr>
                             {% endfor %}
+                            {% for i in exp2 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp3 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp4 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp5 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp6 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp7 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp8 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp9 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp10 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp11 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp12 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp13 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            {% for i in exp14 %}
+                                <tr>
+                                    <td style="text-align: center;"> {{ i.date | date:'d-m-Y' }} </td>
+                                    <td style="text-align: center;">{{ i.expenseaccount }}</td>
+                                    <td style="text-align: center;">{{ i.expensetype }}</td>
+                                    <td style="text-align: center;">{{ i.paidthrough }}</td>
+                                    <td style="text-align: center;">{{ i.reference }}</td>
+                                    <td style="text-align: center;">{{ i.vendor }}</td>
+                                    <td style="text-align: center;">{{ i.amount }}</td>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;">{{ i.amount }}Dr</td>
+                                </tr>
+                            {% endfor %}
+                            
 
                             {% if value != "" %}
                                 <tr>
                                     <td style="text-align: center;"> </td>
                                     <td colspan="2" style="text-align: center;">Total Debits and Credits 
-                                        <!-- {% if fdate != "" %}
+                                        {% if fdate != "" %}
                                             ( {{fdate}}  - {{ldate}} ) 
                                         {% else %}
                                             ( 01-04-{% now 'Y' %} - {{to}} ) 
-                                        {% endif %}     -->
+                                        {% endif %}    
                                     </td>
                                     <td style="text-align: center;"></td>
                                     <td style="text-align: center;"></td>
@@ -233,7 +392,7 @@
                                 <td style="text-align: center;"></td>
                                 <td style="text-align: center;"> </td>
                                 <td style="text-align: center;"></td>
-                                <td style="text-align: center;">₹{{total2}}</td>
+                                <td style="text-align: center;" id="t1"></td>
                                 <td style="text-align: center;"></td>
                                 <td style="text-align: center;"></td>
                             </tr>

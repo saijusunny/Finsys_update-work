@@ -110,7 +110,7 @@ body{
 
             <div class="card radius-15">
                 <div class="card-body">
-                    <form action="{% url 'account_transactions1'%}" method="post" class="needs-validation" novalidate>
+                    <form action="" method="post" class="needs-validation" novalidate>
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-sm-4">
@@ -148,9 +148,8 @@ body{
                                 <button class="btn btn-outline-info  rounded-pill w-100" type="submit">Search</button>
                             </div>
                             <div class="col-md-3" >
-                                <button onclick="printDiv()">Print</button>
-
-                                <button onclick="ExportToExcel('xlsx')">Export to excel</button>
+                                <button class="btn btn-outline-info" onclick="printDiv()">Print</button>
+                                <!-- <button onclick="ExportToExcel('xlsx')">Export to excel</button> -->
                             </div>
                         </div>
                     </form>

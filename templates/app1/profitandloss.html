@@ -98,20 +98,24 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td style="color: black; padding-left: 30px;"><b>Sales</b></td>
+                                        <td style="color: black; padding-left: 30px;"><b>Operating Income</b></td>
                                     </tr>
                                     <tr class="tr" onclick="window.location='plreport1'">
                                         <td class="center font-weight-light" style="color: black; width: 85%; padding-left: 60px">
-                                            Total for Operating Income
+                                            Sales
                                         </td>
                                         <td class="center font-weight-light" style="color: black;">
                                             {{ sum2 }}
                                         </td>
                                     </tr>
-                                    <!-- <tr>
-                                        <td style="color: black; padding-left: 30px;"><b>Income</b></td>
-                                    </tr>
+                                    <hr>
                                     <tr>
+                                        <td style="color: black; padding-left: 30px;" class="border-secondary">
+                                            <b>Total for Operating Income</b>
+                                        </td>
+                                        <td style="color: black;" class="border-secondary"><b>{{ sum2 }}</b></td>
+                                    </tr>
+                                    <!-- <tr> 
                                         <th style="color: black; padding-left: 30px;">sales</th>
                                     </tr> -->
                                     <!-- {% for inv in inv %}
@@ -152,10 +156,17 @@
                                 </tr>
                                 <tr class="tr" onclick="window.location=' plreport2 '">
                                     <td class="center font-weight-light"
-                                        style="color: black; width: 85%; padding-left: 90px">Total for Cost of Goods Sold</td>
+                                        style="color: black; width: 85%; padding-left: 90px">Cost Of Goods Sold</td>
                                     <td class="center font-weight-light"
                                         style="color: black;">{{ sum1 }}</td>
                                 </tr>
+                                <tr>
+                                    <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
+                                        <b>Total for Cost of Goods Sold</b></td>
+                                    <td style="color: black;"
+                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum1 }}</td>
+                                </tr>
+
 
 
                                 <!-- {% for i in account3 %}
@@ -181,7 +192,7 @@
 
 
                                 <tr>
-                                    <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
+                                    <td style="color: black; padding-left: 30px; width: 85%;" class="border-secondary">
                                         <b>Gross Profit</b></td>
                                     <td style="color: black;"
                                         class="center font-weight-light font-weight-bold border-secondary">{{ sum4 }}</td>
@@ -189,8 +200,8 @@
 
 
                                 <tr>
-                                    <td style="color: black; padding-left: 60px;"><b>Other Income</b>
-                                    </td>
+                                    <td style="color: black; padding-left: 30px;"><b>Other Income</b></td>
+                                    <td style="color: black;"><b></b></td>
                                 </tr>
                                 {% for i in account5 %}
                                     {% if i.balance != 0.0 %}
@@ -234,7 +245,7 @@
                                             <!-- {{ ex.expenseaccount }} -->
                                         </td>
                                         <td class="center font-weight-light"
-                                        style="color: black;">{{ sum3 }}</td>
+                                        style="color: black;">{{ ex.amount }}</td>
                                         
                                     </tr>
                                 {% endfor %}

@@ -291,50 +291,10 @@
 <form class="" autocomplete="off" action="" method="post" >
     {% csrf_token %}
     
-    
-
-   
-    
-    <div class="row container-fluid  ">
-        <div class="col-sm-6 p-0" > <label for="Under">All Accounts</label>
-       
-      
-        <div class=" form-group" >
-            <fieldset>
-                <select class="under form-control" id="select"   name="under" id="under"  >
-                    
-                    <option  value="yes"></option>
-                 
-                    
-                    <option value="Bank">Bank</option>
-                   
-                    
-                    <option value="Cash">Cash</option>
-                    <option value="Undepposited Funds">Undepposited Funds</option>
-                 
-                    
-                   
-                    
-                  
-                   
-                      
-                 
-             
-                
-                </select>
-            </fieldset>
-        
-        
-            
-           
-           
-
-        </div> 
-    </div><br><br><br><br>
    
 <div class="bottom ">
    
-    <div class="hidden" id="pDetails">
+    <div class="table table-responsive" id="pDetails">
         <div>
             <table class="table ">
                 <tbody>
@@ -357,8 +317,12 @@
                             </td>
                             
                         </tr>
+
                     </tr>
+
+                    <!-- display data -->
                     {% for h in h %}
+                    {% if h.cid_id == cmp1.cid %}
                     <tr class="rw">
                        
                         <td  style="text-align: center;">
@@ -373,643 +337,255 @@
                        
                         
                     </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for c in c %}
+                    {% if c.cid_id == cmp1.cid %}
+                    <tr class="rw" data-href="{% url 'bnk1' c.accounts1id   %}">
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            {{ c.name }}
+                        </td>
+                        <td style="text-align: center;">
+                        {{ c.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ c.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for i in i %}
+                    {% if i.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td  style="text-align: center;">
+                        <a href="{% url 'bnk1' i.accounts1id   %}">{{ i.name }}</a> 
+                        
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ i.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                            {{ i.balance }}
+                        
+                        </td>
+                    
+                        
+                    </tr>
+
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for bnk in bnk %}
+                    {% if bnk.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' bnk.accounts1id   %}">{{ bnk.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ bnk.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ bnk.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for fx in fx %}
+                    {% if fx.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' fx.accounts1id   %}">{{ fx.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ fx.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ fx.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for nca in nca %}
+                    {% if nca.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' nca.accounts1id   %}">{{ nca.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ nca.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ nca.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for u in u %}
+                    {% if u.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' u.accounts1id   %}">{{ u.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ u.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ u.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for cd in cd %}
+                    {% if cd.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' cd.accounts1id   %}">{{ cd.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ cd.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ cd.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% for ncl in ncl1 %}
+                    {% if ncl.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' ncl.accounts1id   %}">{{ ncl.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ ncl.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ ncl.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% for eq in eq %}
+                    {% if eq.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' eq.accounts1id   %}">{{ eq.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ eq.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ eq.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% for inc in inc %}
+                    {% if inc.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' inc.accounts1id   %}">{{ inc.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ inc.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ inc.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% for oi in oi %}
+                    {% if oi.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' oi.accounts1id   %}">{{ oi.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ oi.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ oi.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for j in j %}
+                    {% if j.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' j.accounts1id   %}">{{ j.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ j.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ j.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% for ex in ex %}
+                    {% if ex.cid_id == cmp1.cid %}
+                    <tr class="rw" >
+                        <td name="name" id="name"  style="text-align: center;">
+                            
+                            <a href="{% url 'bnk1' ex.accounts1id   %}">{{ ex.name }}</a> 
+                        </td>
+                        <td style="text-align: center;">
+                        {{ ex.acctype }}
+                        </td>
+                        <td  style="text-align: center;">
+                        {{ ex.balance }}
+                        </td>
+                        
+                    </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
 
     
             </table>
         
-        
-   
 
-</div></div>
-
-
-
-    <div class="hi" id="pDetail">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for c in c %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' c.accounts1id   %}">{{ c.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ c.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ c.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-  
-
-
-
-    <div class="od" id="odac">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                </tr>
-                <tr>
-                    <tr>
-                        <td  style="text-align: center;">
-                         
-                        </td>
-                        <td  style="text-align: center;">
-                           
-                        </td>
-                        <td  style="text-align: center;">
-                         
-                        </td>
-                        
-                    </tr>
-                </tr >
-                {% for i in i %}
-                <tr class="rw" >
-                    <td  style="text-align: center;">
-                       <a href="{% url 'bnk1' i.accounts1id   %}">{{ i.name }}</a> 
-                      
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ i.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                        {{ i.balance }}
-                       
-                    </td>
-                   
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-
-    <div class="bnk" id="bnk1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for bnk in bnk %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' bnk.accounts1id   %}">{{ bnk.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ bnk.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ bnk.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-    <div class="fx" id="fx1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for fx in fx %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' fx.accounts1id   %}">{{ fx.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ fx.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ fx.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-    <div class="nca" id="nca1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for nca in nca %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' nca.accounts1id   %}">{{ nca.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ nca.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ nca.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
+</div></div>  
+</div>
+</div>    
+</div>
 
  
-    <div class="apy" id="apy1">
 
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for u in u %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' u.accounts1id   %}">{{ u.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ u.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ u.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-   
-    <div class="cd" id="cd1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for cd in cd %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' cd.accounts1id   %}">{{ cd.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ cd.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ cd.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-          
-
-    <div class="ncl" id="ncl1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for ncl in ncl1 %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' ncl.accounts1id   %}">{{ ncl.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ ncl.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ ncl.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-    <div class="eq" id="eq1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for eq in eq %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' eq.accounts1id   %}">{{ eq.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ eq.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ eq.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-    <div class="inc" id="inc1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for inc in inc %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' inc.accounts1id   %}">{{ inc.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ inc.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ inc.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-
-    <div class="oi" id="oi1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for oi in oi %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' oi.accounts1id   %}">{{ oi.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ oi.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ oi.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-    <div class="cg" id="cg1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for j in j %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' j.accounts1id   %}">{{ j.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ j.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ j.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-
-    <div class="ex" id="ex1">
-
-        <table class="table">
-            <tbody>
-                <tr>
-                    <th  style="text-align: center;">Account detail</th>
-                    <th  style="text-align: center;">Account Type</th>
-                    <th  style="text-align: center;">Amount</th>
-                    
-                    
-                </tr>
-                
-                <tr >
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    <td  style="text-align: center;">
-                       
-                    </td>
-                    <td  style="text-align: center;">
-                     
-                    </td>
-                    
-                </tr  class="rw">
-                {% for ex in ex %}
-                <tr class="rw" >
-                    <td name="name" id="name"  style="text-align: center;">
-                         
-                        <a href="{% url 'bnk1' ex.accounts1id   %}">{{ ex.name }}</a> 
-                    </td>
-                    <td style="text-align: center;">
-                       {{ ex.acctype }}
-                    </td>
-                    <td  style="text-align: center;">
-                       {{ ex.balance }}
-                    </td>
-                    
-                </tr>
-                {% endfor %}
-            </tbody>
-
-
-        </table>
-    </div>
-
-
-
-    </div>
-        
-        
-    
-</div>
-
-
-
-
-
-
-</div>
-
-        
-        
-    
-</div>
-
-
-
-
-
-
-
-    
-
-    <script>
+    <!-- <script>
 
 $('.under').change(function(){
             var responseID = $(this).val();
@@ -1123,7 +699,7 @@ $('.under').change(function(){
 
 
        
-    </script>
+    </script> -->
 
     
     

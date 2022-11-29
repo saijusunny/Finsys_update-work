@@ -13501,8 +13501,7 @@ def profitandloss(request):
         for i in inv:
             sum2+=i.grandtotal
 
-        # ex = purchase_expense.objects.filter().values('expenseaccount').annotate(t1=Sum('amount'))
-        # ex = purchase_expense.objects.all()
+        # ex = expense2.objects.filter().values('account').annotate(t1=Sum('amount'))
         ex = expense2.objects.all()
         sum3 = 0
         for i in ex:
@@ -13510,7 +13509,7 @@ def profitandloss(request):
 
         sum4 = sum2-sum1
 
-        sumtot=sum1+sum2+sum3  
+        sumtot=sum4+sum3  
 
         context={'pur':pur,'sum1':sum1,'inv': inv,'sum2':sum2,'sumtot':sumtot,'ex':ex,'sum3':sum3,'sum4':sum4,'cmp1': cmp1}
 
@@ -13548,25 +13547,58 @@ def plreport3(request,id):
         else:
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
-        # x = id.split()
-        # x.append(" ")
-        # a = x[0]
-        # b = x[1]
-        # cu = a +" "+ b
+
+        toda = date.today()
+        tod = toda.strftime("%Y-%m-%d")
+
+        to=toda.strftime("%d-%m-%Y")
         # exp = expense2.objects.filter(account=id)
         exp = expense2.objects.get(id=id)
-        context = {'cmp1': cmp1, 'exp': exp}
+        context = {'cmp1': cmp1, 'exp': exp,'to':to,'tod':tod}
         if exp.account == 'Advertising and Marketing':
             exp1 = purchase_expense.objects.filter(expenseaccount='Advertising and Marketing')
             context = {'cmp1': cmp1, 'exp1': exp1,'exp': exp}
         elif exp.account == 'Audit Fee':
             exp2 = purchase_expense.objects.filter(expenseaccount='Audit Fee')
             context = {'cmp1': cmp1, 'exp2': exp2,'exp': exp}
+        elif exp.account == 'Automobile Expense':
+            exp3 = purchase_expense.objects.filter(expenseaccount='Automobile Expense')
+            context = {'cmp1': cmp1, 'exp3': exp3,'exp': exp}
+        elif exp.account == 'Bad Debt':
+            exp4 = purchase_expense.objects.filter(expenseaccount='Bad Debt')
+            context = {'cmp1': cmp1, 'exp4': exp4,'exp': exp}
+        elif exp.account == 'Bank Fee And Charges':
+            exp5 = purchase_expense.objects.filter(expenseaccount='Bank Fee And Charges')
+            context = {'cmp1': cmp1, 'exp5': exp5,'exp': exp}
+        elif exp.account == 'Automobile charges':
+            exp6 = purchase_expense.objects.filter(expenseaccount='Automobile charges')
+            context = {'cmp1': cmp1, 'exp6': exp6,'exp': exp}
+        elif exp.account == 'Deprieciation Expenses':
+            exp7 = purchase_expense.objects.filter(expenseaccount='Deprieciation Expenses')
+            context = {'cmp1': cmp1, 'exp7': exp7,'exp': exp}
+        elif exp.account == 'Documentation Charges':
+            exp8 = purchase_expense.objects.filter(expenseaccount='Documentation Charges')
+            context = {'cmp1': cmp1, 'exp8': exp8,'exp': exp}
+        elif exp.account == 'Electricity Expenses':
+            exp9 = purchase_expense.objects.filter(expenseaccount='Electricity Expenses')
+            context = {'cmp1': cmp1, 'exp9': exp9,'exp': exp}
+        elif exp.account == 'Food Expenses':
+            exp10 = purchase_expense.objects.filter(expenseaccount='Food Expenses')
+            context = {'cmp1': cmp1, 'exp10': exp10,'exp': exp}
+        elif exp.account == 'IT And Internet charges':
+            exp11 = purchase_expense.objects.filter(expenseaccount='IT And Internet charges')
+            context = {'cmp1': cmp1, 'exp11': exp11,'exp': exp}
+        elif exp.account == 'Labour Charges':
+            exp12 = purchase_expense.objects.filter(expenseaccount='Labour Charges')
+            context = {'cmp1': cmp1, 'exp12': exp12,'exp': exp}
+        elif exp.account == 'Miscellaneous Expenses':
+            exp13 = purchase_expense.objects.filter(expenseaccount='Miscellaneous Expenses')
+            context = {'cmp1': cmp1, 'exp13': exp13,'exp': exp}
+        elif exp.account == 'Printing And Stationary':
+            exp14 = purchase_expense.objects.filter(expenseaccount='Printing And Stationary')
+            context = {'cmp1': cmp1, 'exp14': exp14,'exp': exp}
         else:
             context = {'cmp1': cmp1, 'exp': exp}
-
-        # ex=purchase_expense.objects.filter(expenseaccount='Audit Fee')  
-        # context = {'cmp1': cmp1,'ex':ex}
         return render(request, 'app1/plreport3.html', context)
     return redirect('/')
 
@@ -29680,9 +29712,9 @@ def stocksummary1(request):
         elif filmeth == 'Custom':
             fromdate = request.POST['fper']
             todate = request.POST['tper']
-        elif filmeth == 'This month':
-            fromdate = toda.strftime("%Y-%m-01")
-            todate = toda.strftime("%Y-%m-31")
+        # elif filmeth == 'This month':
+        #     fromdate = toda.strftime("%Y-%m-01")
+        #     todate = toda.strftime("%Y-%m-31")
         elif filmeth == 'This financial year':
             if int(toda.strftime("%m")) >= 1 and int(toda.strftime("%m")) <= 3:
                 pyear = int(toda.strftime("%Y")) - 1
@@ -29696,29 +29728,29 @@ def stocksummary1(request):
             return redirect('stocksummary')
 
         item = itemtable.objects.filter(itmdate__gte=fromdate, itmdate__lte=todate)
-        for i in item:
-            itemname = i.name
+        # for i in item:
+        #     itemname = i.name
 
-            billitm = purchasebill_item.objects.all().filter(items=itemname)
-            qtyin=0
-            for j in billitm :
-                if j.quantity:
-                    qtyin+=j.quantity
+        #     billitm = purchasebill_item.objects.all().filter(items=itemname)
+        #     qtyin=0
+            # for j in billitm :
+            #     if j.quantity:
+            #         qtyin+=j.quantity
 
-            qtyout=0
-            tot1=0
-            tot2=0
-            debitm1 = purchasedebit1.objects.filter(items=itemname).all()
-            for j in debitm1 :
-                if j.quantity:
-                    tot1+=j.quantity
+            # qtyout=0
+            # tot1=0
+            # tot2=0
+            # debitm1 = purchasedebit1.objects.filter(items=itemname).all()
+            # for j in debitm1 :
+            #     if j.quantity:
+            #         tot1+=j.quantity
 
-            initm1 = invoice_item.objects.filter(product=itemname).all()
-            for j in initm1 :
-                if j.qty:
-                    tot2+=j.qty
+            # initm1 = invoice_item.objects.filter(product=itemname).all()
+            # for j in initm1 :
+            #     if j.qty:
+            #         tot2+=j.qty
 
-            qtyout = tot1+tot2
+            # qtyout = tot1+tot2
 
         qtyin1 = purchasebill_item.objects.filter().aggregate(t2=Sum('quantity'))
 
@@ -29740,7 +29772,7 @@ def stocksummary1(request):
    
         # stock = stockadjust.objects.filter(cid=cmp1)
         
-        context = {'item':item,'cmp1':cmp1,'qtyin':qtyin,'qtyin1':qtyin1,'qtyout1':qtyout1,'qtyout':qtyout}
+        context = {'item':item,'cmp1':cmp1,'qtyin1':qtyin1,'qtyout1':qtyout1}
         return render(request, 'app1/stocksummary.html', context)
         
 @login_required(login_url='regcomp')
@@ -29756,9 +29788,9 @@ def stockvaluation1(request):
         elif filmeth == 'Custom':
             fromdate = request.POST['fper']
             todate = request.POST['tper']
-        elif filmeth == 'This month':
-            fromdate = toda.strftime("%Y-%m-01")
-            todate = toda.strftime("%Y-%m-31")
+        # elif filmeth == 'This month':
+        #     fromdate = toda.strftime("%Y-%m-01")
+        #     todate = toda.strftime("%Y-%m-31")
         elif filmeth == 'This financial year':
             if int(toda.strftime("%m")) >= 1 and int(toda.strftime("%m")) <= 3:
                 pyear = int(toda.strftime("%Y")) - 1
@@ -32311,20 +32343,325 @@ def demo(request):
         return render(request,'app1/demo.html',{'cmp1': cmp1,'vndr':vndr})
     return redirect('demo') 
 
-@login_required(login_url='regcomp')
 def bnnk(request):
-    
+    cmp1 = company.objects.get(id=request.session["uid"])
     i=accounts1.objects.filter(acctype='Bank')
     c=accounts1.objects.filter(acctype='Cash')
     u=accounts1.objects.filter(acctype='Undepposited Funds')
     
-    context={'i':i,'c':c,'u':u}
+    context={'i':i,'c':c,'u':u,'cmp1':cmp1}
     return render(request,'app1/bnk.html',context)
 
+
+@login_required(login_url='regcomp')
 def bnk1(request,pk):
+
     bk=accounts1.objects.get(accounts1id=pk)
-    context={'bk':bk,}
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    cust_pym = customer_payment.objects.filter(accounts1id_id=pk)
+    pym_item = vendor_payment.objects.filter(accounts1id_id=pk)
+    exppenses=expense_banking.objects.filter(accounts1id_id=pk)
+    cmp1 = company.objects.get(id=request.session["uid"])
+    context={'bk':bk,
+    'cust_pym': cust_pym,
+    'pym_item':pym_item,
+    'cmp1': cmp1,
+    'exppenses':exppenses,
+    'customers':customers,
+    'vendors':vendors,
+    
+    }
     return render(request,"app1/bnk1.html",context)
+
+@login_required(login_url='regcomp')
+def vend_view(request,pk):
+    
+    cmp1 = company.objects.get(id=request.session["uid"])
+    vend_dat=vendor_payment.objects.get(vendorpymid=pk)
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    
+    context={
+        'vend_dat':vend_dat,
+        'cmp1':cmp1,
+        'customers':customers,
+        'vendors':vendors,
+    }
+    return render(request,'app1/bank_vend_view.html',context)
+@login_required(login_url='regcomp')
+def deletevend(request,pk):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    custom = vendor_payment.objects.get(vendorpymid=pk, cid=cmp1)
+
+    bnk_id=custom.accounts1id_id
+    bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+    bank_bl_val=bnk_bal.balance
+    crnt_bal=custom.amount_received
+    final_val=float(bank_bl_val)+float(crnt_bal)
+    bnk_bal.balance=final_val
+    bnk_bal.save()
+    custom.delete()
+    return redirect('bnnk')
+@login_required(login_url='regcomp')
+def vend_edit(request,pk):
+    if request.method =="POST":
+        bk=vendor_payment.objects.get(vendorpymid=pk)
+        bnk_id=bk.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=bk.amount_received
+        final_val=float(bank_bl_val)+float(crnt_bal)
+
+        bk.customer=request.POST.get('customer')
+        bk.vendor=request.POST.get('vendor')
+        bk.amount_received=request.POST.get('amount')
+        bk.des=request.POST.get('description')
+        bk.date=request.POST.get('tdate')
+        bk.account=request.POST.get('account')
+        bk.paid_through=request.POST.get('paid')
+        bk.ref_no=request.POST.get('refenrence')
+                
+
+        edited_val=request.POST.get('amount')
+        remin_bal=float(final_val)-float(edited_val)
+        bk.running_bal=remin_bal
+        bk.save()
+        bnk_bal.balance=remin_bal
+        bnk_bal.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
+
+@login_required(login_url='regcomp')
+
+def cus_view(request,pk):
+    
+    cmp1 = company.objects.get(id=request.session["uid"])
+    exp_dat=customer_payment.objects.get(customerpymid=pk)
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    
+    context={
+        'cus_dat':exp_dat,
+        'cmp1':cmp1,
+        'customers':customers,
+        'vendors':vendors,
+    }
+    return render(request,'app1/bank_cust_view.html',context)
+@login_required(login_url='regcomp')
+def deletecus(request,pk):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    custom = customer_payment.objects.get(customerpymid=pk, cid=cmp1)
+
+    bnk_id=custom.accounts1id_id
+    bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+    bank_bl_val=bnk_bal.balance
+    crnt_bal=custom.amount_received
+    final_val=float(bank_bl_val)-float(crnt_bal)
+    bnk_bal.balance=final_val
+    bnk_bal.save()
+    custom.delete()
+    return redirect('bnnk')
+@login_required(login_url='regcomp')
+def cus_edit(request,pk):
+    if request.method =="POST":
+        bk=customer_payment.objects.get(customerpymid=pk)
+        bnk_id=bk.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=bk.amount_received
+        final_val=float(bank_bl_val)-float(crnt_bal)
+
+        bk.customer=request.POST.get('customername')
+        bk.vendor=request.POST.get('vendor')
+        bk.amount_received=request.POST.get('amt_cu')
+        bk.date=request.POST.get('cus_date')
+        bk.received_through=request.POST.get('rese_to')
+        bk.paym_ref_no=request.POST.get('py_ref')
+        bk.bnk_ref_no=request.POST.get('bnk_ref')
+        bk.file = request.FILES.get('pic')
+        bk.des= request.POST.get('type_details')
+
+        edited_val=request.POST.get('amt_cu')
+        remin_bal=float(final_val)+float(edited_val)
+        bk.running_bal=remin_bal
+        bk.save()
+        bnk_bal.balance=remin_bal
+        bnk_bal.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
+
+@login_required(login_url='regcomp')
+def exp_view(request,pk):
+    
+    cmp1 = company.objects.get(id=request.session["uid"])
+    exp_dat=expense_banking.objects.get(expenseid=pk)
+    customers=customer.objects.all()
+    vendors=vendor.objects.all()
+    
+    context={
+        'exp_dat':exp_dat,
+        'cmp1':cmp1,
+        'customers':customers,
+        'vendors':vendors,
+    }
+    return render(request,'app1/bank_exp_view.html',context)
+@login_required(login_url='regcomp')
+def exp_edit(request,pk):
+    if request.method =="POST":
+        bk=expense_banking.objects.get(expenseid=pk)
+        bnk_id=bk.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=bk.amount
+        final_val=float(bank_bl_val)+float(crnt_bal)
+
+        bk.expenseaccount=request.POST.get('acc_type')
+        bk.vendor=request.POST.get('vendor_nm')
+        bk.amount=request.POST.get('amount')
+        bk.note=request.POST.get('Type details')
+        bk.date=request.POST.get('dt_exp')
+        
+        bk.reference=request.POST.get('ref_no')
+        bk.customer=request.POST.get('cust')
+        bk.file = request.FILES.get('pic')
+        edited_val=request.POST.get('amount')
+        remin_bal=float(final_val)-float(edited_val)
+        bk.running_bal=remin_bal
+        bk.save()
+        bnk_bal.balance=remin_bal
+        bnk_bal.save()
+        
+        
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
+@login_required(login_url='regcomp')
+def deleteexp(request, pk):
+        cmp1 = company.objects.get(id=request.session['uid'])
+        custom = expense_banking.objects.get(expenseid=pk, cid=cmp1)
+
+        bnk_id=custom.accounts1id_id
+        bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
+        bank_bl_val=bnk_bal.balance
+        crnt_bal=custom.amount
+        final_val=float(bank_bl_val)+float(crnt_bal)
+        bnk_bal.balance=final_val
+
+        bnk_bal.save()
+
+        custom.delete()
+        return redirect('bnnk')
+
+@login_required(login_url='regcomp')
+def add_expenses(request,pk):
+    if request.method =="POST":
+        bk=accounts1.objects.get(accounts1id=pk)
+        exp_acnt=request.POST.get('acc_type')
+        vendor_nme=request.POST.get('vendor_nm')
+        amount=request.POST.get('amount')
+        type_details=request.POST.get('Type details')
+        dte_exp=request.POST.get('dt_exp')
+        
+        ref_no=request.POST.get('ref_no')
+        customer=request.POST.get('cust')
+        file = request.FILES.get('pic')
+        cid=company.objects.get(id=request.session["uid"])
+
+        sum1=bk.balance
+        
+        running_bl=float(sum1)-float(amount)
+
+        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl,accounts1id_id=pk)
+        expenses.save()
+        bk.balance=running_bl
+        bk.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
+
+
+    
+@login_required(login_url='regcomp')
+def payment_vnk(request,pk):
+    if request.method =="POST":
+        bk=accounts1.objects.get(accounts1id=pk)
+        cust_nm=request.POST.get('customername')
+        vendor=request.POST.get('vendor')
+        amt_cu=request.POST.get('amt_cu')
+        type_details=request.POST.get('type_details')
+        cus_date=request.POST.get('cus_date')
+        rese_to=request.POST.get('rese_to')
+        py_ref=request.POST.get('py_ref')
+        cid=company.objects.get(id=request.session["uid"])
+        bnk_ref=request.POST.get('bnk_ref')
+        cmp1 = company.objects.get(id=request.session["uid"])
+        file = request.FILES.get('pic')
+        print(file)
+        sum1=bk.balance
+        
+        running_bl=float(sum1)+float(amt_cu)
+
+        pym=customer_payment(customer=cust_nm,
+                            vendor=vendor,
+                            amount_received=amt_cu,
+                            des=type_details,
+                            date=cus_date,
+                            received_through=rese_to,
+                            paym_ref_no=py_ref,
+                            bnk_ref_no=bnk_ref,
+                            file = file,
+                            cid=cmp1,
+                            running_bal=running_bl,
+                            accounts1id_id=pk
+                            )
+        pym.save()
+        bk.balance=running_bl
+        bk.save()
+        return redirect('bnnk')
+    else:
+       return redirect('bnnk') 
+
+@login_required(login_url='regcomp')
+def payment_vendor(request,pk):
+    if request.method =="POST":
+        bk=accounts1.objects.get(accounts1id=pk)
+        print(bk)
+        cust_nm=request.POST.get('customer')
+        vendor=request.POST.get('vendor')
+        amt_cu=request.POST.get('amount')
+        type_details=request.POST.get('description')
+        cus_date=request.POST.get('tdate')
+        acc=request.POST.get('account')
+        paid=request.POST.get('paid')
+        ref=request.POST.get('refenrence')
+        cid=company.objects.get(id=request.session["uid"])
+        cmp1 = company.objects.get(id=request.session["uid"])
+        cust_nm=request.POST.get('customer')
+        sum1=bk.balance
+        
+        running_bl=float(sum1)-float(amt_cu)
+        pyms=vendor_payment(customer=cust_nm,
+                            vendor=vendor,
+                            amount_received=amt_cu,
+                            des=type_details,
+                            date=cus_date,
+                            paid_through=paid,
+                            ref_no=ref,
+                            account=acc,
+                            cid=cmp1,
+                            running_bal=running_bl,
+                            accounts1id_id=pk
+                            )
+        pyms.save()
+
+        bk.balance=running_bl
+        bk.save()
+        return redirect('bnnk')
+    else:
+        return redirect('bnnk')
 
 def accpayment(request):
     cmp1 = company.objects.get(id=request.session["uid"])
