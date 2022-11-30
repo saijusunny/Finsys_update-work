@@ -2,26 +2,7 @@
 {% block body %}
 {% load static %}
 <style>
-#myModal {
-    position:fixed;
-    bottom: 0;
-    top:auto;
-    right:auto;
-    left: auto;
-    background-color: #1b2f40;
-    height: 60px;
 
-    padding:0.8%;
-    
-}
-#myModal::-webkit-scrollbar{
-    display: none;
-}
-.mr-0 {
-  margin-left:30%;
-  font-size: 20px;
-  margin-top: auto;
-}
 </style>
 
 <div class="page-content" >
@@ -38,12 +19,12 @@
         <table class="table">
             <thead>
                 <tr style="text-align:center ;background-color: rgba(51, 51, 75, 0.829);" class="rw">
-                <th>Date</th>
-                <th>Transaction Details</th>
-                <th>Type</th>
-                <th>Deposits</th>
-                <th>Withdrawal</th>
-                <th>Select</th>
+                <th>Reconciled Date</th>
+                <th>Reconciled Period</th>
+                <th>Closing Balance</th>
+                <th>Status</th>
+                <th></th>
+                
             </tr>
             </thead>
             <tbody>
@@ -53,12 +34,10 @@
 
                     <td>{{ pym.date }}</td>
                     
-                    <td></td>
-                    <td><a href="{% url 'cus_view' pym.customerpymid %}" >Customer Payment:<br>{{ pym.customer }}</a> </td>
+                    <td>{{str_dat}} To {{end_dat}}</td>
                     <td>{{ pym.running_bal }}</td>
                     <td></td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    
+                    <td></td>
                 </tr>
                 {% endif %}
                 {% endfor %}
@@ -68,12 +47,12 @@
                 <tr style="text-align:center ;" class="rw">
 
                     <td>{{ pym2.date }}</td>
-                    <td></td>
-                    <td><a href="{% url 'vend_view' pym2.vendorpymid %}"  >Vendor Payment:<br>{{ pym2.vendor }}</a</td>
-                    <td></td>
+        
+                    <td>{{str_dat}} To {{end_dat}}</td>
+
                     <td>{{ pym2.amount_received }}</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    
+                    <td></td>
+                    <td></td>
                 </tr>
                 {% endif %}
                 {% endfor %}
@@ -83,12 +62,10 @@
                 <tr style="text-align:center ;" class="rw">
                     <!-- data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal" -->
                     <td>{{ exp.date }}</td>
-                    <td></td>
-                    <td><a href="{% url 'exp_view' exp.expenseid %}" >Expense:<br>{{ exp.expenseaccount }}</a></td>
-                    <td></td> 
+                    <td>{{str_dat}} To {{end_dat}}</td>
                     <td>{{ exp.amount }}</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    
+                    <td></td>
+                    <td></td>
                 </tr>
                 {% endif %}
                 {% endfor %}
@@ -112,23 +89,14 @@
 <div class="modal col-md-11" id="myModal">
 
         <a href="#" class="btn btn-light ml-2">Save and Reconcile Later</a>
-        <a href="{% url 'start_reconcile' bnk_det.accounts1id%}" onclick="alert('The Account has been Reconciled')" class="btn btn-primary ml-2">Reconcile</a>
-        <a href="{% url 'bnk1' bnk_det.accounts1id%}" class="btn btn-light ml-2" onclick="alert('Are you sure you want to leve this page?')">Close</a>
+        <a href="#" class="btn btn-primary ml-2">Reconcile</a>
+        <a href="#" class="btn btn-light ml-2">Close</a>
 
-        <span class="mr-0"> Balance:<span style="color:#673ab7" class="ml-1">₹{{clos_bal}}</span> &nbsp;&nbsp; Difference Balance:<span style="color:red" class="ml-1">₹25000.0</span></span>
+        <span class="mr-0"> Balance:<span style="color:#673ab7" class="ml-1">₹2500.0</span> &nbsp;&nbsp; Difference Balance:<span style="color:red" class="ml-1">₹2500.0</span></span>
         
         <a class="close" data-dismiss="modal">×</a>
     
 </div>
-
-<script type="text/javascript">
-    $(window).on('load', function() {
-        $('#myModal').modal('show');
-    
-    $('.modal-backdrop').remove();
-    $('body').removeClass( "modal-open" );
-});
-</script>
 
 
 

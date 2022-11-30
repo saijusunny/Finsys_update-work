@@ -785,6 +785,7 @@ urlpatterns = [
     re_path(r'^vend_edit/(?P<pk>\d+)$',views.vend_edit,name='vend_edit'),
     re_path(r'^deletevend/(?P<pk>\d+)$',views.deletevend,name='deletevend'),
     path('bank_recon/<int:pk>', views.bank_recon, name='bank_recon'),
+    path('start_reconcile/<int:pk>', views.start_reconcile, name='start_reconcile'),
 
 
         

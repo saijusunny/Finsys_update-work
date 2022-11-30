@@ -32880,18 +32880,17 @@ def acres(request,pk):
 #------------------------------------------------------------------------------------Bank Reconcilation
 def bank_recon(request,pk):
     bnk_det=accounts1.objects.get(accounts1id=pk)
-
+    global str_dat
+    global end_dat
+    global clos_bal
     str_dat=request.POST.get("st_dt")
     end_dat=request.POST.get("end_dt")
     clos_bal=request.POST.get("cl_bal")
     cmp1 = company.objects.get(id=request.session["uid"])
-# date__gte=str_dat, date__lte=end_dat  .strptime('%Y-%m-%d')
     cust_pym = customer_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat )
     vend_pym = vendor_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat)
     exppenses=expense_banking.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat)
     
-    print(cust_pym)
-
     
     context={
         'bnk_det':bnk_det,
@@ -32899,5 +32898,24 @@ def bank_recon(request,pk):
         'cust_pym':cust_pym,
         'vend_pym':vend_pym,
         'exppenses':exppenses,
+        'clos_bal':clos_bal,
         }
     return render(request,'app1/bank_recon.html',context)
+
+def start_reconcile(request,pk):
+    bnk_det=accounts1.objects.get(accounts1id=pk)
+    cmp1 = company.objects.get(id=request.session["uid"])
+    cust_pym = customer_payment.objects.filter(accounts1id_id=pk, )
+    vend_pym = vendor_payment.objects.filter(accounts1id_id=pk,)
+    exppenses=expense_banking.objects.filter(accounts1id_id=pk,)
+    
+    context={
+        'bnk_det':bnk_det,
+        "cmp1":cmp1,
+        'cust_pym':cust_pym,
+        'vend_pym':vend_pym,
+        'exppenses':exppenses,
+        "str_dat":str_dat,
+        "end_dat":end_dat,
+        }
+    return render(request,'app1/start reconcile.html',context)
