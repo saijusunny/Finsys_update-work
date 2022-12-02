@@ -9831,6 +9831,17 @@ def getterm(request):
     list.append(dict)
     return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
 
+def gettermss(request):
+    id = request.GET.get('id')
+    dudt=request.GET.get('du')
+    dts=datetime.datetime.strptime(dudt, "%d-%m-%Y").date()
+    list = []
+    toda =  dts+ timedelta(days=int(id))
+    newdate = toda.strftime("%d-%m-%Y")
+    dict = {'newdate': newdate}
+    list.append(dict)
+    return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
+
 
 @login_required(login_url='regcomp')
 def gooexpensesuppliers(request):

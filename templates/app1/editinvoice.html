@@ -2270,6 +2270,30 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
 
   
 </script>
+
+<script>
+  $('#termadd').on('change', function() {
+  
+      
+  select = $('#termadd').val();
+  dudt = $('#duedat').val();
+  $.ajax({
+    type: "GET",
+    url: "{% url 'gettermss' %}",
+    data: {
+      id: select,
+      du:dudt,
+    }
+  }).done(function(response) {
+    var json_data = JSON.parse(response);
+    for (key in json_data) {
+      document.getElementById('duedat').value = json_data[key]['newdate'];
+    }
+  }).fail(function() {
+
+  });
+  });
+</script>
 <script>
   $(document).ready(function() {
     var $select1 = $('#plosu'),

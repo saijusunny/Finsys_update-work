@@ -1600,7 +1600,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                 </div>
             <div class="modal-body">
 
-                <form action="new_customers2" method="POST">{% csrf_token %}
+                <form action="new_customers2" method="POST" autocomplete="off">{% csrf_token %}
 
                     <div class="row">
                         <div class="col-md-4 mt-3">
@@ -1636,7 +1636,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         <div class="col-md-4 mt-3">
                             <label for="validationCustom03">Location</label>
                             <input type="text" class="form-control" id="validationCustom03" name="location"
-                                   required style="background-color: #2f516f;color: white;">
+                                    style="background-color: #2f516f;color: white;">
                             <div class="valid-feedback">Looks good!</div>
                         </div>
                         <div class="col-md-4 mt-3"></div>
@@ -1704,7 +1704,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         <div class="col-md-4 mt-3">
                             <label for="validationCustom03">PAN NO</label>
                             <input type="text" class="form-control" id="validationCustom03" name="panno"
-                                   required style="background-color: #2f516f;color: white;"
+                                    style="background-color: #2f516f;color: white;"
                                    onchange="checkpan(this)" placeholder="APPCK7465F">
                             <div class="text-danger m-2" id="warnpan"></div>
                         </div>
@@ -1761,7 +1761,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         <div class="col-md-4 mt-3">
                             <label for="validationCustom03">Email</label>
                             <input type="email" class="form-control" id="validationCustom03" name="email"
-                                   required style="background-color: #2f516f;color: white;"
+                                    style="background-color: #2f516f;color: white;"
                                    placeholder="finsys@mail.com">
                             <div class="invalid-feedback">Please provide a valid Email</div>
                         </div>
@@ -1776,7 +1776,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                             <label for="validationCustom01">Mobile</label>
                             <input type="text" class="form-control" id="validationCustom01"
                                    onchange="checkphone(this)" name="mobile"
-                                   required style="background-color: #2f516f;color: white;">
+                                    style="background-color: #2f516f;color: white;">
                             <div class="text-danger m-2" id="warnphone"></div>
                         </div>
                     </div>
@@ -1793,7 +1793,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                     <div class="form-row">
                                         <label for="street">Street</label>
                                         <textarea class="form-control street" id="street" name="street"
-                                                  required
+                                                  
                                                   style="background-color: #2f516f;color: white;"></textarea>
                                         <div class="invalid-feedback">Please provide a valid Street</div>
                                     </div>
@@ -1805,7 +1805,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="city">City</label>
                                         <input type="text" class="form-control" id="city"
                                                name="city"
-                                               required
+                                               
                                                style="background-color: #2f516f;color: white;" placeholder="City">
                                         <div class="invalid-feedback">Please provide a valid City</div>
                                     </div>
@@ -1814,7 +1814,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                     <div class="form-row">
                                         <label for="state">State</label>
                                         <select type="text" class="form-control" id="state" name="state"
-                                                style="background-color: #2f516f; color: white;">
+                                            required style="background-color: #2f516f; color: white;">
                                             <option value="" disabled selected>Choose</option>
                                             <option value="Andaman and Nicobar Islads">Andaman and Nicobar Islads
                                             </option>
@@ -1866,7 +1866,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="pinco">Pin Code</label>
                                         <input type="text" class="form-control" id="pinco"
                                                name="pincode"
-                                               required style="background-color: #2f516f;color: white;"
+                                                style="background-color: #2f516f;color: white;"
                                                placeholder="PIN code">
                                         <div class="invalid-feedback">Please provide a valid Pin Code</div>
                                     </div>
@@ -1876,7 +1876,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="country">Country</label>
                                         <input type="text" class="form-control" id="country"
                                                name="country"
-                                               required style="background-color: #2f516f;color: white;"
+                                                style="background-color: #2f516f;color: white;"
                                                placeholder="Country">
                                         <div class="invalid-feedback">Please provide a valid Country</div>
                                     </div>
@@ -1898,7 +1898,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="shipstreet">Street</label>
                                         <textarea class="form-control" id="shipstreet"
                                                   name="shipstreet"
-                                                  required
+                                                  
                                                   style="background-color: #2f516f;color: white;"></textarea>
                                         <div class="invalid-feedback">Please provide a valid Street</div>
                                     </div>
@@ -1910,7 +1910,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="shipcity">City</label>
                                         <input type="text" class="form-control" id="shipcity"
                                                name="shipcity"
-                                               required
+                                               
                                                style="background-color: #2f516f;color: white;" placeholder="City">
                                         <div class="invalid-feedback">Please provide a valid City</div>
                                     </div>
@@ -1971,7 +1971,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="shippinco">Pin Code</label>
                                         <input type="text" class="form-control" id="shippinco"
                                                name="shippincode"
-                                               required style="background-color: #2f516f;color: white;"
+                                                style="background-color: #2f516f;color: white;"
                                                placeholder="PIN code">
                                         <div class="invalid-feedback">Please provide a valid Pin Code</div>
                                     </div>
@@ -1981,7 +1981,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                         <label for="shipcountry">Country</label>
                                         <input type="text" class="form-control" id="shipcountry"
                                                name="shipcountry"
-                                               required style="background-color: #2f516f;color: white;"
+                                                style="background-color: #2f516f;color: white;"
                                                placeholder="Country">
                                         <div class="invalid-feedback">Please provide a valid Country</div>
                                     </div>

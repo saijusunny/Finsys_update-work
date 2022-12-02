@@ -346,9 +346,10 @@
             //useCORS: true,
             // width: 600
             
+            
         }).then((canvas) => {
             //Canvas (convert to PNG)
-            doc.addImage(canvas.toDataURL("image/png"), 'PNG', 15, 10, 700, 850);
+            doc.addImage(canvas.toDataURL("image/png"), 'PNG', 15, 10, 810, 600);
         })
 
         doc.save("Document.pdf");
@@ -469,36 +470,37 @@
         
 
         
-        <div  id="whatToPrint">
+        <div  id="">
 
-
-          <div class="py-5">
-            <div class="container">
+        
+          <div class="py-5" >
+            <div class="container"   >
               <div class="row hidden-md-up">
                 <div class="col-md-8 " style="margin: auto; ">
-                  <div class="card">
-                    <div class="card-block">
-                      <div class="card-body">
+                  <div class="card"  >
+                    <div class="card-block"   >
+                      <div class="card-body" >
                         
-                        <div class="tempinv" size="A4">
-                          <div class="row invoice-header px-3 py-2">
+                        <div class="tempinv" size="A4" id="whatToPrint">
+                          <div class="row invoice-header px-0 py-0">
                             <div class="col-12">
                               <img src="/media/images/default.png" width="30px">
                             </div>
         
-                              <div class="col-12">
-                              <p class="text-center" >TAX INVOICE<br>
+                              <div class="col-12" style="text-align: right; font-size: 16px;">
+                              <p class="text-center" style="font-size: 14px;">TAX INVOICE<br>
                                
-                              <span style="text-transform: uppercase;">{{cmp1.cname}}</span><br>
+                              <span style="text-transform: uppercase; ">{{cmp1.cname}}</span><br>
                              {{cmp1.caddress }}<br>
-                          email id :  {{cmp1.cemail}} ,GSTIN/UIN : </p>
+                          email id :  {{cmp1.cemail}} ,<br>
+                          GSTIN/UIN : </p>
                             </div>
                             
                           </div>
                         
                           <div class="invoice-content row ">
                             <div class="col-4">
-                              <p  style="color:black; font-size:8px">Buyer/Client Name : {{invoice.customername}}<br>
+                              <p  style="color:black; font-size:14px">Buyer/Client Name : {{invoice.customername}}<br>
                               
                               {{invoice.bname}}<br>
                              GSTIN/UIN: <br>
@@ -506,9 +508,9 @@
                               place of supply : {{invoice.placosupply}}</p>
                             </div>
                             <div class="col-8">
-                             <table width="100%" class="table1" border="1">
+                             <table width="100%" style="font-size:14px" class="table1" border="1">
                               <tr>
-                                <td>Invoice No: {{invoice.invoiceno}}</td>
+                                <td id="number">Invoice No: {{invoice.invoiceno}}</td>
                                 <td>Dated:{{invoice.invoicedate }}</td>
         
                               
@@ -558,7 +560,7 @@
                         
                           <div class="row ">
                             <div class=" col-md-12 invoice-table ">
-                              <table border="1" width="100%" class="table2">
+                              <table border="1" width="100%" class="table2" style="font-size:14px">
                                     <thead class="thead splitForPrint">
                                       <tr style="width:100%;">
                                         <th >Sl no.</th>
@@ -599,27 +601,27 @@
                                       
                                      
                                       <tr>
-                                        <th colspan="9"   ><span style="float: right;margin-right: 10px;">Sub Total</span></th>
+                                        <th colspan="9"   ><span style="float: right;margin-right: 14px;">Sub Total</span></th>
                                         
                                         <td> {{invoice.subtotal}}</td>
                                       </tr>
                                       {% if invoice.IGST %}
                                       <tr>
-                                        <th colspan="9"  ><span style="float: right;margin-right: 10px;">IGST</span></th>
+                                        <th colspan="9"  ><span style="float: right;margin-right: 14px;">IGST</span></th>
                                         
                                         <td> {{invoice.IGST}}</td>
                                       </tr>
                                       {% endif %}
                                       {% if invoice.CGST != '0.00' %}
                                       <tr>
-                                        <th colspan="9"  ><span style="float: right;margin-right: 10px;">CGST</span></th>
+                                        <th colspan="9"  ><span style="float: right;margin-right: 14px;">CGST</span></th>
                                         
                                         <td> {{invoice.CGST}}</td>
                                       </tr>
                                       {% endif %}
                                       {% if invoice.SGST %}
                                       <tr>
-                                        <th colspan="9"  ><span style="float: right;margin-right: 10px;">SGST</span></th>
+                                        <th colspan="9"  ><span style="float: right;margin-right: 14px;">SGST</span></th>
                                         
                                         <td> {{invoice.SGST}}</td>
                                       </tr>
@@ -627,13 +629,13 @@
                                       
                                       {% if invoice.TCS != '0' %}
                                       <tr>
-                                        <th colspan="9"  ><span style="float: right;margin-right: 10px;">TCS</span></th>
+                                        <th colspan="9"  ><span style="float: right;margin-right: 14px;">TCS</span></th>
                                         
                                         <td> {{invoice.TCS}}</td>
                                       </tr>
                                       {% endif %}
                                       <tr>
-                                        <th colspan="9"  ><span style="float: right;margin-right: 10px;">Grand Total</span></th>
+                                        <th colspan="9"  ><span style="float: right;margin-right: 14px;">Grand Total</span></th>
                                         
                                         <td> {{invoice.grandtotal}}</td>
                                       </tr>
@@ -645,8 +647,8 @@
                                   </table>
                             </div>
                           </div>
-                          <div class="row amount">
-                            <p>Amount in words<br>
+                          <div class="row amount" style="font-size: 14px; padding-left: 2%;">
+                            <p>Amount in words:<br>
                             {{words_total}}</p>
                           </div>
                           <div class="row ">
@@ -706,30 +708,15 @@
                                   </table> -->
                         <div class="row invoice_details">
                            <!-- invoiced to details -->
-                           <div class="col-12 ">
-                             <p class="gray-ish terms"><b>Terms & Conditions</b><br>
-                              1.All Amount in INR Only<br>
-                              2.CASH : Payment is to be made directly to the office<br>
-                              3.CHEQUE : Cheques should be drawn in favour of COMPANY<br>
-                              4.RECIEPTS: Official receipts duly signed will be considered valid</p>
-                           </div>
+                           
                            <!-- Invoice assets and total -->
                               
-                           </div>
-                           <div class="row">
-                            <div class="col-md-6">
-                              <p class="gray-ish terms"><b>BANK DETAILS</b><br>
-                                Bank Name :<br>
-                                A/c No :<br>
-                                Branch Name :<br>
-                                Bank IFSC :</p>
-                              </div>
+                           
         
-                              <div class="col-md-6">
-                                <p class="gray-ish terms"><b>COMPANY NAME</b><br>
+                              <div class="col-md-12" >
+                                <p class="gray-ish terms" style="text-align: right; font-size: 14px;"><b>COMPANY NAME</b><br>
                                   <br>
-                                  <br>
-                                  <br>
+                        
                                   Authorised Signatory</p>
                                 </div>
         
