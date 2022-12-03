@@ -10368,6 +10368,52 @@ def supplieracccreate(request):
     except:
         return redirect('goaddsuppliers')
 
+@login_required(login_url='regcomp')
+def paym_acc(request):
+    try:
+        cmp1 = company.objects.get(id=request.session["uid"])
+        prodobj = ProductModel.objects.all()
+        itemobj = ItemModel.objects.all()
+        
+        return render(request, 'app1/paym_acc.html', {'cmp1': cmp1, 'Product': prodobj, 'Item': itemobj})
+    except:
+        return redirect('paym_acc')
+
+@login_required(login_url='regcomp')
+def pym_acc_crt(request):
+    
+        cmp1 = company.objects.get(id=request.session["uid"])
+        acctype = request.POST.get('acctype')
+        
+        detype = request.POST.get('detype')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        gst = request.POST.get('gst')
+        deftaxcode = request.POST.get('deftaxcode')
+        balance = 0
+        toda = date.today()
+        tod = toda.strftime("%Y-%m-%d")
+        # pro = accountype.objects.get(accountypeid=acctype)
+        # pro2 = ProductModel.objects.filter(Pid=acctype)
+        
+        if request.method == 'POST':
+                
+                account = accounts1(acctype=acctype, detype=detype, name=name, description=description,
+                                   gst=gst, dbbalance=balance,
+                                   deftaxcode=deftaxcode, balance=balance, asof=tod, cid_id =cmp1.cid)
+                account.save()
+                account1 = accountype(
+                    cid_id =cmp1.cid, accountname="detype", accountbal=balance)
+                account1.save()
+                acco = accounts1.objects.get(
+                    name='Opening Balance Equity', cid=cmp1.cid)
+                acco.balance += float(balance)
+                acco.save()
+                return redirect('payment_received')
+        else:
+            return redirect('payment_received')
+   
+
 
 @login_required(login_url='regcomp')
 def paymentcoacreate(request):
@@ -10377,7 +10423,11 @@ def paymentcoacreate(request):
         itemobj = ItemModel.objects.all()
         return render(request, 'app1/paymentcoa.html', {'cmp1': cmp1, 'Product': prodobj, 'Item': itemobj})
     except:
-        return redirect('paymentindex')
+        return redirect('paymentcoacreate')
+
+
+
+
 
 
 @login_required(login_url='regcomp')
@@ -27691,7 +27741,7 @@ def payment_received(request):
         bun = bundle.objects.filter(cid=cmp1)
         noninv = noninventory.objects.filter(cid=cmp1)
         ser = service.objects.filter(cid=cmp1)
-        acounts = accounts.objects.filter(cid=cmp1)
+        acounts = accounts1.objects.filter(cid=cmp1,acctype='Bank')
         item = itemtable.objects.filter(cid=cmp1)
         context = {'cmp1': cmp1, 'customers': customers, 'inv': inv, 'bun': bun, 'noninv': noninv, 'ser': ser,'item':item,
                    'tod': tod, 'accoun': acounts}

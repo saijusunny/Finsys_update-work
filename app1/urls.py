@@ -787,6 +787,8 @@ urlpatterns = [
     path('bank_recon/<int:pk>', views.bank_recon, name='bank_recon'),
     path('start_reconcile/<int:pk>', views.start_reconcile, name='start_reconcile'), 
     path('gettermss/', views.gettermss, name='gettermss'),
+    path('pym_acc_crt/', views.pym_acc_crt, name='pym_acc_crt'),
+    path('paym_acc/', views.paym_acc, name='paym_acc'),
 
 
         

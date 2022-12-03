@@ -53,7 +53,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <label class="col-form-label">Payment Date</label>
-                                <input type="text" name="paymdate" value="{{ tod }}" class="form-control">
+                                <input type="date" name="paymdate" value="{{ tod }}" class="form-control">
                             </div>
                             <div class="col-md-8"></div>
                         </div>
@@ -69,11 +69,13 @@
                                 <label class="col-form-label">Payment Method</label>
                                 <select name="pmethod" id="paymeth" onclick="showinp('newmethod', this)"
                                         class="form-control">
-                                    <option id="newmth"></option>
+                                        <option value="Bank">Bank</option>
+                                    
                                     <option value="Cash">Cash</option>
                                     <option value="Cheque">Cheque</option>
                                     <option value="Credit Card">Credit Card</option>
                                     <option value="Add New">Add New</option>
+                                    <option id="newmth"></option>
                                 </select>
                             </div>
                             <div class="col-md-4">
@@ -106,7 +108,7 @@
                                         <option value="Uncategorised Asset">Uncategorised Asset</option>
                                         <option value="Undeposited Fund">Undeposited Fund</option> -->
                                     </select>
-                                    <a href="{% url 'paymentcoacreate' %}"><button type="button" class="btn btn-outline-secondary ml-1">+</button></a>
+                                    <a href="{% url 'paym_acc' %}"><button type="button" class="btn btn-outline-secondary ml-1">+</button></a>
                                 </div>
                             </div>
                         </div>

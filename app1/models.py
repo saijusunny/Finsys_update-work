@@ -818,7 +818,7 @@ class ItemModel(models.Model):
 class accountype(models.Model):
     accountypeid = models.AutoField(('ACCOUNTYPEID'), primary_key=True)
     cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    accountname = models.CharField(max_length=100)
+    accountname = models.CharField(max_length=100 , null=True)
     accountbal = models.CharField(max_length=100, default='')
 
 
