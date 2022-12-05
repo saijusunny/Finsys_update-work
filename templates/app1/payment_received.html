@@ -84,10 +84,16 @@
                                 <label class="col-form-label">Deposit to</label>
                                 <div class="d-flex">
                                     <select name="depto" id="" class="form-control" style="width: 95%;">
-                                        {% for acc in accoun %}
+                                        {% for acc in acounts_bnk %}
                                             <option value="{{ acc.name }}">{{ acc.name }}</option>
                                         {% endfor %}
-                                        <option value="BANK">BANK</option>
+                                        {% for acc2 in acounts_cash %}
+                                            <option value="{{ acc2.name }}">{{ acc2.name }}</option>
+                                        {% endfor %}
+                                        {% for acc3 in acounts_undep %}
+                                            <option value="{{ acc3.name }}">{{ acc3.name }}</option>
+                                        {% endfor %}
+                                        
                                         <!-- <option value="Deferred GST Input Credit">Deferred GST Input Credit</option>
                                         <option value="Deferred IGST">Deferred IGST</option>
                                         <option value="Deferred Krishi Kalyan Cess Input Credit">Deferred Krishi
@@ -259,7 +265,7 @@
                                 `
                              <tr id='addr1' >
                                         <td>1</td>
-                                        <td><input type="text" name="invdate[]" id=""
+                                        <td><input type="text" name="invdate[]" id="" style="margin-top:41px"
                                                    value="${date}" class="form-control"/><br>
                                             <input type="text" name="duedate[]" 
                                                    value="${date}"hidden> <span >duedate : ${date} </span>

@@ -19,7 +19,9 @@
                         <select name="acctype" id="select1"
                                 class="custom-select-md form-control w-100">
                             <option value="Bank">Bank</option>
-                            <option value="Current Assets">Current Assets</option>
+                            <option value="Bank">Cash</option>
+                            <option value="Bank">Undepposited Funds</option>
+                            <!-- <option value="Current Assets">Current Assets</option> -->
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -29,17 +31,7 @@
                     </div>
                 </div>
                 <div class="row mt-2 mb-2">
-                    <div class="col-md-6">
-                        <label for="detype">*Detail Type</label>
-                        <select name="detype" id="select2"
-                                class="custom-select-md form-control w-100"
-                                onchange="nameinput(this)">
-                            {% for item in Item %}
-                                <option text="{{ item.Pid }}"
-                                        value="{{ item.Itemname }}">{{ item.Itemname }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+                    
                     <div class="col-md-6">
                         <label for="description">Description</label>
                         <input type="text" name="description" class="form-control">

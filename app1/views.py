@@ -10385,7 +10385,7 @@ def pym_acc_crt(request):
         cmp1 = company.objects.get(id=request.session["uid"])
         acctype = request.POST.get('acctype')
         
-        detype = request.POST.get('detype')
+        
         name = request.POST.get('name')
         description = request.POST.get('description')
         gst = request.POST.get('gst')
@@ -10398,12 +10398,12 @@ def pym_acc_crt(request):
         
         if request.method == 'POST':
                 
-                account = accounts1(acctype=acctype, detype=detype, name=name, description=description,
+                account = accounts1(acctype=acctype, name=name, description=description,
                                    gst=gst, dbbalance=balance,
                                    deftaxcode=deftaxcode, balance=balance, asof=tod, cid_id =cmp1.cid)
                 account.save()
                 account1 = accountype(
-                    cid_id =cmp1.cid, accountname="detype", accountbal=balance)
+                    cid_id =cmp1.cid, accountname=name, accountbal=balance)
                 account1.save()
                 acco = accounts1.objects.get(
                     name='Opening Balance Equity', cid=cmp1.cid)
@@ -25352,6 +25352,8 @@ def customer_profile(request,id):
     toda = date.today()
     tod = toda.strftime("%Y-%m-%d")
     to = toda.strftime("%d-%m-%Y")
+
+    act="Active"
     inv = invoice.objects.filter(cid=cmp1,customername=su,status='Approved',invoicedate=tod)
 
     pay = payment.objects.filter(cid=cmp1,customer=su,paymdate=tod)
@@ -25444,10 +25446,26 @@ def customer_profile(request,id):
                 'resum':resum,
                 'bal_amount':prebalance,
                 'tod':to,
+                'act':act
 
                 
      }
     return render(request, 'app1/customer_view.html', context)
+
+def active_cust(request,pk):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    custo = customer.objects.get(customerid=pk, cid=cmp1)
+    custo.status="Inactive"
+    custo.save()
+    return redirect('customer_profile',pk)
+
+def inactive_cust(request,pk):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    custo = customer.objects.get(customerid=pk, cid=cmp1)
+    custo.status="Active"
+    custo.save()
+    return redirect('customer_profile',pk)
+
 
 
 
@@ -27741,10 +27759,13 @@ def payment_received(request):
         bun = bundle.objects.filter(cid=cmp1)
         noninv = noninventory.objects.filter(cid=cmp1)
         ser = service.objects.filter(cid=cmp1)
-        acounts = accounts1.objects.filter(cid=cmp1,acctype='Bank')
+        acounts_bnk = accounts1.objects.filter(cid=cmp1,acctype='Bank')
+        acounts_cash=accounts1.objects.filter(cid=cmp1,acctype='Cash')
+        acounts_undep=accounts1.objects.filter(cid=cmp1,acctype='Undepposited Funds')
+
         item = itemtable.objects.filter(cid=cmp1)
         context = {'cmp1': cmp1, 'customers': customers, 'inv': inv, 'bun': bun, 'noninv': noninv, 'ser': ser,'item':item,
-                   'tod': tod, 'accoun': acounts}
+                   'tod': tod,'acounts_cash':acounts_cash,'acounts_bnk':acounts_bnk,'acounts_undep':acounts_undep, }
         return render(request, 'app1/payment_received.html', context)
     except:
         return redirect('/')
@@ -27931,6 +27952,9 @@ def search_payment_received(request):
 def payment_view(request,id):
     cmp1 = company.objects.get(id=request.session["uid"])
     pay = payment.objects.get(paymentid=id)
+    ref_nos=pay.refno
+    print(ref_nos)
+    inv_det = invoice.objects.filter(invoiceno=pay.refno)
     pk =  pay.customer 
     x = pk.split()
     x.append(" ")
@@ -27944,7 +27968,8 @@ def payment_view(request,id):
     context = {
         'pay':pay ,
         'cmp1':cmp1,
-        'custobject':custobject
+        'custobject':custobject,
+        'inv_det':inv_det,
     }
 
     return render(request,'app1/payment_view.html',context)
@@ -27964,6 +27989,9 @@ def edit_payment(request,id):
         b = x[1] + " " + x[2]
         custobject = customer.objects.get(firstname=a, lastname=b, cid=cmp1)
     payitem = paymentitems.objects.filter(payment=pay) 
+    acounts_bnk = accounts1.objects.filter(cid=cmp1,acctype='Bank')
+    acounts_cash=accounts1.objects.filter(cid=cmp1,acctype='Cash')
+    acounts_undep=accounts1.objects.filter(cid=cmp1,acctype='Undepposited Funds')
 
     count = paymentitems.objects.filter(payment=pay).count()
     print(count)
@@ -27973,6 +28001,9 @@ def edit_payment(request,id):
         'custobject':custobject,
         'payitem':payitem,
         'count':count,
+        'acounts_cash':acounts_cash,
+        'acounts_bnk':acounts_bnk,
+        'acounts_undep':acounts_undep,
     }
 
     return render(request,'app1/payment_edit.html',context)
@@ -32980,3 +33011,8 @@ def start_reconcile(request,pk):
         "end_dat":end_dat,
         }
     return render(request,'app1/start reconcile.html',context)
+def credit_note(request):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    pdebit = purchasedebit.objects.all()  
+
+    return render(request,'app1/credit_note.html',{'cmp1': cmp1,'pdebit':pdebit})

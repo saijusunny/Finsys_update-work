@@ -154,8 +154,8 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     </td>
                     <td><input type="text" name='hsn[]' id="hsn1${roinc}" placeholder='Enter HSN Code' class="form-control" style="background-color: #2f516f; color: white;" /></td>
                     <td><input type="text" name='description[]' id="description${roinc}" placeholder='Description' class="form-control" style="background-color: #2f516f; color: white;" /></td>
-                    <td><input type="number" name='qty[]' onchange="qtychange1(this)" placeholder='Enter Qty' id="qty1" class="form-control qty" step=0 min=0 style="background-color: #2f516f; color: white;" />
-                      <span id="qtyspan${roinc}" class='text-muted'></span>
+                    <td><input type="number" name='qty[]' onchange="qtychange1(this)" placeholder='Enter Qty' id="qty1" class="form-control qty" step=0 min=0 style="background-color: #2f516f; color: white;" /><div><span>Available Qty :</span> <span id="qtyspan${roinc}" class=''></span></div>
+                      
                     </td>
                     <td><input type="number" name='price[]' id="unit1${roinc}" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" style="background-color: #2f516f; color: white;" /></td>
                     
@@ -224,6 +224,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description').value = data1
                     document.getElementById('qtyspan').innerHTML = data2;
                     document.getElementById('unit1').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     
                     if (place == '{{ cmp1.state }}')
@@ -265,6 +275,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description1').value = data1
                     document.getElementById('qtyspan1').innerHTML = data2;
                     document.getElementById('unit11').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan1').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -302,6 +322,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description2').value = data1
                     document.getElementById('qtyspan2').innerHTML = data2;
                     document.getElementById('unit12').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan2').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -338,6 +368,15 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description3').value = data1
                     document.getElementById('qtyspan3').innerHTML = data2;
                     document.getElementById('unit13').value = data3
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan3').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -373,6 +412,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description4').value = data1
                     document.getElementById('qtyspan4').innerHTML = data2;
                     document.getElementById('unit14').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan4').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -408,6 +457,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description5').value = data1
                     document.getElementById('qtyspan5').innerHTML = data2;
                     document.getElementById('unit15').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan5').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -444,6 +503,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description6').value = data1
                     document.getElementById('qtyspan6').innerHTML = data2;
                     document.getElementById('unit16').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan6').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -479,6 +548,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description7').value = data1
                     document.getElementById('qtyspan7').innerHTML = data2;
                     document.getElementById('unit17').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan7').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -514,6 +593,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description8').value = data1
                     document.getElementById('qtyspan8').innerHTML = data2;
                     document.getElementById('unit18').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan8').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -549,6 +638,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description9').value = data1
                     document.getElementById('qtyspan9').innerHTML = data2;
                     document.getElementById('unit19').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan9').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -584,6 +683,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description10').value = data1
                     document.getElementById('qtyspan10').innerHTML = data2;
                     document.getElementById('unit110').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan10').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -619,6 +728,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description11').value = data1
                     document.getElementById('qtyspan11').innerHTML = data2;
                     document.getElementById('unit111').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan11').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -656,6 +775,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description12').value = data1
                     document.getElementById('qtyspan12').innerHTML = data2;
                     document.getElementById('unit112').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan12').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -692,6 +821,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description13').value = data1
                     document.getElementById('qtyspan13').innerHTML = data2;
                     document.getElementById('unit113').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan13').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -727,6 +866,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description14').value = data1
                     document.getElementById('qtyspan14').innerHTML = data2;
                     document.getElementById('unit114').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan14').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -762,6 +911,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description15').value = data1
                     document.getElementById('qtyspan15').innerHTML = data2;
                     document.getElementById('unit115').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan15').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -798,6 +957,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description16').value = data1
                     document.getElementById('qtyspan16').innerHTML = data2;
                     document.getElementById('unit116').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan16').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -833,6 +1002,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description17').value = data1
                     document.getElementById('qtyspan17').innerHTML = data2;
                     document.getElementById('unit117').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan17').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -868,6 +1047,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description18').value = data1
                     document.getElementById('qtyspan18').innerHTML = data2;
                     document.getElementById('unit118').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan18').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -903,6 +1092,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description19').value = data1
                     document.getElementById('qtyspan19').innerHTML = data2;
                     document.getElementById('unit119').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan19').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -938,6 +1137,16 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     document.getElementById('description20').value = data1
                     document.getElementById('qtyspan20').innerHTML = data2;
                     document.getElementById('unit120').value = data3
+
+                    if (data2<1)
+                    {
+                      
+                      
+                      document.getElementById('qtyspan20').style.color="red";
+                    }
+                    else{
+                      pass
+                    }
                     
                     if (place == '{{ cmp1.state }}')
                     {
@@ -1151,7 +1360,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     <td><input type="text" name='hsn[]'  value="{{ j.hsn }}" id="hsn1{{ forloop.counter }}" placeholder='Enter HSN Code' class="form-control" style="background-color: #2f516f; color: white;" /></td>
                     <td><input type="text" name='description[]'  value="{{ j.description }}"  id="description{{ forloop.counter }}" placeholder='Description' class="form-control" style="background-color: #2f516f; color: white;" /></td>
                     <td><input type="number" name='qty[]' value="{{ j.qty }}" onchange="qtychange1(this)" placeholder='Enter Qty' id="qty1" value=0 class="form-control qty" step=0 min=0 style="background-color: #2f516f; color: white;" />
-                      <span id="qtyspan{{ forloop.counter }}" class='text-muted'></span>
+                      <div><span>Available Qty :</span><span id="qtyspan{{ forloop.counter }}" class=''></span></div>
                     </td>
                     <td><input type="number" name='price[]' value="{{ j.price }}" id="unit1{{ forloop.counter }}" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" style="background-color: #2f516f; color: white;" /></td>
                     

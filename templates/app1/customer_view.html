@@ -497,7 +497,11 @@
                                     <a href="{% url 'editcustomer' customer.customerid %}" class=" fa fa-pencil btn btn-outline-info rounded-pill text-grey mt-3 mb-3" role="button">
                                         Edit
                                     </a>&nbsp;&nbsp;&nbsp;
-                                    <a href="{% url 'editcustomer' customer.customerid %}" class=" fa fa-pencil btn btn-outline-info rounded-pill text-grey mt-3 mb-3" role="button">Inactivate</a>
+                                    {% if customer.status == act%}
+                                    <a href="{% url 'active_cust' customer.customerid %}" class=" fa fa-pencil btn btn-outline-info rounded-pill text-grey mt-3 mb-3" role="button">Inactivate</a> &nbsp;&nbsp;&nbsp;
+                                    {% else %}
+                                    <a href="{% url 'inactive_cust' customer.customerid %}" class=" fa fa-pencil btn btn-outline-info rounded-pill text-grey mt-3 mb-3" role="button">Activate</a> &nbsp;&nbsp;&nbsp;
+                                    {% endif %}
                                    
                                     <a   class="btn btn-outline-info rounded-pill text-grey mt-3 mb-3" role="button"> 
 
