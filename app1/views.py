@@ -32451,9 +32451,9 @@ def bnk1(request,pk):
     bk=accounts1.objects.get(accounts1id=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
-    cust_pym = customer_payment.objects.filter(accounts1id_id=pk)
-    pym_item = vendor_payment.objects.filter(accounts1id_id=pk)
-    exppenses=expense_banking.objects.filter(accounts1id_id=pk)
+    cust_pym = customer_payment.objects.filter(accounts1id_id=pk).order_by('-date').values()
+    pym_item = vendor_payment.objects.filter(accounts1id_id=pk).order_by('-date').values()
+    exppenses=expense_banking.objects.filter(accounts1id_id=pk).order_by('-date').values()
     cmp1 = company.objects.get(id=request.session["uid"])
     context={'bk':bk,
     'cust_pym': cust_pym,
@@ -32670,7 +32670,7 @@ def add_expenses(request,pk):
         expenses.save()
         bk.balance=running_bl
         bk.save()
-        return redirect('bnnk')
+        return redirect('bnk1',pk)
     else:
         return redirect('bnnk')
 
@@ -32712,7 +32712,7 @@ def payment_vnk(request,pk):
         pym.save()
         bk.balance=running_bl
         bk.save()
-        return redirect('bnnk')
+        return redirect('bnk1',pk)
     else:
        return redirect('bnnk') 
 
@@ -32751,7 +32751,7 @@ def payment_vendor(request,pk):
 
         bk.balance=running_bl
         bk.save()
-        return redirect('bnnk')
+        return redirect('bnk1',pk)
     else:
         return redirect('bnnk')
 
