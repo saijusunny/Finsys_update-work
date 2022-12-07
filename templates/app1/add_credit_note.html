@@ -131,14 +131,14 @@
         }
     </script> -->
 
-    <form action="createpurchasedebit" method="post" class="needs-validation" novalidate>
+    <form action="{% url 'create_credit'%}" method="post" class="needs-validation" novalidate>
         {% csrf_token %}
         <div class="page-content">
             <!--breadcrumb-->
             <div class="card radius-15">
                 <div class="card-body">
                     <div class="card-title">
-                        <center><h3 class="mb-0" id="invnumb">DEBIT NOTE</h3></center>
+                        <center><h3 class="mb-0" id="invnumb">CREDIT NOTE</h3></center>
                     </div>
                     <hr/>
                 </div>
@@ -150,10 +150,10 @@
                         <div class="col-md-8">
                             <div class="row">
                                 <div class="col-md-5 mt-3">
-                                    <label for="validationCustom02">Vendor</label>
+                                    <label for="validationCustom02">Customer</label>
                                     <div class="d-flex">
                                         <select name="vendor" id="select" class="custom-select">
-                                            <option selected disabled>Select Vendor</option>
+                                            <option selected disabled>Select Customer</option>
                                             {% for v in vndr %}
                                             <option value="{{ v.firstname }} {{ v.lastname }}">{{ v.firstname }} {{ v.lastname }}</option>
                                             {% endfor %}
@@ -172,7 +172,7 @@
                                     <textarea class="form-control" name="address" rows="5" id="mailaddr"></textarea>
                                 </div>
                                 <div class="col-md-5 mt-3">
-                                    <label for="validationCustom02">Debit Note Date</label>
+                                    <label for="validationCustom02">Credit Note Date</label>
                                     <input type="date" class="form-control" name="debitdate" id="date">
                                 </div>
                             </div>
@@ -222,12 +222,11 @@
                                     </select>
                                 </div>
                                 <div class="col-md-5 mt-3">
-                                    <label for="validationCustom02">Bill Number</label>
-                                    <select name="billno" id="" class="form-control">
-                                        <option selected>Select Bill</option>
-                                        {% for p in pbill %}
-                                            <option value="{{ p.bill_no }}">Bill - {{ p.bill_no }}</option>
-                                        {% endfor %}
+                                    <label for="validationCustom02">Invoice Number</label>
+                                    <select name="billno" id="inv_no" class="form-control">
+                                        <option selected >Select Invoice</option>
+                                        
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -1186,7 +1185,7 @@
                 select = $('#select').val();
                 $.ajax({
                 type: "GET",
-                url: "{% url 'getvendordata' %}",
+                url: "{% url 'getcustdata' %}",
                 data: {
                     id: select
                 }
@@ -1195,6 +1194,15 @@
                 for (key in json_data) {
                     document.getElementById('email').value = json_data[key]['email'];
                     document.getElementById('mailaddr').value = json_data[key]['street'] + '\n' + json_data[key]['city'] + '\n' + json_data[key]['state'] + '\n' + json_data[key]['pincode'] + '\n' + json_data[key]['country'];
+                    var invdrop=document.getElementById('inv_no');
+                    var option=document.createElement("option");
+                    
+                    
+                    option.text=json_data[key]['invdata'];
+                    invdrop.add(option,invdrop[0]);
+                    
+                    
+
                     
                 }
                 })

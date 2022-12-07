@@ -10,7 +10,9 @@ from datetime import datetime, date, timedelta
 from .models import advancepayment, paydowncreditcard, salesrecpts, timeact, timeactsale, Cheqs, suplrcredit, addac, \
     bills, invoice, expences, payment, credit, delayedcharge, estimate, service, noninventory, bundle, employee, \
     payslip, inventory, customer, supplier, company, accounts, ProductModel, ItemModel, accountype, \
-    expenseaccount, incomeaccount, accounts1, recon1, recordpay, addtax1, bankstatement, customize
+    expenseaccount, incomeaccount,salescreditnote,salescreditnote1, accounts1, recon1, recordpay,addtax1,\
+    bankstatement, customize
+    
 
 from django.contrib.auth.models import auth, User
 from django.contrib import messages
@@ -32451,17 +32453,27 @@ def bnk1(request,pk):
     bk=accounts1.objects.get(accounts1id=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
-    cust_pym = customer_payment.objects.filter(accounts1id_id=pk).order_by('-date').values()
-    pym_item = vendor_payment.objects.filter(accounts1id_id=pk).order_by('-date').values()
-    exppenses=expense_banking.objects.filter(accounts1id_id=pk).order_by('-date').values()
+    cust_pym = customer_payment.objects.filter(accounts1id_id=pk)
+    pym_item = vendor_payment.objects.filter(accounts1id_id=pk)
+    exppenses=expense_banking.objects.filter(accounts1id_id=pk)
+
+    list = []
+    dict = {'exppenses':exppenses,'customers':customers,'vendors':vendors,}
+    list.append(dict)
+    print(list)
+    # list.sort(key=lambda x:x['date'])
+    print(list)
+
+
     cmp1 = company.objects.get(id=request.session["uid"])
     context={'bk':bk,
     'cust_pym': cust_pym,
     'pym_item':pym_item,
     'cmp1': cmp1,
-    'exppenses':exppenses,
-    'customers':customers,
-    'vendors':vendors,
+    'list':list,
+    # 'exppenses':exppenses,
+    # 'customers':customers,
+    # 'vendors':vendors,
     
     }
     return render(request,"app1/bnk1.html",context)
@@ -33013,6 +33025,105 @@ def start_reconcile(request,pk):
     return render(request,'app1/start reconcile.html',context)
 def credit_note(request):
     cmp1 = company.objects.get(id=request.session['uid'])
-    pdebit = purchasedebit.objects.all()  
+    pdebit = salescreditnote.objects.all()  
 
     return render(request,'app1/credit_note.html',{'cmp1': cmp1,'pdebit':pdebit})
+
+def addpurchasecredit(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        vndr = customer.objects.all()  
+        pbill = purchasebill.objects.all()  
+        item = itemtable.objects.all() 
+        context = {'cmp1': cmp1,'vndr':vndr,'item':item,'pbill':pbill} 
+        return render(request,'app1/add_credit_note.html',context)
+    return redirect('credit_note') 
+
+def getcustdata(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        id = request.GET.get('id')
+        print(id)
+        invdata = invoice.objects.get(customername=id)
+        print(invdata.invoiceno)
+        
+        x = id.split()
+        x.append(" ")
+        a = x[0]
+        b = x[1]
+        if x[2] is not None:
+            b = x[1] + " " + x[2]
+            custobject = customer.objects.get(firstname=a, lastname=b)
+            list = []
+            dict = {'customerid':custobject.customerid,'firstname':custobject.firstname,'lastname':custobject.lastname,"email":custobject.email,"street":custobject.street,"city":custobject.city,"state":custobject.state,"pincode":custobject.pincode,"country":custobject.country,"invdata":invdata.invoiceno}
+            list.append(dict)
+        else:
+            custobject = customer.objects.get(firstname=a, lastname=b)
+            list = []
+            dict = {'customerid':custobject.customerid,'firstname':custobject.firstname,'lastname':custobject.lastname,"email":custobject.email,"street":custobject.street,"city":custobject.city,"state":custobject.state,"pincode":custobject.pincode,"country":custobject.country,"inv_no":inv_no.invoiceno}
+            list.append(dict)
+        return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
+    return redirect('getvendordata')
+
+def create_credit(request):
+    
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        if request.method == 'POST':
+            debit_no = '1000'
+            pdebit = salescreditnote(customer = request.POST['vendor'],
+                                    address = request.POST['address'],
+                                    email=request.POST['email'],
+                                    creditdate=request.POST['debitdate'],
+                                    supply=request.POST['supply'],
+                                    billno=request.POST['billno'],
+                                    subtotal=request.POST['subtotal'],
+                                    taxamount=request.POST['taxamount'],
+                                    grandtotal=request.POST['grandtotal'],
+                                    cid=cmp1
+                                )
+            pdebit.save()
+            pdebit.credit_no = int(pdebit.credit_no) + pdebit.screditid
+            pdebit.save()
+
+
+            items = request.POST.getlist("items[]")
+            hsn = request.POST.getlist("hsn[]")
+            quantity = request.POST.getlist("quantity[]")
+            price = request.POST.getlist("price[]")
+            tax = request.POST.getlist("tax[]")
+            total = request.POST.getlist("total[]")
+
+            pdeb=salescreditnote.objects.get(screditid=pdebit.screditid)
+
+            if len(items)==len(hsn)==len(quantity)==len(price)==len(tax)==len(total) and items and hsn and quantity and price and tax and total:
+                mapped=zip(items,hsn,quantity,price,tax,total)
+                mapped=list(mapped)
+                for ele in mapped:
+                    porderAdd,created = salescreditnote1.objects.get_or_create(items = ele[0],hsn=ele[1],quantity=ele[2],price=ele[3],
+                    tax=ele[4],total=ele[5],scredit=pdeb)
+
+                    itemqty = itemtable.objects.get(name=ele[0],cid=cmp1)
+                    if itemqty.stock != 0:
+                        temp=0
+                        temp = itemqty.stock 
+
+                        temp = temp+int(ele[2])
+                        itemqty.stock =temp
+                        itemqty.save()
+
+            return redirect('credit_note')
+        return redirect('credit_note')
+    return redirect('/') 

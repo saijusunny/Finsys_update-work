@@ -792,6 +792,9 @@ urlpatterns = [
     path('active_cust/<int:pk>', views.active_cust, name='active_cust'),
     path('inactive_cust/<int:pk>', views.inactive_cust, name='inactive_cust'),
     path('credit_note/', views.credit_note, name='credit_note'),
+    path('addpurchasecredit/', views.addpurchasecredit, name='addpurchasecredit'),
+    path('getcustdata/', views.getcustdata, name='getcustdata'),
+    path('create_credit/', views.create_credit, name='create_credit'),
 
 
         

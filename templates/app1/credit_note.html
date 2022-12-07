@@ -17,7 +17,7 @@
             <div class="card radius-15">
                 <div class="card-body">
                     <div class="card-title">
-                        <center><h2 class="mb-0">Dedit Note</h2></center>
+                        <center><h2 class="mb-0">Credit Note</h2></center>
                         <hr>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                                 <a class="dropdown-item" href="#">Billed</a>
                                 <a class="dropdown-item" href="#">Approved</a>
                             </div> -->
-                            <a href="{% url 'addpurchasedebit' %}" class="btn btn-outline-info fa fa-plus" role="button">&nbsp;New</a>
+                            <a href="{% url 'addpurchasecredit' %}" class="btn btn-outline-info fa fa-plus" role="button">&nbsp;New</a>
                         </div>
                     </div>
 
@@ -52,18 +52,18 @@
                             <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Debit Number</th>
-                                <th>Vendor</th>
+                                <th>Credit Number</th>
+                                <th>Customer</th>
                                 <th>Tax Amount</th>
                                 <th>Amount</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for p in pdebit %}
-                                <tr onclick="window.location='viewpurchasedebit/{{ p.pdebitid }}';">
-                                    <th>{{ p.debitdate |date:'d-m-Y' }}</th>
-                                    <td>DN - {{ p.debit_no }}</td>
-                                    <td>{{ p.vendor }}</a></td>
+                                <tr onclick="window.location='viewpurchasedebit/{{ p.screditid }}';">
+                                    <th>{{ p.creditdate |date:'d-m-Y' }}</th>
+                                    <td>DN - {{ p.credit_no }}</td>
+                                    <td>{{ p.customer }}</a></td>
                                     <td>{{ p.taxamount }}</td>
                                     <td>{{ p.grandtotal }}</td>
                                 </tr> 
