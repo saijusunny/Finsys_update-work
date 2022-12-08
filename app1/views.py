@@ -32453,27 +32453,41 @@ def bnk1(request,pk):
     bk=accounts1.objects.get(accounts1id=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
-    cust_pym = customer_payment.objects.filter(accounts1id_id=pk)
-    pym_item = vendor_payment.objects.filter(accounts1id_id=pk)
-    exppenses=expense_banking.objects.filter(accounts1id_id=pk)
+    
+    cust_pym =list(customer_payment.objects.filter(accounts1id_id=pk).values_list('date',flat=True).order_by('-date'))
+    pym_item = list(vendor_payment.objects.filter(accounts1id_id=pk).values_list('date',flat=True).order_by('-date'))
+    exppenses=list(expense_banking.objects.filter(accounts1id_id=pk).values_list('date',flat=True).order_by('-date'))
 
-    list = []
-    dict = {'exppenses':exppenses,'customers':customers,'vendors':vendors,}
-    list.append(dict)
-    print(list)
-    # list.sort(key=lambda x:x['date'])
-    print(list)
+    
+    import pdb; pdb.set_trace()
+    filter_value=[]
+    # dict = [{'exppenses':exppenses},{'cust_pym':cust_pym},{'pym_item':pym_item},]
+    
+    filter_value+=cust_pym
+    filter_value+=pym_item
+    filter_value+=exppenses
+    
+    filter_value=filter_value.sort()
+    filter_value=filter_value[::-1]
+    lst_final=[]
+    for item in filter_value:
+        ctm_pymt=customer_payment.objects.filter(accounts1id_id=pk,date=item)
+        
+    
+    newlist=sorted(filter_value, key=lambda d: d['date'])
 
+    # dict=[{'expenseaccount':exppenses.expenseaccount,'amount':exppenses.amount,'vendor':exppenses.vendor,'date':exppenses.date}]
+    
+    # print(type(dict))
 
+    # dict.sort(key = lambda x: datetime.datetime.strptime(x['date'], '%Y-%m-%d'))
+    
     cmp1 = company.objects.get(id=request.session["uid"])
     context={'bk':bk,
-    'cust_pym': cust_pym,
-    'pym_item':pym_item,
+
     'cmp1': cmp1,
-    'list':list,
-    # 'exppenses':exppenses,
-    # 'customers':customers,
-    # 'vendors':vendors,
+    'customers':customers,
+    'vendors':vendors,
     
     }
     return render(request,"app1/bnk1.html",context)

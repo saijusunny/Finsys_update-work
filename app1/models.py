@@ -1577,10 +1577,11 @@ class expense_banking(models.Model):
     expenseid = models.AutoField(('exid'), primary_key=True)
     cid = models.ForeignKey(company, on_delete=models.CASCADE)
     accounts1id = models.ForeignKey(accounts1,blank=True,null=True, on_delete=models.CASCADE)
-    date = models.DateField(null=True)
+    
     expenseaccount = models.CharField(max_length=100,null=True)
     amount = models.IntegerField(null=True)  
     vendor = models.CharField(max_length=100,null=True)
+    date = models.DateField(null=True)
     customer = models.CharField(max_length=100,null=True)
     
     reference = models.CharField(max_length=100,null=True)

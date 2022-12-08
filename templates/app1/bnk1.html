@@ -1654,7 +1654,7 @@
                 {% endif %}
                 {% endfor %}
                 
-                {% for exp in exppenses %}
+                {% for exp in {{dict.exppenses}} %}
                 {% if exp.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw">
                     <!-- data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal" -->
