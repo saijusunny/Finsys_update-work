@@ -269,7 +269,7 @@ function uplodfile(){
                 
                 <a   style="padding: 10px; margin-top: -5px; cursor: pointer;" > 
                     
-                 <form  action="{%url 'deletevend' vend_dat.vendorpymid%} "> 
+                 <form  action="{%url 'deletevend' vend_dat.bnkpymid%} "> 
                     
                     <i class="fa fa-trash-o delete"> Delete</i>
 
@@ -387,7 +387,7 @@ function uplodfile(){
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form method="post" action="{% url 'vend_edit' vend_dat.vendorpymid %}">
+                                    <form method="post" action="{% url 'vend_edit' vend_dat.bnkpymid %}">
                                         {% csrf_token %}
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-6">

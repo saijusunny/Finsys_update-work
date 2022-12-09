@@ -269,7 +269,7 @@ function uplodfile(){
                 
                 <a   style="padding: 10px; margin-top: -5px; cursor: pointer;" > 
                     
-                 <form  action="{%url 'deletecus' cus_dat.customerpymid%} "> 
+                 <form  action="{%url 'deletecus' cus_dat.bnkpymid%} "> 
                     
                     <i class="fa fa-trash-o delete"> Delete</i>
                     <input name="_method" type="hidden" value="DELETE">
@@ -387,13 +387,13 @@ function uplodfile(){
                         <div class="modal-body">
                             
                             <div class="card p-3 m-3">
-                                <form method="post" action="{% url 'cus_edit' cus_dat.customerpymid %}">
+                                <form method="post" action="{% url 'cus_edit' cus_dat.bnkpymid %}">
                                     {% csrf_token %}
                                     <div class="row mt-2 mb-2">
                                         <div class="col-md-6">
                                             <label for="acctyp">Customer</label>
                                             <select name="customername" id="select" class="form-control" style="background-color: #2f516f; color: white;">
-                                                <option value="NIL" disabled selected>{{cus_dat.customer}}</option>
+                                                <option value="NIL" selected>{{cus_dat.customer}}</option>
                                                 {% for cust in customers %}
                                                 {% if cust.cid_id == cmp1.cid %}
                                                 

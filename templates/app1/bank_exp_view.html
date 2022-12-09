@@ -269,7 +269,7 @@ function uplodfile(){
                 
                 <a   style="padding: 10px; margin-top: -5px; cursor: pointer;" > 
 
-                 <form  action="{%url 'deleteexp' exp_dat.expenseid%} "> 
+                 <form  action="{%url 'deleteexp' exp_dat.bnkpymid%} "> 
                     <i class="fa fa-trash-o delete"> Delete</i>
                     <input name="_method" type="hidden" value="DELETE">
                     
@@ -339,12 +339,12 @@ function uplodfile(){
                                                                         Expense date : {{exp_dat.date}}<br><br>
                                                                         expense account : {{exp_dat.expenseaccount}}<br><br>
                                                                         reference no. : {{exp_dat.reference}}<br><br>
-                                                                        Description : {{exp_dat.note}}<br><br</h5>
+                                                                        Description : {{exp_dat.des}}<br><br</h5>
                                                                 
                                                                 </div>
                                                                 <div class="col-4">
                                                                     <p style="background-color:green;text-align:center;">&nbsp &nbspAmount<br>
-                                                                        &nbsp ₹ {{exp_dat.amount}}</p>
+                                                                        &nbsp ₹ {{exp_dat.amount_received}}</p>
                                                                 </div>
                                                                
                                                             </div><br>
@@ -384,7 +384,7 @@ function uplodfile(){
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form method="post" action="{% url 'exp_edit' exp_dat.expenseid%}">
+                                    <form method="post" action="{% url 'exp_edit' exp_dat.bnkpymid%}">
                                         {% csrf_token %}
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-6">
@@ -432,14 +432,14 @@ function uplodfile(){
                                             
                                             <div class="col-md-6">
                                                 <label for="description">Amount</label>
-                                                <input type="text" value={{exp_dat.amount}} name="amount" class="form-control">
+                                                <input type="text" value={{exp_dat.amount_received}} name="amount" class="form-control">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label>Description</label>
                                         <textarea class="form-control mt-2" type="text"  name="Type details" cols="20" class="form-control"
-                                                  rows="10" style="font-size: small;" >{{exp_dat.note}}</textarea>
+                                                  rows="10" style="font-size: small;" >{{exp_dat.des}}</textarea>
                                             </div>
                                            
                                             <div class="col-md-6 mt-2">

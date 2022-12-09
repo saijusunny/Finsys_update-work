@@ -11,7 +11,7 @@ from .models import advancepayment, paydowncreditcard, salesrecpts, timeact, tim
     bills, invoice, expences, payment, credit, delayedcharge, estimate, service, noninventory, bundle, employee, \
     payslip, inventory, customer, supplier, company, accounts, ProductModel, ItemModel, accountype, \
     expenseaccount, incomeaccount,salescreditnote,salescreditnote1, accounts1, recon1, recordpay,addtax1,\
-    bankstatement, customize
+    bankstatement, customize,banking_payment
     
 
 from django.contrib.auth.models import auth, User
@@ -9791,6 +9791,8 @@ def getbalan(request):
 def getinvpro(request):
     cmp1 = company.objects.get(id=request.session['uid'])
     invno = request.GET.get('invoiceno')
+
+   
     list = []
     if invoice.objects.get(invoiceno=invno, cid=cmp1):
         invoiobject = invoice.objects.get(invoiceno=invno, cid=cmp1)
@@ -32165,6 +32167,7 @@ def addpurchasedebit(request):
     return redirect('gopurchasedebit') 
 
 def itemdata(request):
+    print("haiiisss")
     if 'uid' in request.session:
         if request.session.has_key('uid'):
             uid = request.session['uid']
@@ -32172,20 +32175,31 @@ def itemdata(request):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         id = request.GET.get('id')
+        print(id)
 
         toda = date.today()
         tod = toda.strftime("%Y-%m-%d")
         # to = toda.strftime("%d-%m-%Y")
         context={'tod':tod}
         item = itemtable.objects.get(name=id,cid=cmp1)
-        print(item)
-        hsn = item.hsn
-        qty = item.stock
-        price = item.purchase_cost
-        gst = item.intra_st
-        sgst = item.inter_st
-        return JsonResponse({"status":" not",'hsn':hsn,'qty':qty,'price':price,'gst':gst,'sgst':sgst},context)
+        print(item .name)
+        # hsn = item.hsn
+        # qty = item.stock
+        # price = item.purchase_cost
+        # gst = item.intra_st
+        # sgst = item.inter_st
+
+        list=[]
+        dict = {'hsn':item.hsn,'qty':item.stock,'price':item.purchase_cost,'gst':item.intra_st,'sgst':item.inter_st}
+        list.append(dict)
+        return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
+
+
+        # return JsonResponse({"status":" not",'hsn':hsn,'qty':qty,'price':price,'gst':gst,'sgst':sgst},context)
     return redirect('/')
+
+
+    
 
 def createpurchasedebit(request):
     if 'uid' in request.session:
@@ -32454,40 +32468,24 @@ def bnk1(request,pk):
     customers=customer.objects.all()
     vendors=vendor.objects.all()
     
-    cust_pym =list(customer_payment.objects.filter(accounts1id_id=pk).values_list('date',flat=True).order_by('-date'))
-    pym_item = list(vendor_payment.objects.filter(accounts1id_id=pk).values_list('date',flat=True).order_by('-date'))
-    exppenses=list(expense_banking.objects.filter(accounts1id_id=pk).values_list('date',flat=True).order_by('-date'))
+    bnk_pym =banking_payment.objects.filter(accounts1id_id=pk).order_by('-bnkpymid')
 
+    cust="Customer Payment"
+    vend="Vendor Payment"
+    exp="Expense"
     
-    import pdb; pdb.set_trace()
-    filter_value=[]
-    # dict = [{'exppenses':exppenses},{'cust_pym':cust_pym},{'pym_item':pym_item},]
+    # import pdb; pdb.set_trace()
     
-    filter_value+=cust_pym
-    filter_value+=pym_item
-    filter_value+=exppenses
-    
-    filter_value=filter_value.sort()
-    filter_value=filter_value[::-1]
-    lst_final=[]
-    for item in filter_value:
-        ctm_pymt=customer_payment.objects.filter(accounts1id_id=pk,date=item)
-        
-    
-    newlist=sorted(filter_value, key=lambda d: d['date'])
-
-    # dict=[{'expenseaccount':exppenses.expenseaccount,'amount':exppenses.amount,'vendor':exppenses.vendor,'date':exppenses.date}]
-    
-    # print(type(dict))
-
-    # dict.sort(key = lambda x: datetime.datetime.strptime(x['date'], '%Y-%m-%d'))
     
     cmp1 = company.objects.get(id=request.session["uid"])
     context={'bk':bk,
-
+    'bnk_pym':bnk_pym,
     'cmp1': cmp1,
     'customers':customers,
     'vendors':vendors,
+    'cust':cust,
+    'vend':vend,
+    'exp':exp,
     
     }
     return render(request,"app1/bnk1.html",context)
@@ -32496,7 +32494,7 @@ def bnk1(request,pk):
 def vend_view(request,pk):
     
     cmp1 = company.objects.get(id=request.session["uid"])
-    vend_dat=vendor_payment.objects.get(vendorpymid=pk)
+    vend_dat=banking_payment.objects.get(bnkpymid=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
     
@@ -32510,7 +32508,7 @@ def vend_view(request,pk):
 @login_required(login_url='regcomp')
 def deletevend(request,pk):
     cmp1 = company.objects.get(id=request.session['uid'])
-    custom = vendor_payment.objects.get(vendorpymid=pk, cid=cmp1)
+    custom = banking_payment.objects.get(bnkpymid=pk, cid=cmp1)
 
     bnk_id=custom.accounts1id_id
     bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
@@ -32524,7 +32522,7 @@ def deletevend(request,pk):
 @login_required(login_url='regcomp')
 def vend_edit(request,pk):
     if request.method =="POST":
-        bk=vendor_payment.objects.get(vendorpymid=pk)
+        bk=banking_payment.objects.get(bnkpymid=pk)
         bnk_id=bk.accounts1id_id
         bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
         bank_bl_val=bnk_bal.balance
@@ -32556,7 +32554,7 @@ def vend_edit(request,pk):
 def cus_view(request,pk):
     
     cmp1 = company.objects.get(id=request.session["uid"])
-    exp_dat=customer_payment.objects.get(customerpymid=pk)
+    exp_dat=banking_payment.objects.get(bnkpymid=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
     
@@ -32570,7 +32568,7 @@ def cus_view(request,pk):
 @login_required(login_url='regcomp')
 def deletecus(request,pk):
     cmp1 = company.objects.get(id=request.session['uid'])
-    custom = customer_payment.objects.get(customerpymid=pk, cid=cmp1)
+    custom = banking_payment.objects.get(bnkpymid=pk, cid=cmp1)
 
     bnk_id=custom.accounts1id_id
     bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
@@ -32584,7 +32582,7 @@ def deletecus(request,pk):
 @login_required(login_url='regcomp')
 def cus_edit(request,pk):
     if request.method =="POST":
-        bk=customer_payment.objects.get(customerpymid=pk)
+        bk=banking_payment.objects.get(bnkpymid=pk)
         bnk_id=bk.accounts1id_id
         bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
         bank_bl_val=bnk_bal.balance
@@ -32615,7 +32613,7 @@ def cus_edit(request,pk):
 def exp_view(request,pk):
     
     cmp1 = company.objects.get(id=request.session["uid"])
-    exp_dat=expense_banking.objects.get(expenseid=pk)
+    exp_dat=banking_payment.objects.get(bnkpymid=pk)
     customers=customer.objects.all()
     vendors=vendor.objects.all()
     
@@ -32629,17 +32627,17 @@ def exp_view(request,pk):
 @login_required(login_url='regcomp')
 def exp_edit(request,pk):
     if request.method =="POST":
-        bk=expense_banking.objects.get(expenseid=pk)
+        bk=banking_payment.objects.get(bnkpymid=pk)
         bnk_id=bk.accounts1id_id
         bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
         bank_bl_val=bnk_bal.balance
-        crnt_bal=bk.amount
+        crnt_bal=bk.amount_received
         final_val=float(bank_bl_val)+float(crnt_bal)
 
         bk.expenseaccount=request.POST.get('acc_type')
         bk.vendor=request.POST.get('vendor_nm')
-        bk.amount=request.POST.get('amount')
-        bk.note=request.POST.get('Type details')
+        bk.amount_received=request.POST.get('amount')
+        bk.des=request.POST.get('Type details')
         bk.date=request.POST.get('dt_exp')
         
         bk.reference=request.POST.get('ref_no')
@@ -32659,12 +32657,12 @@ def exp_edit(request,pk):
 @login_required(login_url='regcomp')
 def deleteexp(request, pk):
         cmp1 = company.objects.get(id=request.session['uid'])
-        custom = expense_banking.objects.get(expenseid=pk, cid=cmp1)
+        custom = banking_payment.objects.get(bnkpymid=pk, cid=cmp1)
 
         bnk_id=custom.accounts1id_id
         bnk_bal=accounts1.objects.get(accounts1id=bnk_id)
         bank_bl_val=bnk_bal.balance
-        crnt_bal=custom.amount
+        crnt_bal=custom.amount_received
         final_val=float(bank_bl_val)+float(crnt_bal)
         bnk_bal.balance=final_val
 
@@ -32692,7 +32690,7 @@ def add_expenses(request,pk):
         
         running_bl=float(sum1)-float(amount)
 
-        expenses = expense_banking(expenseaccount=exp_acnt,vendor=vendor_nme,amount=amount,note=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl,accounts1id_id=pk)
+        expenses = banking_payment(expenseaccount=exp_acnt,vendor=vendor_nme,amount_received=amount,des=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl,pym_type="Expense",accounts1id_id=pk)
         expenses.save()
         bk.balance=running_bl
         bk.save()
@@ -32722,7 +32720,7 @@ def payment_vnk(request,pk):
         
         running_bl=float(sum1)+float(amt_cu)
 
-        pym=customer_payment(customer=cust_nm,
+        pym=banking_payment(customer=cust_nm,
                             vendor=vendor,
                             amount_received=amt_cu,
                             des=type_details,
@@ -32733,6 +32731,7 @@ def payment_vnk(request,pk):
                             file = file,
                             cid=cmp1,
                             running_bal=running_bl,
+                            pym_type="Customer Payment",
                             accounts1id_id=pk
                             )
         pym.save()
@@ -32761,7 +32760,7 @@ def payment_vendor(request,pk):
         sum1=bk.balance
         
         running_bl=float(sum1)-float(amt_cu)
-        pyms=vendor_payment(customer=cust_nm,
+        pyms=banking_payment(customer=cust_nm,
                             vendor=vendor,
                             amount_received=amt_cu,
                             des=type_details,
@@ -32771,7 +32770,8 @@ def payment_vendor(request,pk):
                             account=acc,
                             cid=cmp1,
                             running_bal=running_bl,
-                            accounts1id_id=pk
+                            accounts1id_id=pk,
+                            pym_type="Vendor Payment",
                             )
         pyms.save()
 
@@ -33005,34 +33005,37 @@ def bank_recon(request,pk):
     end_dat=request.POST.get("end_dt")
     clos_bal=request.POST.get("cl_bal")
     cmp1 = company.objects.get(id=request.session["uid"])
-    cust_pym = customer_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat )
-    vend_pym = vendor_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat)
-    exppenses=expense_banking.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat)
+    cust_pym = banking_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat )
+    
+
+    cst="Customer Payment"
+    vend="Vendor Payment"
+    exp="Expense Payment"
     
     
     context={
         'bnk_det':bnk_det,
         "cmp1":cmp1,
         'cust_pym':cust_pym,
-        'vend_pym':vend_pym,
-        'exppenses':exppenses,
+       
         'clos_bal':clos_bal,
+        'cst':cst,
+        'vend':vend,
+        'exp':exp,
         }
     return render(request,'app1/bank_recon.html',context)
 
 def start_reconcile(request,pk):
     bnk_det=accounts1.objects.get(accounts1id=pk)
     cmp1 = company.objects.get(id=request.session["uid"])
-    cust_pym = customer_payment.objects.filter(accounts1id_id=pk, )
-    vend_pym = vendor_payment.objects.filter(accounts1id_id=pk,)
-    exppenses=expense_banking.objects.filter(accounts1id_id=pk,)
+    cust_pym = banking_payment.objects.filter(accounts1id_id=pk, )
+    
     
     context={
         'bnk_det':bnk_det,
         "cmp1":cmp1,
         'cust_pym':cust_pym,
-        'vend_pym':vend_pym,
-        'exppenses':exppenses,
+       
         "str_dat":str_dat,
         "end_dat":end_dat,
         }
@@ -33066,8 +33069,10 @@ def getcustdata(request):
         cmp1 = company.objects.get(id=request.session['uid'])
         id = request.GET.get('id')
         print(id)
-        invdata = invoice.objects.get(customername=id)
+        # import pdb; pdb.set_trace()
+        invdata = invoice.objects.get(customername=id, cid_id=cmp1)
         print(invdata.invoiceno)
+        context={'invdata':invdata}
         
         x = id.split()
         x.append(" ")

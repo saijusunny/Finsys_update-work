@@ -47,47 +47,44 @@
             </tr>
             </thead>
             <tbody>
-                {% for pym in cust_pym %}
-                {% if pym.cid_id == cmp1.cid %}
+                {% for pym2 in cust_pym %}
+                {% if pym2.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw" data-href="">
 
-                    <td>{{ pym.date }}</td>
+                    {% if pym2.pym_type == cst %}
+
+                    <td>{{ pym2.date }}</td>
                     
                     <td></td>
-                    <td><a href="{% url 'cus_view' pym.customerpymid %}" >Customer Payment:<br>{{ pym.customer }}</a> </td>
+                    <td><a href="{% url 'cus_view' pym2.bnkpymid %}" >{{ pym2.pym_type }}<br>{{ pym2.customer }}</a> </td>
                     <td>{{ pym.running_bal }}</td>
                     <td></td>
                     <td><input type="checkbox" name="" id=""></td>
-                    
-                </tr>
-                {% endif %}
-                {% endfor %}
 
-                {% for pym2 in vend_pym %}
-                {% if pym2.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw">
+                    {% elif pym2.pym_type == vend %}
+                    
+                
+                
 
                     <td>{{ pym2.date }}</td>
                     <td></td>
-                    <td><a href="{% url 'vend_view' pym2.vendorpymid %}"  >Vendor Payment:<br>{{ pym2.vendor }}</a</td>
+                    <td><a href="{% url 'vend_view' pym2.bnkpymid %}"  >{{ pym2.pym_type }}<br>{{ pym2.vendor }}</a</td>
                     <td></td>
                     <td>{{ pym2.amount_received }}</td>
                     <td><input type="checkbox" name="" id=""></td>
+                    {% elif pym2.pym_type == exp %}
                     
-                </tr>
-                {% endif %}
-                {% endfor %}
                 
-                {% for exp in exppenses %}
-                {% if exp.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw">
+            
+                
                     <!-- data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal" -->
-                    <td>{{ exp.date }}</td>
+                    <td>{{ pym2.date }}</td>
                     <td></td>
-                    <td><a href="{% url 'exp_view' exp.expenseid %}" >Expense:<br>{{ exp.expenseaccount }}</a></td>
+                    <td><a href="{% url 'exp_view' pym2.bnkpymid %}" >{{ pym2.pym_type }}<br>{{ pym2.expenseaccount }}</a></td>
                     <td></td> 
-                    <td>{{ exp.amount }}</td>
+                    <td>{{ pym2.amount }}</td>
                     <td><input type="checkbox" name="" id=""></td>
+                    {%endif%}
                     
                 </tr>
                 {% endif %}

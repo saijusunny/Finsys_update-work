@@ -1625,48 +1625,46 @@
                     <th>Withdrawal</th>
                     <th>Running Balance</th>
                 </tr>
-                {% for pym in cust_pym %}
+                {% for pym in bnk_pym %}
                 {% if pym.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw" data-href="">
 
+                    {%if pym.pym_type == cust %}
+
                     <td>{{ pym.date }}</td>
                     
-                    <td><a href="{% url 'cus_view' pym.customerpymid %}" >Customer Payment:<br>{{ pym.customer }}</a> </td>
+                    <td><a href="{% url 'cus_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.customer }}</a> </td>
                     <td>{{ pym.amount_received }}</td>
                     <td></td>
                     <td>{{ pym.running_bal }}</td>
-                    
-                </tr>
-                {% endif %}
-                {% endfor %}
 
-                {% for pym2 in pym_item %}
-                {% if pym2.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw">
+                    {% elif pym.pym_type == vend %}
+                    <td>{{ pym.date }}</td>
 
-                    <td>{{ pym2.date }}</td>
-                    <td><a href="{% url 'vend_view' pym2.vendorpymid %}"  >Vendor Payment:<br>{{ pym2.vendor }}</a></td>
+                    <td><a href="{% url 'vend_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.vendor }}</a> </td>
                     <td></td>
-                    <td>{{ pym2.amount_received }}</td>
-                    <td>{{ pym2.running_bal }}</td>
+
+                    <td>{{ pym.amount_received }}</td>
+                    <td>{{ pym.running_bal }}</td>
+
+                    {% elif pym.pym_type == exp %}
+                    <td>{{ pym.date }}</td>
+
+                    <td><a href="{% url 'exp_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.expenseaccount }}</a> </td>
+                    <td></td>
+                    <td>{{ pym.amount_received }}</td>
+                    <td>{{ pym.running_bal }}</td>
+
+                    {% endif%}
+
+
+                    
                     
                 </tr>
                 {% endif %}
                 {% endfor %}
+
                 
-                {% for exp in {{dict.exppenses}} %}
-                {% if exp.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw">
-                    <!-- data-id="1" data-dismiss="modal"  data-target="#edit_section_exp "data-toggle="modal" -->
-                    <td>{{ exp.date }}</td>
-                    <td><a href="{% url 'exp_view' exp.expenseid %}" >Expense:<br>{{ exp.expenseaccount }}</a></td>
-                    <td></td>
-                    <td>{{ exp.amount }}</td> 
-                    <td>{{ exp.running_bal }}</td>
-                    
-                </tr>
-                {% endif %}
-                {% endfor %}
 
 
                 <tr>
