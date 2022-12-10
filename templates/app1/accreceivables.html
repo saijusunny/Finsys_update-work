@@ -112,7 +112,7 @@
                                     <tbody>
                                     {% for i in cust %}
                                         <tr  class="table-row " data-href="{% url 'account_transactions' i.customerid  %}">
-                                            <td class="center text-dark">{{i.firstname}} {{i.firstname}}</td>
+                                            <td class="center text-dark">{{i.firstname}} {{i.lastname}}</td>
                                             <td class="center text-dark">Balance Due</td>
                                             <td class="center text-dark">{{i.receivables}}</td>
                                             <td class="center text-dark"></td>

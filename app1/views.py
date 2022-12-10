@@ -15061,38 +15061,62 @@ def accreceivables(request):
 
         inv = invoice.objects.filter(cid=cmp1).values(
             'customername').annotate(t1=Sum('baldue'))
-        # cre = credit.objects.filter(cid=cmp1).values(
-        #     'customer').annotate(t1=Coalesce(Sum('grndtot'), 0))
+        
         tot = invoice.objects.filter(
             cid=cmp1).all().aggregate(t2=Sum('baldue'))
-
-        
-
-        # tot1 = credit.objects.filter(
-        #     cid=cmp1).all().aggregate(t2=Sum('grndtot'))
-
-        # custo = customer.objects.filter(cid=cmp1).all()
-
-        
 
         cust = customer.objects.filter(cid=cmp1)
         
         for i in cust:
             custname = i.firstname +" "+i.lastname
             
+      
             statment = cust_statment.objects.filter(customer=custname,cid=cmp1)
-            debit=0
-            credit=0
-            total1 = 0
             
-            for j in statment :
-                if j.Amount:
-                    debit+=j.Amount
-                if j.Payments:
-                    credit+=j.Payments
+            inv_sum=0.0
+            cred_sum=0.0
+            adv_sum=0.0
+            cst_sum=0.0
+            pym_sum=0.0
+            credits= salescreditnote.objects.filter(customer=custname,cid=cmp1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+            adv_pym= advancepayment.objects.filter(payee=custname,cid=cmp1).aggregate(Sum('amount')).get('amount__sum',0.00)
+            
+            cust_pym= customer.objects.filter(firstname=i.firstname,lastname=i.lastname,cid=cmp1).aggregate(Sum('opening_balance')).get('opening_balance__sum',0.00)
 
-            total1=debit-credit
-           
+            totss = invoice.objects.filter(customername=custname,cid=cmp1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+
+            totrs = payment.objects.filter(customer=custname,cid=cmp1).aggregate(Sum('amtreceived')).get('amtreceived__sum',0.00)
+
+    
+            
+            if totss is not None:
+                inv_sum=totss
+            else:
+                inv_sum=0.0
+
+            if credits is not None:
+                cred_sum=credits
+            else:
+                cred_sum=0.0
+
+            if adv_pym is not None:
+                adv_sum=adv_pym
+            else:
+                adv_sum=0.0
+
+            if cust_pym is not None:
+                cst_sum=cust_pym
+            else:
+                cst_sum=0.0
+            if totrs is not None:
+                pym_sum=totrs
+            else:
+                pym_sum=0.0
+            
+            total1 = 0
+            total1=float(inv_sum)-float(cred_sum)-float(adv_sum)-float(cst_sum)-float(pym_sum)
+            
+        
             i.receivables = total1
             i.save()
 
@@ -15101,14 +15125,13 @@ def accreceivables(request):
                 if i.receivables:
                     sum +=i.receivables
 
-            print(sum)    
-        
+                
+    
+
 
 
         context = {'invoice': inv, 'cmp1': cmp1,
                    'tot': tot, 
-                #    'tot1': tot1,
-                    # 'cre': cre,
                     "cust":cust,
                     'sum':sum,
                     }
@@ -15118,102 +15141,93 @@ def accreceivables(request):
 @login_required(login_url='regcomp')
 def accreceivables1(request):
     try:
-        # toda = date.today()
-        # tod = toda.strftime("%Y-%m-%d")
         filmeth = request.POST['reportperiod']
-        # if filmeth == 'Today':
-        #     fromdate = tod
-        #     todate = tod
         if filmeth == 'Custom':
             fromdate = request.POST['fper']
             todate = request.POST['tper']
-
-            print(fromdate)
-
-
-        # elif filmeth == 'This month':
-        #     fromdate = toda.strftime("%Y-%m-01")
-        #     todate = toda.strftime("%Y-%m-31")
-        # elif filmeth == 'This financial year':
-        #     if int(toda.strftime("%m")) >= 1 and int(toda.strftime("%m")) <= 3:
-        #         pyear = int(toda.strftime("%Y")) - 1
-        #         fromdate = f'{pyear}-03-01'
-        #         todate = f'{toda.strftime("%Y")}-03-31'
-        #     else:
-        #         pyear = int(toda.strftime("%Y")) + 1
-        #         fromdate = f'{toda.strftime("%Y")}-03-01'
-        #         todate = f'{pyear}-03-31'
-        else:
-            return redirect('accreceivables')
-        # cmp1 = company.objects.get(id=request.session["uid"])
-        # inv = invoice.objects.filter(cid=cmp1, invoicedate__gte=fromdate, invoicedate__lte=todate).values(
-        #     'customername').annotate(t1=Sum('baldue'))
-        # cre = credit.objects.filter(cid=cmp1, creditdate__gte=fromdate, creditdate__lte=todate).values(
-        #     'customer').annotate(t1=Coalesce(Sum('grndtot'), 0))
-        # tot = invoice.objects.filter(cid=cmp1, invoicedate__gte=fromdate, invoicedate__lte=todate).aggregate(
-        #     t2=Sum('baldue'))
-        # tot1 = credit.objects.filter(cid=cmp1, creditdate__gte=fromdate, creditdate__lte=todate).aggregate(
-        #     t2=Sum('grndtot'))
-        # context = {'invoice': inv, 'cmp1': cmp1,
-        #            'tot': tot, 'tot1': tot1, 'cre': cre}
-
         cmp1 = company.objects.get(id=request.session["uid"])
 
         inv = invoice.objects.filter(cid=cmp1).values(
             'customername').annotate(t1=Sum('baldue'))
-        # cre = credit.objects.filter(cid=cmp1).values(
-        #     'customer').annotate(t1=Coalesce(Sum('grndtot'), 0))
+        
         tot = invoice.objects.filter(
             cid=cmp1).all().aggregate(t2=Sum('baldue'))
-
-        
-
-        # tot1 = credit.objects.filter(
-        #     cid=cmp1).all().aggregate(t2=Sum('grndtot'))
-
-        # custo = customer.objects.filter(cid=cmp1).all()
-
-        
 
         cust = customer.objects.filter(cid=cmp1)
         
         for i in cust:
             custname = i.firstname +" "+i.lastname
             
-            statment = cust_statment.objects.filter(customer=custname,cid=cmp1,Date__gte=fromdate,Date__lte=todate)
-            debit=0
-            credit=0
-            total1 = 0
+      
+            statment = cust_statment.objects.filter(customer=custname,cid=cmp1)
             
-            for j in statment :
-                if j.Amount:
-                    debit+=j.Amount
-                if j.Payments:
-                    credit+=j.Payments
+            inv_sum=0.0
+            cred_sum=0.0
+            adv_sum=0.0
+            cst_sum=0.0
+            pym_sum=0.0
+            credits= salescreditnote.objects.filter(customer=custname,cid=cmp1,creditdate__gte=fromdate,creditdate__lte=todate).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+            adv_pym= advancepayment.objects.filter(payee=custname,cid=cmp1,paymentdate__gte=fromdate,paymentdate__lte=todate).aggregate(Sum('amount')).get('amount__sum',0.00)
+            
+            cust_pym= customer.objects.filter(firstname=i.firstname,lastname=i.lastname,cid=cmp1).aggregate(Sum('opening_balance')).get('opening_balance__sum',0.00)
 
-            total1=debit-credit
-           
+            totss = invoice.objects.filter(customername=custname,cid=cmp1,invoicedate__gte=fromdate,invoicedate__lte=todate).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+
+            totrs = payment.objects.filter(customer=custname,cid=cmp1,paymdate__gte=fromdate,paymdate__lte=todate).aggregate(Sum('amtreceived')).get('amtreceived__sum',0.00)
+
+            
+                    
+            if totss is not None:
+                inv_sum=totss
+            else:
+                inv_sum=0.0
+
+            if credits is not None:
+                cred_sum=credits
+            else:
+                cred_sum=0.0
+
+            if adv_pym is not None:
+                adv_sum=adv_pym
+            else:
+                adv_sum=0.0
+
+            if cust_pym is not None:
+                cst_sum=cust_pym
+            else:
+                cst_sum=0.0
+            if totrs is not None:
+                pym_sum=totrs
+            else:
+                pym_sum=0.0
+            
+            total1 = 0
+            total1=float(inv_sum)-float(cred_sum)-float(adv_sum)-float(cst_sum)-float(pym_sum)
+            
+        
             i.receivables = total1
             i.save()
 
             sum=0
             for i in  cust:
-                sum +=i.receivables
+                if i.receivables:
+                    sum +=i.receivables
 
-            print(sum)    
+                       
+          
         
 
 
         context = {'invoice': inv, 'cmp1': cmp1,
                    'tot': tot, 
-                #    'tot1': tot1,
-                    # 'cre': cre,
                     "cust":cust,
                     'sum':sum,
                     }
         return render(request, 'app1/accreceivables.html', context)
     except:
         return redirect('accreceivables')
+
+    
 
 
 @login_required(login_url='regcomp')
