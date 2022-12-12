@@ -9565,13 +9565,21 @@ def getdatainv(request):
             opb = cust1.opening_balance
             print(opb )
             obdue = cust1.opening_balance_due
+        else:
+            cust1 = customer.objects.get(firstname=a,lastname=b,cid =cmp1,opnbalance_status="Default")
+
+            date = cust1.date
+            opb = cust1.opening_balance
+            print(opb )
+            obdue = cust1.opening_balance_due
+
 
             
 
         x_data = list(invitems)
         ct= list(custobject)
         
-        return JsonResponse({"status":" not","invitem":x_data,"ct":ct,'date':date,'opb':opb,'obdue':obdue,})
+        return JsonResponse({"status":" not","invitem":x_data,"ct":ct,'opb':opb,'obdue':obdue,})
         # return redirect('goexpences')
 
 
@@ -15078,6 +15086,7 @@ def accreceivables(request):
             adv_sum=0.0
             cst_sum=0.0
             pym_sum=0.0
+
             credits= salescreditnote.objects.filter(customer=custname,cid=cmp1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
             adv_pym= advancepayment.objects.filter(payee=custname,cid=cmp1).aggregate(Sum('amount')).get('amount__sum',0.00)
             
@@ -25359,7 +25368,7 @@ def gstverification(request):
     return render(request,'app1/addcust.html',{'response':res})
 
 
-
+ 
 
 def customer_profile(request,id):
     cmp1 = company.objects.get(id=request.session["uid"])
