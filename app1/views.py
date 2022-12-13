@@ -15080,6 +15080,53 @@ def accreceivables(request):
             
       
             statment = cust_statment.objects.filter(customer=custname,cid=cmp1)
+
+            # previous year amount
+            current_year=datetime.datetime.now().year
+            end_date=str(current_year)+"-03-31"
+            previous_year = int(current_year) - 1
+            start_date=str(previous_year)+"-04-01"
+            
+            # str_date=start_date.strptime("%Y-%m-%d")
+            
+
+            credits1= salescreditnote.objects.filter(customer=custname,cid=cmp1,creditdate__gte=start_date,creditdate__lte=end_date).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+            adv_pym1= advancepayment.objects.filter(payee=custname,cid=cmp1,paymentdate__gte=start_date,paymentdate__lte=end_date).aggregate(Sum('amount')).get('amount__sum',0.00)
+            
+            # cust_pym= customer.objects.filter(firstname=i.firstname,lastname=i.lastname,cid=cmp1).aggregate(Sum('opening_balance')).get('opening_balance__sum',0.00)
+
+            totss1 = invoice.objects.filter(customername=custname,cid=cmp1,invoicedate__gte=start_date,invoicedate__lte=end_date).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+
+            totrs1 = payment.objects.filter(customer=custname,cid=cmp1,paymdate__gte=start_date,paymdate__lte=end_date).aggregate(Sum('amtreceived')).get('amtreceived__sum',0.00)
+
+            if totss1 is not None:
+                inv_sum1=totss1
+            else:
+                inv_sum1=0.0
+
+            if credits1 is not None:
+                cred_sum1=credits1
+            else:
+                cred_sum1=0.0
+
+            if adv_pym1 is not None:
+                adv_sum1=adv_pym1
+            else:
+                adv_sum1=0.0
+
+            
+            if totrs1 is not None:
+                pym_sum1=totrs1
+            else:
+                pym_sum1=0.0
+
+            prev_amount=float(inv_sum1)-float(cred_sum1)-float(adv_sum1)-float(pym_sum1)
+            print(prev_amount)
+
+            
+
+
+
             
             inv_sum=0.0
             cred_sum=0.0
