@@ -24,6 +24,25 @@
 }
 </style>
 
+<script>
+    function select_all(){  
+                var ele=document.getElementsByName('sltd');  
+                for(var i=0; i<ele.length; i++){  
+                    
+                    if(ele[i].type=='checkbox')  {
+                        
+                        if (ele[i].checked==false){
+                            
+                            ele[i].checked=true;  
+                        }
+                        else{
+                            ele[i].checked=false;  
+                        }
+                    }
+                }  
+            }  
+</script>
+
 <div class="page-content" >
     <div class="container card radius-15 ">
         <div class="card radius-15">
@@ -47,6 +66,15 @@
             </tr>
             </thead>
             <tbody>
+                <tr>
+                    <td></td>
+                    
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>Select All &nbsp;<input type="checkbox" onclick=select_all() name="slt_all" id="slt_all"></td>
+                </tr>
                 {% for pym2 in cust_pym %}
                 {% if pym2.cid_id == cmp1.cid %}
                 <tr style="text-align:center ;" class="rw" data-href="">
@@ -57,9 +85,9 @@
                     
                     <td></td>
                     <td><a href="{% url 'cus_view' pym2.bnkpymid %}" >{{ pym2.pym_type }}<br>{{ pym2.customer }}</a> </td>
-                    <td>{{ pym.running_bal }}</td>
+                    <td>{{ pym2.amount_received }}</td>
                     <td></td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="sltd" id="chk1"></td>
 
                     {% elif pym2.pym_type == vend %}
                     
@@ -71,7 +99,7 @@
                     <td><a href="{% url 'vend_view' pym2.bnkpymid %}"  >{{ pym2.pym_type }}<br>{{ pym2.vendor }}</a</td>
                     <td></td>
                     <td>{{ pym2.amount_received }}</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="sltd" id="chk1"></td>
                     {% elif pym2.pym_type == exp %}
                     
                 
@@ -82,8 +110,8 @@
                     <td></td>
                     <td><a href="{% url 'exp_view' pym2.bnkpymid %}" >{{ pym2.pym_type }}<br>{{ pym2.expenseaccount }}</a></td>
                     <td></td> 
-                    <td>{{ pym2.amount }}</td>
-                    <td><input type="checkbox" name="" id=""></td>
+                    <td>{{ pym2.amount_received }}</td>
+                    <td><input type="checkbox" name="sltd" id="chk1"></td>
                     {%endif%}
                     
                 </tr>
@@ -109,10 +137,16 @@
 <div class="modal col-md-11" id="myModal">
 
         <a href="#" class="btn btn-light ml-2">Save and Reconcile Later</a>
-        <a href="{% url 'start_reconcile' bnk_det.accounts1id%}" onclick="alert('The Account has been Reconciled')" class="btn btn-primary ml-2">Reconcile</a>
-        <a href="{% url 'bnk1' bnk_det.accounts1id%}" class="btn btn-light ml-2" onclick="alert('Are you sure you want to leve this page?')">Close</a>
+        {% if differ == clos_bal %}
+            <a href="" onclick="alert('The Account has been Reconciled')" class="btn btn-primary ml-2">Reconcile</a>
+        {% else %}
+            <a href="#" onclick="alert('Amount has not been cleared you have to clear all the amounts until you get a zero difference to reconcile the account')" class="btn btn-primary ml-2">Reconcile</a>
+        {% endif %}
 
-        <span class="mr-0"> Balance:<span style="color:#673ab7" class="ml-1">₹{{clos_bal}}</span> &nbsp;&nbsp; Difference Balance:<span style="color:red" class="ml-1">₹25000.0</span></span>
+        <a href="" class="btn btn-light ml-2" onclick="alert('Are you sure you want to leve this page?')">Close</a>
+        
+
+        <span class="mr-0"> Balance:<span style="color:#673ab7" class="ml-1">₹{{clos_bal}}</span> &nbsp;&nbsp; Difference Balance:<span style="color:red" class="ml-1">₹{{differ}}</span></span>
         
         <a class="close" data-dismiss="modal">×</a>
     

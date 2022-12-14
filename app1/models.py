@@ -1564,6 +1564,7 @@ class banking_payment(models.Model):
     expenseaccount = models.CharField(max_length=100,null=True)
     reference = models.CharField(max_length=100,null=True)
     pym_type = models.CharField(max_length=100,null=True)
+    status=models.CharField(max_length=100,null=True)
 
     
 

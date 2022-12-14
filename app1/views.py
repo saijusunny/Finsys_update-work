@@ -32760,7 +32760,7 @@ def add_expenses(request,pk):
         
         running_bl=float(sum1)-float(amount)
 
-        expenses = banking_payment(expenseaccount=exp_acnt,vendor=vendor_nme,amount_received=amount,des=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl,pym_type="Expense",accounts1id_id=pk)
+        expenses = banking_payment(expenseaccount=exp_acnt,vendor=vendor_nme,amount_received=amount,des=type_details,date=dte_exp,reference=ref_no,customer=customer,file=file,cid=cid,running_bal=running_bl,pym_type="Expense",accounts1id_id=pk,status="Active")
         expenses.save()
         bk.balance=running_bl
         bk.save()
@@ -32802,7 +32802,9 @@ def payment_vnk(request,pk):
                             cid=cmp1,
                             running_bal=running_bl,
                             pym_type="Customer Payment",
-                            accounts1id_id=pk
+                            accounts1id_id=pk,
+                            status="Active"
+
                             )
         pym.save()
         bk.balance=running_bl
@@ -32842,6 +32844,7 @@ def payment_vendor(request,pk):
                             running_bal=running_bl,
                             accounts1id_id=pk,
                             pym_type="Vendor Payment",
+                            status="Active"
                             )
         pyms.save()
 
@@ -33076,11 +33079,18 @@ def bank_recon(request,pk):
     clos_bal=request.POST.get("cl_bal")
     cmp1 = company.objects.get(id=request.session["uid"])
     cust_pym = banking_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat )
+
+    totamout = banking_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat ).aggregate(Sum('amount_received')).get('amount_received__sum',0.00)
+    differ=float(totamout)-float(clos_bal)
+    print(clos_bal)
+    print(totamout)
+    print(differ)
+    
     
 
     cst="Customer Payment"
     vend="Vendor Payment"
-    exp="Expense Payment"
+    exp="Expense"
     
     
     context={
@@ -33092,6 +33102,7 @@ def bank_recon(request,pk):
         'cst':cst,
         'vend':vend,
         'exp':exp,
+        'differ':differ,
         }
     return render(request,'app1/bank_recon.html',context)
 
