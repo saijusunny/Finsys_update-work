@@ -248,6 +248,17 @@ $(document).ready(function () {
                                     </tr>
                                     </thead>
                                     <tbody>
+                                        <tr  class="table-row ">
+                                            <td class="center text-dark" ></td>
+                                            <td class="center text-dark"></td>
+                                            <td class="center text-dark">"***Operning Balance***"</td>
+                                            <td class="center text-dark"></td>
+                                            <td class="center text-dark"></td>
+                                            <td class="center text-dark"></td>
+                                            <td class="center text-dark"></td>
+                                            <td class="center text-dark">{{prev_amount}}
+
+                                        </tr>
                                     {% for i in cust %}
                                         <tr  class="table-row " data-href="{% url 'account_transactions' i.customerid  %}">
                                             <td class="center text-dark" ><a style="color: blue;" href="{% url 'customer_profile' i.customerid %}">{{i.firstname}} {{i.lastname}}</a></td>

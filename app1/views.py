@@ -15091,6 +15091,7 @@ def accreceivables(request):
             
 
             credits1= salescreditnote.objects.filter(customer=custname,cid=cmp1,creditdate__gte=start_date,creditdate__lte=end_date).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+            
             adv_pym1= advancepayment.objects.filter(payee=custname,cid=cmp1,paymentdate__gte=start_date,paymentdate__lte=end_date).aggregate(Sum('amount')).get('amount__sum',0.00)
             
             # cust_pym= customer.objects.filter(firstname=i.firstname,lastname=i.lastname,cid=cmp1).aggregate(Sum('opening_balance')).get('opening_balance__sum',0.00)
@@ -15121,11 +15122,7 @@ def accreceivables(request):
                 pym_sum1=0.0
 
             prev_amount=float(inv_sum1)-float(cred_sum1)-float(adv_sum1)-float(pym_sum1)
-            print(prev_amount)
-
             
-
-
 
             
             inv_sum=0.0
@@ -15134,14 +15131,29 @@ def accreceivables(request):
             cst_sum=0.0
             pym_sum=0.0
 
-            credits= salescreditnote.objects.filter(customer=custname,cid=cmp1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
-            adv_pym= advancepayment.objects.filter(payee=custname,cid=cmp1).aggregate(Sum('amount')).get('amount__sum',0.00)
+            current_years=datetime.datetime.now().year
+            end_date12=str(current_years)+"-04-01"
+            previous_years = int(current_year) +1 
+            start_date12=str(previous_years)+"-03-31"
+
+            start_date1=datetime.datetime.strptime(start_date12, "%Y-%m-%d").date()
+            end_date1=datetime.datetime.strptime(end_date12, "%Y-%m-%d").date()
+            print(end_date1)
+            print(start_date1)
+            print(type(end_date1))
+            print(type(start_date1))
+            
+
+            credits= salescreditnote.objects.filter(customer=custname,cid=cmp1,creditdate__gte=start_date1,creditdate__lte=end_date1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+
+            adv_pym= advancepayment.objects.filter(payee=custname,cid=cmp1,paymentdate__gte=start_date1,paymentdate__lte=end_date1).aggregate(Sum('amount')).get('amount__sum',0.00)
             
             cust_pym= customer.objects.filter(firstname=i.firstname,lastname=i.lastname,cid=cmp1).aggregate(Sum('opening_balance')).get('opening_balance__sum',0.00)
 
-            totss = invoice.objects.filter(customername=custname,cid=cmp1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
+            totss = invoice.objects.filter(customername=custname,cid=cmp1,invoicedate__gte=start_date1,invoicedate__lte=end_date1).aggregate(Sum('grandtotal')).get('grandtotal__sum',0.00)
 
-            totrs = payment.objects.filter(customer=custname,cid=cmp1).aggregate(Sum('amtreceived')).get('amtreceived__sum',0.00)
+            totrs = payment.objects.filter(customer=custname,cid=cmp1,paymdate__gte=start_date1,paymdate__lte=end_date1).aggregate(Sum('amtreceived')).get('amtreceived__sum',0.00)
+            print(totss)
 
     
             
@@ -15190,6 +15202,7 @@ def accreceivables(request):
                    'tot': tot, 
                     "cust":cust,
                     'sum':sum,
+                    'prev_amount':prev_amount
                     }
         return render(request, 'app1/accreceivables.html', context)
     
@@ -32543,6 +32556,7 @@ def bnk1(request,pk):
     cust="Customer Payment"
     vend="Vendor Payment"
     exp="Expense"
+    recon="Disable"
     
     # import pdb; pdb.set_trace()
     
@@ -32556,6 +32570,7 @@ def bnk1(request,pk):
     'cust':cust,
     'vend':vend,
     'exp':exp,
+    'recon':recon
     
     }
     return render(request,"app1/bnk1.html",context)
@@ -33071,23 +33086,21 @@ def acres(request,pk):
 #------------------------------------------------------------------------------------Bank Reconcilation
 def bank_recon(request,pk):
     bnk_det=accounts1.objects.get(accounts1id=pk)
-    global str_dat
-    global end_dat
-    global clos_bal
+    global st_dt
+    global end_dt
+
     str_dat=request.POST.get("st_dt")
     end_dat=request.POST.get("end_dt")
     clos_bal=request.POST.get("cl_bal")
+
+    
     cmp1 = company.objects.get(id=request.session["uid"])
     cust_pym = banking_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat )
+    
 
     totamout = banking_payment.objects.filter(accounts1id_id=pk,date__gte=str_dat, date__lte=end_dat ).aggregate(Sum('amount_received')).get('amount_received__sum',0.00)
     differ=float(totamout)-float(clos_bal)
-    print(clos_bal)
-    print(totamout)
-    print(differ)
     
-    
-
     cst="Customer Payment"
     vend="Vendor Payment"
     exp="Expense"
@@ -33105,6 +33118,23 @@ def bank_recon(request,pk):
         'differ':differ,
         }
     return render(request,'app1/bank_recon.html',context)
+
+def bnk_disables(request,pk):
+    if request.method == 'POST':
+        
+        # list_of_input_ids=request.POST.getlist('inputs')
+    
+        list_of_input_ids=request.POST.getlist('sltd')
+        
+        for zitem in list_of_input_ids :
+            cust_pym = banking_payment.objects.get(accounts1id_id=pk,bnkpymid=zitem)
+            cust_pym.status="Disable"
+            cust_pym.save()
+
+        return redirect('bnk1',pk)
+    else:
+        return redirect('bnk1',pk)
+
 
 def start_reconcile(request,pk):
     bnk_det=accounts1.objects.get(accounts1id=pk)

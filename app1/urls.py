@@ -795,6 +795,7 @@ urlpatterns = [
     path('addpurchasecredit/', views.addpurchasecredit, name='addpurchasecredit'),
     path('getcustdata/', views.getcustdata, name='getcustdata'),
     path('create_credit/', views.create_credit, name='create_credit'),
+    path('bnk_disables/<int:pk>', views.bnk_disables, name='bnk_disables'),
 
 
         

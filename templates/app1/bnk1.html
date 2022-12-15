@@ -1626,42 +1626,68 @@
                     <th>Running Balance</th>
                 </tr>
                 {% for pym in bnk_pym %}
-                {% if pym.cid_id == cmp1.cid %}
-                <tr style="text-align:center ;" class="rw" data-href="">
+                    {% if pym.cid_id == cmp1.cid %}
+                    <tr style="text-align:center ;" class="rw" data-href="">
 
-                    {%if pym.pym_type == cust %}
+                        {%if pym.pym_type == cust %}
+                            {%if pym.status == recon %}
 
-                    <td>{{ pym.date }}</td>
-                    
-                    <td><a href="{% url 'cus_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.customer }}</a> </td>
-                    <td>{{ pym.amount_received }}</td>
-                    <td></td>
-                    <td>{{ pym.running_bal }}</td>
+                                <td>{{ pym.date }}</td>
+                                    
+                                <td>{{ pym.pym_type }}<br>{{ pym.customer }}</td>
+                                <td>{{ pym.amount_received }}</td>
+                                <td></td>
+                                <td>{{ pym.running_bal }}</td>
+                            {% else %}
 
-                    {% elif pym.pym_type == vend %}
-                    <td>{{ pym.date }}</td>
+                                <td>{{ pym.date }}</td>
+                                
+                                <td><a href="{% url 'cus_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.customer }}</a> </td>
+                                <td>{{ pym.amount_received }}</td>
+                                <td></td>
+                                <td>{{ pym.running_bal }}</td>
+                            {%endif%}
 
-                    <td><a href="{% url 'vend_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.vendor }}</a> </td>
-                    <td></td>
+                        {% elif pym.pym_type == vend %}
+                            {%if pym.status == recon %}
+                                <td>{{ pym.date }}</td>
 
-                    <td>{{ pym.amount_received }}</td>
-                    <td>{{ pym.running_bal }}</td>
+                                <td>{{ pym.pym_type }}<br>{{ pym.vendor }}</td>
+                                <td></td>
 
-                    {% elif pym.pym_type == exp %}
-                    <td>{{ pym.date }}</td>
+                                <td>{{ pym.amount_received }}</td>
+                                <td>{{ pym.running_bal }}</td>
+                            {% else %}
+                                <td>{{ pym.date }}</td>
 
-                    <td><a href="{% url 'exp_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.expenseaccount }}</a> </td>
-                    <td></td>
-                    <td>{{ pym.amount_received }}</td>
-                    <td>{{ pym.running_bal }}</td>
+                                <td><a href="{% url 'vend_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.vendor }}</a> </td>
+                                <td></td>
 
-                    {% endif%}
+                                <td>{{ pym.amount_received }}</td>
+                                <td>{{ pym.running_bal }}</td>
+                            {%endif%}
 
+                        {% elif pym.pym_type == exp %}
+                            {%if pym.status == recon %}
+                                <td>{{ pym.date }}</td>
 
-                    
-                    
-                </tr>
-                {% endif %}
+                                <td>{{ pym.pym_type }}<br>{{ pym.expenseaccount }}</td>
+                                <td></td>
+                                <td>{{ pym.amount_received }}</td>
+                                <td>{{ pym.running_bal }}</td>
+                            {% else %}
+                                <td>{{ pym.date }}</td>
+
+                                <td><a href="{% url 'exp_view' pym.bnkpymid %}" >{{ pym.pym_type }}<br>{{ pym.expenseaccount }}</a> </td>
+                                <td></td>
+                                <td>{{ pym.amount_received }}</td>
+                                <td>{{ pym.running_bal }}</td>
+
+                            {% endif %}  
+                        {% endif %}
+
+                    </tr>
+                    {% endif %}
                 {% endfor %}
 
                 
